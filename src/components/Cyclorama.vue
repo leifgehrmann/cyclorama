@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue'
 
 const scene = new THREE.Scene();
 
-const mode = 'london' as 'london' | 'barker';
+const mode = 'alps' as 'london' | 'barker' | 'edinburgh' | 'alps';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -16,20 +16,44 @@ let panoramaHeight: number;
 let panoramaY: number;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
-  case 'london':
-    texture1 = new THREE.TextureLoader().load( 'public/London_360_from_St_Paul\'s_Cathedral_-_Sept_2007.jpg' );
-    scene.background = new THREE.Color( 0xAACCED );
-    panoramaRadius = ft2m(130/2);
-    panoramaHeight = ft2m(130/2);
-    panoramaY = -5;
+  case 'alps': {
+    texture1 = new THREE.TextureLoader().load('public/alps.jpg');
+    scene.background = new THREE.Color(0xD8CFC8);
+    const imageWidth = 4096;
+    const imageHeight = 1491;
+    panoramaRadius = ft2m(227 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = 5;
     break;
-  default:
-    scene.background = new THREE.Color( 0xF8EFE8 );
-    texture1 = new THREE.TextureLoader().load( 'public/Barker_Panorama.jpg' );
-    panoramaRadius = ft2m(130/2);
-    panoramaHeight = ft2m(70.3);
+  }
+  case 'edinburgh': {
+    texture1 = new THREE.TextureLoader().load('public/lanorama.jpg');
+    scene.background = new THREE.Color(0xD8CFC8);
+    const imageWidth = 4000;
+    const imageHeight = 544;
+    panoramaRadius = ft2m(84 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = 0;
     break;
+  }
+  case 'london': {
+    texture1 = new THREE.TextureLoader().load('public/London_360_from_St_Paul\'s_Cathedral_-_Sept_2007.jpg');
+    scene.background = new THREE.Color(0xAACCED);
+    panoramaRadius = ft2m(130 / 2);
+    panoramaHeight = ft2m(130 / 2);
+    panoramaY = -5;
+    break;
+  }
+  default: {
+    scene.background = new THREE.Color(0xF8EFE8);
+    texture1 = new THREE.TextureLoader().load('public/Barker_Panorama.jpg');
+    const imageWidth = 18237;
+    const imageHeight = 2248;
+    panoramaRadius = ft2m(84 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = 0;
+    break;
+  }
 }
 
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
