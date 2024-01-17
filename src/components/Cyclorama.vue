@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue'
 
 const scene = new THREE.Scene();
 
-const mode = 'alps' as 'london' | 'barker' | 'edinburgh' | 'alps';
+const mode = 'london' as 'london' | 'barker' | 'edinburgh' | 'alps';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -14,6 +14,10 @@ let texture1: THREE.Texture;
 let panoramaRadius: number;
 let panoramaHeight: number;
 let panoramaY: number;
+let stageRadius = ft2m(30/2);
+let stageHeight = ft2m(1);
+let umbrellaRadius = ft2m(50/2);
+let ceilingHeight = 4;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
   case 'alps': {
@@ -34,6 +38,7 @@ switch (mode) {
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = 0;
+    stageRadius = ft2m(27/2);
     break;
   }
   case 'london': {
@@ -52,19 +57,16 @@ switch (mode) {
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = 0;
+    stageRadius = ft2m(27/2);
     break;
   }
 }
 
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 
-const stageRadius = ft2m(30/2);
-const stageHeight = ft2m(1);
-const umbrellaRadius = ft2m(50/2);
-const ceilingHeight = 4;
 const railingHeight = 0.8;
 const railingCount = Math.round(stageRadius * Math.PI * 8);
 const railingRadius = 0.02;
@@ -79,6 +81,7 @@ let cameraPosZ = camera.position.z;
 let cameraVel = 0;
 let cameraAcc = 0;
 let cameraAngle = 0;
+let cameraTilt = 0;
 
 const panoramaGeom = new THREE.CylinderGeometry( panoramaRadius, panoramaRadius, panoramaHeight, 60, 1, true);
 const panoramaMat = new THREE.MeshBasicMaterial( { map: texture1 } );
@@ -149,18 +152,27 @@ window.addEventListener('keydown', (event) => {
   } else if (event.code === 'ArrowRight') {
     cameraAngle += 0.02;
   } else if (event.code === 'ArrowDown') {
-    cameraPosX += Math.sin(cameraAngle) * 0.1;
-    cameraPosZ += Math.cos(cameraAngle) * 0.1;
+    cameraPosX += Math.sin(cameraAngle) * (event.shiftKey ? 0.3 : 0.1);
+    cameraPosZ += Math.cos(cameraAngle) * (event.shiftKey ? 0.3 : 0.1);
   } else if (event.code === 'ArrowUp') {
-    cameraPosX -= Math.sin(cameraAngle) * 0.1;
-    cameraPosZ -= Math.cos(cameraAngle) * 0.1;
+    cameraPosX -= Math.sin(cameraAngle) * (event.shiftKey ? 0.3 : 0.1);
+    cameraPosZ -= Math.cos(cameraAngle) * (event.shiftKey ? 0.3 : 0.1);
+  } else if (event.code === 'KeyR') {
+    cameraTilt -= 0.02;
+  } else if (event.code === 'KeyF') {
+    cameraTilt += 0.02;
   }
 })
 
 function animate() {
   requestAnimationFrame( animate );
   resizeRendererToDisplaySize(renderer);
-  camera.rotation.y = cameraAngle;
+  camera.setRotationFromEuler(new THREE.Euler(
+      cameraTilt,
+      cameraAngle,
+      0,
+      'YZX'
+  ))
   camera.position.x = cameraPosX;
   camera.position.z = cameraPosZ;
   camera.position.y = stageHeight + averageHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
