@@ -2,6 +2,13 @@
 import * as THREE from 'three';
 import { ref, onMounted } from 'vue'
 
+// Plan
+// - Mouse navigation = click-drag changes angle, joystick changes position
+// - Touch navigation = touch-drag changes angle, joystick changes position
+// - Keyboard navigation = LRUD changes angle, WASD changes position
+// - joystick and other controls fades when no touch or mouse-movement on screen
+// - velocity of mouse/touch release results in acceleration
+
 const scene = new THREE.Scene();
 
 const mode = 'london' as 'london' | 'barker' | 'edinburgh' | 'alps';
