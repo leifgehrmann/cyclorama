@@ -3,11 +3,11 @@ import * as THREE from 'three';
 import { ref, onMounted } from 'vue'
 
 // Plan
-// - Mouse navigation = click-drag changes angle, joystick changes position
-// - Touch navigation = touch-drag changes angle, joystick changes position
-// - Keyboard navigation = LRUD changes angle, WASD changes position
-// - joystick and other controls fades when no touch or mouse-movement on screen
-// - velocity of mouse/touch release results in acceleration
+// -    Mouse navigation = click-drag changes angle, joystick changes position
+// -    Touch navigation = touch-drag changes angle, joystick changes position
+// - ✅ Keyboard navigation = LRUD changes angle, WASD changes position
+// -    joystick and other controls fades when no touch or mouse-movement on screen
+// -    velocity of mouse/touch release results in acceleration
 
 const scene = new THREE.Scene();
 
@@ -78,17 +78,45 @@ const railingHeight = 0.8;
 const railingCount = Math.round(stageRadius * Math.PI * 8);
 const railingRadius = 0.02;
 const railingPostOffset = 0.05;
+const railingOnStageRadius = stageRadius - railingPostOffset - railingRadius;
 
 const averageHeight = 1.70; // Average height for UK in the 1800s.
 const breathingRatePerMin = 15; // Usually between 12-18 breaths per minute.
 const breathingBobHeight = 0.02;
 
+let controlState = {
+  sagittal: 0, // forwards-backward
+  frontal: 0, // crab-walk, left-right
+  yaw: 0, // turning left-right
+  pitch: 0, // looking up-down
+}
 let cameraPosX = camera.position.x;
 let cameraPosZ = camera.position.z;
-let cameraVel = 0;
-let cameraAcc = 0;
-let cameraAngle = 0;
-let cameraTilt = 0;
+let cameraSagittalVel = 0;
+let cameraSagittalVelMax = 0.7;
+let cameraSagittalVelDecel = 0.7;
+let cameraSagittalAcc = 0;
+let cameraFrontalVel = 0;
+let cameraFrontalVelMax = 0.7;
+let cameraFrontalVelDecel = 0.7;
+let cameraFrontalAcc = 0;
+let cameraYaw = 0;
+let cameraYawVel = 0;
+let cameraYawVelMax = 0.7;
+let cameraYawVelDecel = 0.7;
+let cameraYawAcc = 0;
+let cameraPitch = 0;
+let cameraPitchVel = 0;
+let cameraPitchVelMax = 0.7;
+let cameraPitchVelDecel = 0.7;
+let cameraPitchAcc = 0;
+
+let keyboardRotationAcc = 0.005;
+let keyboardWalkingAcc = 0.02;
+let keyboardW = false;
+let keyboardA = false;
+let keyboardS = false;
+let keyboardD = false;
 
 const panoramaGeom = new THREE.CylinderGeometry( panoramaRadius, panoramaRadius, panoramaHeight, 60, 1, true);
 const panoramaMat = new THREE.MeshBasicMaterial( { map: texture1 } );
@@ -111,7 +139,7 @@ const umbrella = new THREE.Mesh( umbrellaGeom, umbrellaMat );
 umbrella.translateY(stageHeight + ceilingHeight)
 scene.add( umbrella );
 
-const railingGeom = new THREE.TorusGeometry( stageRadius - railingPostOffset - railingRadius, railingRadius, 16, 100 );
+const railingGeom = new THREE.TorusGeometry( railingOnStageRadius, railingRadius, 16, 100 );
 const railingMat = new THREE.MeshBasicMaterial( { color: 0x555555 } );
 const railing = new THREE.Mesh( railingGeom, railingMat );
 railing.translateY(stageHeight + railingHeight)
@@ -120,8 +148,8 @@ scene.add(railing);
 
 for (let i = 0; i < railingCount; i++) {
   const theta = i / railingCount * Math.PI * 2;
-  const railingPostX = Math.sin(theta) * (stageRadius - railingPostOffset - railingRadius);
-  const railingPostZ = Math.cos(theta) * (stageRadius - railingPostOffset - railingRadius);
+  const railingPostX = Math.sin(theta) * (railingOnStageRadius);
+  const railingPostZ = Math.cos(theta) * (railingOnStageRadius);
   const railingPostGeom = new THREE.CylinderGeometry( railingRadius, railingRadius, railingHeight, 16, 1, false);
   const railingPostMat = new THREE.MeshBasicMaterial( { color: 0x555555 } );
   const railingPost = new THREE.Mesh( railingPostGeom, railingPostMat );
@@ -146,37 +174,116 @@ function resizeRendererToDisplaySize(renderer: THREE.Renderer) {
 }
 
 window.addEventListener('keydown', (event) => {
-  if (event.code === 'Minus') {
-    // updateZoomDirection(-1);
-  } else if (event.code === 'Equal') {
-    // updateZoomDirection(1);
-  } else if (event.shiftKey && event.code === 'ArrowLeft') {
-    cameraAngle -= 0.1;
-  } else if (event.shiftKey && event.code === 'ArrowRight') {
-    cameraAngle += 0.1;
-  } else if (event.code === 'ArrowLeft') {
-    cameraAngle -= 0.02;
+  if (event.code === 'ArrowLeft') {
+    controlState.yaw = -keyboardRotationAcc;
   } else if (event.code === 'ArrowRight') {
-    cameraAngle += 0.02;
+    controlState.yaw = keyboardRotationAcc;
   } else if (event.code === 'ArrowDown') {
-    cameraPosX += Math.sin(cameraAngle) * (event.shiftKey ? 0.3 : 0.1);
-    cameraPosZ += Math.cos(cameraAngle) * (event.shiftKey ? 0.3 : 0.1);
+    controlState.pitch = keyboardRotationAcc;
   } else if (event.code === 'ArrowUp') {
-    cameraPosX -= Math.sin(cameraAngle) * (event.shiftKey ? 0.3 : 0.1);
-    cameraPosZ -= Math.cos(cameraAngle) * (event.shiftKey ? 0.3 : 0.1);
-  } else if (event.code === 'KeyR') {
-    cameraTilt -= 0.02;
-  } else if (event.code === 'KeyF') {
-    cameraTilt += 0.02;
+    controlState.pitch = -keyboardRotationAcc;
+  } else if (event.code === 'KeyW') {
+    keyboardW = true;
+  } else if (event.code === 'KeyA') {
+    keyboardA = true;
+  } else if (event.code === 'KeyS') {
+    keyboardS = true;
+  } else if (event.code === 'KeyD') {
+    keyboardD = true;
+  }
+})
+
+window.addEventListener('keyup', (event) => {
+  if (event.code === 'ArrowLeft') {
+    controlState.yaw = 0;
+  } else if (event.code === 'ArrowRight') {
+    controlState.yaw = 0;
+  } else if (event.code === 'ArrowDown') {
+    controlState.pitch = 0;
+  } else if (event.code === 'ArrowUp') {
+    controlState.pitch = 0;
+  } else if (event.code === 'KeyW') {
+    keyboardW = false;
+    controlState.sagittal = 0;
+    controlState.frontal = 0;
+  } else if (event.code === 'KeyA') {
+    keyboardA = false;
+    controlState.sagittal = 0;
+    controlState.frontal = 0;
+  } else if (event.code === 'KeyS') {
+    keyboardS = false;
+    controlState.sagittal = 0;
+    controlState.frontal = 0;
+  } else if (event.code === 'KeyD') {
+    keyboardD = false;
+    controlState.sagittal = 0;
+    controlState.frontal = 0;
   }
 })
 
 function animate() {
   requestAnimationFrame( animate );
+  // compute direction from keyboard. Keyboard overrides joystick controls.
+  if (keyboardW || keyboardA || keyboardS || keyboardD) {
+    controlState.sagittal = 0;
+    controlState.frontal = 0;
+    if (keyboardW) {
+      controlState.sagittal += keyboardWalkingAcc
+    }
+    if (keyboardA) {
+      controlState.frontal -= keyboardWalkingAcc
+    }
+    if (keyboardS) {
+      controlState.sagittal -= keyboardWalkingAcc
+    }
+    if (keyboardD) {
+      controlState.frontal += keyboardWalkingAcc
+    }
+    if (controlState.frontal !== 0 && controlState.sagittal !== 0 ) {
+      controlState.sagittal *= 1 / Math.sqrt(2);
+      controlState.frontal *= 1 / Math.sqrt(2);
+    }
+  }
+
+  // Update View
+  cameraYawAcc = controlState.yaw;
+  cameraYawVel += cameraYawAcc;
+  cameraYawVel *= cameraYawVelDecel;
+  cameraYawVel = THREE.MathUtils.clamp(cameraYawVel, -cameraYawVelMax, cameraYawVelMax)
+
+  cameraPitchAcc = controlState.pitch;
+  cameraPitchVel += cameraPitchAcc;
+  cameraPitchVel *= cameraPitchVelDecel;
+  cameraPitchVel = THREE.MathUtils.clamp(cameraPitchVel, -cameraPitchVelMax, cameraPitchVelMax)
+
+  cameraYaw += cameraYawVel;
+  cameraPitch += THREE.MathUtils.clamp(cameraPitchVel, -Math.PI/2, Math.PI/2);
+
+  // Update movement
+  cameraSagittalAcc = controlState.sagittal;
+  cameraSagittalVel += cameraSagittalAcc;
+  cameraSagittalVel *= cameraSagittalVelDecel;
+  cameraSagittalVel = THREE.MathUtils.clamp(cameraSagittalVel, -cameraSagittalVelMax, cameraSagittalVelMax)
+
+  cameraFrontalAcc = controlState.frontal;
+  cameraFrontalVel += cameraFrontalAcc;
+  cameraFrontalVel *= cameraFrontalVelDecel;
+  cameraFrontalVel = THREE.MathUtils.clamp(cameraFrontalVel, -cameraFrontalVelMax, cameraFrontalVelMax)
+
+  cameraPosX -= Math.sin(-cameraYaw) * cameraSagittalVel + Math.sin(-cameraYaw - Math.PI / 2) * cameraFrontalVel;
+  cameraPosZ -= Math.cos(-cameraYaw) * cameraSagittalVel + Math.cos(-cameraYaw - Math.PI / 2) * cameraFrontalVel;
+
+  // Prevent out of bounds by resetting position to railing radius
+  const angleFromCenter = Math.atan2(cameraPosX, cameraPosZ)
+  const maxDistAtRailingX = Math.abs(Math.sin(angleFromCenter) * railingOnStageRadius);
+  const maxDistAtRailingZ = Math.abs(Math.cos(angleFromCenter) * railingOnStageRadius);
+  cameraPosX = THREE.MathUtils.clamp(cameraPosX, -maxDistAtRailingX, maxDistAtRailingX)
+  cameraPosZ = THREE.MathUtils.clamp(cameraPosZ, -maxDistAtRailingZ, maxDistAtRailingZ)
+
   resizeRendererToDisplaySize(renderer);
   camera.setRotationFromEuler(new THREE.Euler(
-      cameraTilt,
-      cameraAngle,
+      -cameraPitch,
+      -cameraYaw,
       0,
       'YZX'
   ))
