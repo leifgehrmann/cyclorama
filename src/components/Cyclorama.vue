@@ -10,8 +10,9 @@ import { ref, onMounted } from 'vue'
 // -    velocity of mouse/touch release results in acceleration
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000)
 
-const mode = 'london' as 'london' | 'barker' | 'edinburgh' | 'alps';
+const mode = 'barker' as 'london' | 'barker' | 'edinburgh' | 'alps';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -20,58 +21,91 @@ const ft2m = (feet: number): number => {
 let texture1: THREE.Texture;
 let panoramaRadius: number;
 let panoramaHeight: number;
+let panoramaCeilingY: number = 100;
+let groundColor: THREE.Color = new THREE.Color(0x000000);
+let groundYStart: number = 100;
+let groundYEnd: number = 100;
+let skyColor: THREE.Color = new THREE.Color(0x000000);
+let skyYStart: number = 100;
+let skyYEnd: number = 100;
 let panoramaY: number;
 let stageRadius = ft2m(30/2);
-let stageHeight = ft2m(1);
+//let stageHeight = ft2m(1);
+let stageHeight = 0;
 let umbrellaRadius = ft2m(50/2);
 let ceilingHeight = 4;
+let initialCameraYaw = 0;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
   case 'alps': {
     texture1 = new THREE.TextureLoader().load('public/alps.jpg');
-    scene.background = new THREE.Color(0xD8CFC8);
+    skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4096;
     const imageHeight = 1491;
     panoramaRadius = ft2m(227 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = 5;
+    panoramaY = -panoramaHeight * 0.4;
+    skyYStart = 4
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 10;
     break;
   }
   case 'edinburgh': {
     texture1 = new THREE.TextureLoader().load('public/lanorama.jpg');
-    scene.background = new THREE.Color(0xD8CFC8);
+    skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4000;
     const imageHeight = 544;
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = 0;
-    stageRadius = ft2m(27/2);
+    panoramaY = -panoramaHeight * 0.45;
+    skyYStart = 4
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY - 0.5;
+    groundYEnd = panoramaY + 2;
     break;
   }
   case 'london': {
     texture1 = new THREE.TextureLoader().load('public/London_360_from_St_Paul\'s_Cathedral_-_Sept_2007.jpg');
-    scene.background = new THREE.Color(0xAACCED);
+    texture1.colorSpace = 'srgb'
+    skyColor = new THREE.Color(0xAACCED);
+    groundColor = new THREE.Color(0x111121);
     panoramaRadius = ft2m(130 / 2);
     panoramaHeight = ft2m(130 / 2);
-    panoramaY = -5;
+    panoramaY = -panoramaHeight * 0.7;
+    skyYStart = 4
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY - 0.5;
+    groundYEnd = panoramaY + 2;
     break;
   }
   default: {
-    scene.background = new THREE.Color(0xF8EFE8);
     texture1 = new THREE.TextureLoader().load('public/Barker_Panorama.jpg');
+    texture1.colorSpace = 'srgb'
+    skyColor = new THREE.Color(0xDCD7B7);
+    groundColor = new THREE.Color(0x212111);
     const imageWidth = 18237;
     const imageHeight = 2248;
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = 0;
+    panoramaY = -panoramaHeight * 0.5;
     stageRadius = ft2m(27/2);
+    skyYStart = 4
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY - 0.5;
+    groundYEnd = panoramaY + 1;
+    initialCameraYaw = Math.PI * 0.8;
     break;
   }
 }
 
 const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setSize( window.innerWidth, window.innerHeight );
 
 const railingHeight = 0.8;
@@ -100,7 +134,7 @@ let cameraFrontalVel = 0;
 let cameraFrontalVelMax = 0.7;
 let cameraFrontalVelDecel = 0.7;
 let cameraFrontalAcc = 0;
-let cameraYaw = 0;
+let cameraYaw = initialCameraYaw;
 let cameraYawVel = 0;
 let cameraYawVelMax = 0.7;
 let cameraYawVelDecel = 0.7;
@@ -124,23 +158,23 @@ const panorama = new THREE.Mesh( panoramaGeom, panoramaMat );
 
 panorama.geometry.scale(-1, -1, -1)
 panorama.geometry.rotateZ(Math.PI)
-panorama.geometry.translate(0, panoramaY, 0);
+panorama.geometry.translate(0, panoramaHeight / 2 + panoramaY, 0);
 scene.add( panorama );
 
 const stageGeom = new THREE.CylinderGeometry( stageRadius, stageRadius, stageHeight, 60, 1, false);
-const stageMat = new THREE.MeshBasicMaterial( { color: 0x888888 } );
+const stageMat = new THREE.MeshBasicMaterial( { color: 0x333343 } );
 const stage = new THREE.Mesh( stageGeom, stageMat );
 stage.translateY(stageHeight/2);
 scene.add( stage );
 
 const umbrellaGeom = new THREE.CylinderGeometry( umbrellaRadius, umbrellaRadius, 0.1, 60, 1, false);
-const umbrellaMat = new THREE.MeshBasicMaterial( { color: 0x333333 } );
+const umbrellaMat = new THREE.MeshBasicMaterial( { color: 0x333343 } );
 const umbrella = new THREE.Mesh( umbrellaGeom, umbrellaMat );
 umbrella.translateY(stageHeight + ceilingHeight)
 scene.add( umbrella );
 
 const railingGeom = new THREE.TorusGeometry( railingOnStageRadius, railingRadius, 16, 100 );
-const railingMat = new THREE.MeshBasicMaterial( { color: 0x555555 } );
+const railingMat = new THREE.MeshBasicMaterial( { color: 0x222232 } );
 const railing = new THREE.Mesh( railingGeom, railingMat );
 railing.translateY(stageHeight + railingHeight)
 railing.rotateX(Math.PI/2);
@@ -151,7 +185,7 @@ for (let i = 0; i < railingCount; i++) {
   const railingPostX = Math.sin(theta) * (railingOnStageRadius);
   const railingPostZ = Math.cos(theta) * (railingOnStageRadius);
   const railingPostGeom = new THREE.CylinderGeometry( railingRadius, railingRadius, railingHeight, 16, 1, false);
-  const railingPostMat = new THREE.MeshBasicMaterial( { color: 0x555555 } );
+  const railingPostMat = new THREE.MeshBasicMaterial( { color: 0x222232 } );
   const railingPost = new THREE.Mesh( railingPostGeom, railingPostMat );
   railingPost.translateX(railingPostX)
   railingPost.translateZ(railingPostZ)
@@ -159,13 +193,107 @@ for (let i = 0; i < railingCount; i++) {
   scene.add(railingPost);
 }
 
+const skyGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, skyYEnd - skyYStart, 60, 1, true);
+const skyMat = new THREE.ShaderMaterial({
+  uniforms: {
+    color1: {
+      value: skyColor.clone().convertLinearToSRGB()
+    },
+    color2: {
+      value: skyColor.clone().convertLinearToSRGB()
+    }
+  },
+  vertexShader: `
+    varying vec2 vUv;
+
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform vec3 color1;
+    uniform vec3 color2;
+
+    varying vec2 vUv;
+
+    void main() {
+
+      gl_FragColor = vec4(mix(color1, color2, vUv.y), vUv.y);
+    }
+  `
+});
+skyMat.transparent = true;
+const sky = new THREE.Mesh(skyGeom, skyMat);
+sky.geometry.scale(-1, -1, -1)
+sky.geometry.rotateZ(Math.PI)
+sky.geometry.translate(0, (skyYEnd - skyYStart) / 2 + skyYStart, 0);
+scene.add(sky);
+
+const panoramaCeilingGeom = new THREE.PlaneGeometry(
+    panoramaRadius * 2.2,
+    panoramaRadius * 2.2
+);
+const panoramaCeilingMat = new THREE.MeshBasicMaterial( { color: skyColor, side: THREE.DoubleSide } );
+const panoramaCeiling = new THREE.Mesh(panoramaCeilingGeom, panoramaCeilingMat);
+panoramaCeiling.geometry.rotateX(Math.PI/2);
+panoramaCeiling.geometry.translate(0, panoramaCeilingY, 0);
+scene.add(panoramaCeiling);
+
+const groundGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, skyYEnd - skyYStart, 60, 1, true);
+const groundMat = new THREE.ShaderMaterial({
+  uniforms: {
+    color1: {
+      value: groundColor.clone().convertLinearToSRGB()
+    },
+    color2: {
+      value: groundColor.clone().convertLinearToSRGB()
+    }
+  },
+  vertexShader: `
+    varying vec2 vUv;
+
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform vec3 color1;
+    uniform vec3 color2;
+
+    varying vec2 vUv;
+
+    void main() {
+
+      gl_FragColor = vec4(mix(color1, color2, vUv.y), 1.0 - vUv.y);
+    }
+  `
+});
+groundMat.transparent = true;
+const ground = new THREE.Mesh(groundGeom, groundMat);
+ground.geometry.scale(-1, -1, -1)
+ground.geometry.rotateZ(Math.PI)
+ground.geometry.translate(0, (groundYEnd - groundYStart) / 2 + groundYStart, 0);
+scene.add(ground);
+
+const panoramaGroundGeom = new THREE.PlaneGeometry(
+    panoramaRadius * 2.2,
+    panoramaRadius * 2.2
+);
+const panoramaGroundMat = new THREE.MeshBasicMaterial( { color: groundColor, side: THREE.DoubleSide } );
+const panoramaGround = new THREE.Mesh(panoramaGroundGeom, panoramaGroundMat);
+panoramaGround.geometry.rotateX(Math.PI/2);
+panoramaGround.geometry.translate(0, groundYStart, 0);
+scene.add(panoramaGround);
+
 camera.position.y = stageHeight + 1;
 
 function resizeRendererToDisplaySize(renderer: THREE.Renderer) {
   const canvas = renderer.domElement;
   const pixelRatio = window.devicePixelRatio;
-  const width  = canvas.clientWidth  * pixelRatio | 0;
-  const height = canvas.clientHeight * pixelRatio | 0;
+  const width  = window.innerWidth  * pixelRatio | 0;
+  const height = window.innerHeight * pixelRatio | 0;
   const needResize = canvas.width !== width || canvas.height !== height;
   if (needResize) {
     renderer.setSize(width, height, false);
