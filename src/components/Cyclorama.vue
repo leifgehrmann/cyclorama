@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as THREE from 'three';
 import { ref, onMounted } from 'vue'
+import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 // Plan
 // -    Mouse navigation = click-drag changes angle, joystick changes position
@@ -12,12 +13,13 @@ import { ref, onMounted } from 'vue'
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'barker' as 'london' | 'barker' | 'edinburgh' | 'alps';
+const mode = 'london' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
 }
 
+let panoramaUrl: string;
 let texture1: THREE.Texture;
 let panoramaRadius: number;
 let panoramaHeight: number;
@@ -37,9 +39,30 @@ let ceilingHeight = 4;
 let initialCameraYaw = 0;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
-  case 'alps': {
-    texture1 = new THREE.TextureLoader().load('public/alps.jpg');
+  case 'constantinople': {
+    panoramaUrl = 'public/Constantinople.jpg';
+    texture1 = new THREE.TextureLoader().load(panoramaUrl);
+    texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xD8CFC8);
+    groundColor = new THREE.Color(0x000000);
+    const imageWidth = 1875;
+    const imageHeight = 319;
+    panoramaRadius = ft2m(84 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = -panoramaHeight * 0.4;
+    skyYStart = 4
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 2;
+    break;
+  }
+  case 'alps': {
+    panoramaUrl = 'public/alps.jpg';
+    texture1 = new THREE.TextureLoader().load(panoramaUrl);
+    texture1.colorSpace = 'srgb'
+    skyColor = new THREE.Color(0xD8CFC8);
+    groundColor = new THREE.Color(0x000000);
     const imageWidth = 4096;
     const imageHeight = 1491;
     panoramaRadius = ft2m(227 / 2);
@@ -53,7 +76,9 @@ switch (mode) {
     break;
   }
   case 'edinburgh': {
-    texture1 = new THREE.TextureLoader().load('public/lanorama.jpg');
+    panoramaUrl = 'public/lanorama.jpg';
+    texture1 = new THREE.TextureLoader().load(panoramaUrl);
+    texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4000;
     const imageHeight = 544;
@@ -63,12 +88,13 @@ switch (mode) {
     skyYStart = 4
     skyYEnd = panoramaY + panoramaHeight
     panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY - 0.5;
-    groundYEnd = panoramaY + 2;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 1;
     break;
   }
   case 'london': {
-    texture1 = new THREE.TextureLoader().load('public/London_360_from_St_Paul\'s_Cathedral_-_Sept_2007.jpg');
+    panoramaUrl = 'public/London_360_from_St_Paul\'s_Cathedral_-_Sept_2007.jpg';
+    texture1 = new THREE.TextureLoader().load(panoramaUrl);
     texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xAACCED);
     groundColor = new THREE.Color(0x111121);
@@ -78,12 +104,13 @@ switch (mode) {
     skyYStart = 4
     skyYEnd = panoramaY + panoramaHeight
     panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY - 0.5;
+    groundYStart = panoramaY;
     groundYEnd = panoramaY + 2;
     break;
   }
   default: {
-    texture1 = new THREE.TextureLoader().load('public/Barker_Panorama.jpg');
+    panoramaUrl = 'public/Barker_Panorama.jpg';
+    texture1 = new THREE.TextureLoader().load(panoramaUrl);
     texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xDCD7B7);
     groundColor = new THREE.Color(0x212111);
@@ -96,7 +123,7 @@ switch (mode) {
     skyYStart = 4
     skyYEnd = panoramaY + panoramaHeight
     panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY - 0.5;
+    groundYStart = panoramaY;
     groundYEnd = panoramaY + 1;
     initialCameraYaw = Math.PI * 0.8;
     break;
@@ -240,7 +267,7 @@ panoramaCeiling.geometry.rotateX(Math.PI/2);
 panoramaCeiling.geometry.translate(0, panoramaCeilingY, 0);
 scene.add(panoramaCeiling);
 
-const groundGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, skyYEnd - skyYStart, 60, 1, true);
+const groundGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, groundYEnd - groundYStart, 60, 1, true);
 const groundMat = new THREE.ShaderMaterial({
   uniforms: {
     color1: {
@@ -278,14 +305,101 @@ ground.geometry.translate(0, (groundYEnd - groundYStart) / 2 + groundYStart, 0);
 scene.add(ground);
 
 const panoramaGroundGeom = new THREE.PlaneGeometry(
-    panoramaRadius * 2.2,
-    panoramaRadius * 2.2
+    panoramaRadius * 2,
+    panoramaRadius * 2
 );
 const panoramaGroundMat = new THREE.MeshBasicMaterial( { color: groundColor, side: THREE.DoubleSide } );
 const panoramaGround = new THREE.Mesh(panoramaGroundGeom, panoramaGroundMat);
 panoramaGround.geometry.rotateX(Math.PI/2);
 panoramaGround.geometry.translate(0, groundYStart, 0);
 scene.add(panoramaGround);
+
+const loader = new SVGLoader();
+const group = new THREE.Group();
+
+loader.load( 'person-2.svg', function ( data ) {
+  group.scale.multiplyScalar( 0.01 );
+  group.position.x = 0;
+  group.position.z = stageRadius - 0.5;
+  // group.position.y = 1.76;
+  group.position.y = 1.85;
+  group.rotation.y = Math.PI;
+  group.scale.y *= - 1;
+
+  let renderOrder = 0;
+
+  for ( const path of data.paths ) {
+
+    const fillColor = path.userData.style.fill;
+
+    if ( fillColor !== undefined && fillColor !== 'none' ) {
+
+      const material = new THREE.MeshBasicMaterial( {
+        color: new THREE.Color().setStyle( fillColor ),
+        opacity: path.userData.style.fillOpacity,
+        transparent: true,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      } );
+
+      const shapes = SVGLoader.createShapes( path );
+
+      for ( const shape of shapes ) {
+
+        const geometry = new THREE.ShapeGeometry( shape );
+        const mesh = new THREE.Mesh( geometry, material );
+        mesh.renderOrder = renderOrder ++;
+
+        group.add( mesh );
+
+      }
+
+    }
+
+    const strokeColor = path.userData.style.stroke;
+
+    if ( strokeColor !== undefined && strokeColor !== 'none' ) {
+
+      const material = new THREE.MeshBasicMaterial( {
+        color: new THREE.Color().setStyle( strokeColor ),
+        opacity: path.userData.style.strokeOpacity,
+        transparent: true,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      } );
+
+      for ( const subPath of path.subPaths ) {
+
+        const geometry = SVGLoader.pointsToStroke( subPath.getPoints(), path.userData.style );
+
+        if ( geometry ) {
+
+          const mesh = new THREE.Mesh( geometry, material );
+          mesh.renderOrder = renderOrder ++;
+
+          group.add( mesh );
+
+        }
+
+      }
+
+    }
+
+  }
+
+  scene.add( group );
+} );
+
+function setOpacity( obj: THREE.Group | THREE.Mesh, opacity: number ) {
+  if (obj.children) {
+    obj.children.forEach((child: THREE.Object3D): void => {
+      setOpacity(child, opacity);
+    });
+  }
+  if ( obj.material ) {
+    obj.material.opacity = opacity ;
+  };
+};
 
 camera.position.y = stageHeight + 1;
 
@@ -385,7 +499,8 @@ function animate() {
   cameraPitchVel = THREE.MathUtils.clamp(cameraPitchVel, -cameraPitchVelMax, cameraPitchVelMax)
 
   cameraYaw += cameraYawVel;
-  cameraPitch += THREE.MathUtils.clamp(cameraPitchVel, -Math.PI/2, Math.PI/2);
+  cameraPitch += cameraPitchVel;
+  cameraPitch = THREE.MathUtils.clamp(cameraPitch, -Math.PI/2, Math.PI/2);
 
   // Update movement
   cameraSagittalAcc = controlState.sagittal;
@@ -418,13 +533,21 @@ function animate() {
   camera.position.x = cameraPosX;
   camera.position.z = cameraPosZ;
   camera.position.y = stageHeight + averageHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
+
+  group.rotation.y = -cameraYaw;
+
+  setOpacity( group, Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) );
+
   renderer.render( scene, camera );
 }
 animate();
 
-const canvas = ref(null)
+const canvas = ref(null as null | HTMLDivElement)
 
 onMounted(() => {
+  if (canvas.value === null) {
+    return;
+  }
   canvas.value.appendChild(renderer.domElement);
 })
 </script>
