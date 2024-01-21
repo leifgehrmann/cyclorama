@@ -4,7 +4,7 @@ import Joystick from './components/Joystick.vue';
 </script>
 
 <template>
-  <div>
+  <div class="touch-none">
     <Cyclorama />
     <Joystick />
   </div>
