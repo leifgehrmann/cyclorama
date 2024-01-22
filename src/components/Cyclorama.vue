@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import * as THREE from 'three';
 import { ref, onMounted } from 'vue'
-import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+import Stage from "../sceneObjects/stage.ts";
+import Sky from "../sceneObjects/sky.ts";
+import Ground from "../sceneObjects/ground.ts";
+import Person from "../sceneObjects/person.ts";
+import Panorama from "../sceneObjects/panorama.ts";
 
 // Plan
 // -    Mouse navigation = click-drag changes angle, joystick changes position
@@ -9,30 +13,32 @@ import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 // - ✅ Keyboard navigation = LRUD changes angle, WASD changes position
 // -    joystick and other controls fades when no touch or mouse-movement on screen
 // -    velocity of mouse/touch release results in acceleration
+// -    Pinch to zoom changes FOV.
+// -    scroll changes FOV
+// -    + / - changes FOV
+// -    Q / E changes height
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'london' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
+const mode = 'edinburgh' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
 }
 
 let panoramaUrl: string;
-let texture1: THREE.Texture;
 let panoramaRadius: number;
 let panoramaHeight: number;
-let panoramaCeilingY: number = 100;
+let panoramaCeilingY: number;
 let groundColor: THREE.Color = new THREE.Color(0x000000);
-let groundYStart: number = 100;
-let groundYEnd: number = 100;
-let skyColor: THREE.Color = new THREE.Color(0x000000);
-let skyYStart: number = 100;
-let skyYEnd: number = 100;
+let groundYStart: number;
+let groundYEnd: number;
+let skyColor: THREE.Color;
+let skyYStart: number;
+let skyYEnd: number;
 let panoramaY: number;
 let stageRadius = ft2m(30/2);
-//let stageHeight = ft2m(1);
 let stageHeight = 0;
 let umbrellaRadius = ft2m(50/2);
 let ceilingHeight = 4;
@@ -41,8 +47,6 @@ let initialCameraYaw = 0;
 switch (mode) {
   case 'constantinople': {
     panoramaUrl = 'public/Constantinople.jpg';
-    texture1 = new THREE.TextureLoader().load(panoramaUrl);
-    texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xD8CFC8);
     groundColor = new THREE.Color(0x000000);
     const imageWidth = 1875;
@@ -59,8 +63,6 @@ switch (mode) {
   }
   case 'alps': {
     panoramaUrl = 'public/alps.jpg';
-    texture1 = new THREE.TextureLoader().load(panoramaUrl);
-    texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xD8CFC8);
     groundColor = new THREE.Color(0x000000);
     const imageWidth = 4096;
@@ -77,8 +79,6 @@ switch (mode) {
   }
   case 'edinburgh': {
     panoramaUrl = 'public/lanorama.jpg';
-    texture1 = new THREE.TextureLoader().load(panoramaUrl);
-    texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4000;
     const imageHeight = 544;
@@ -94,8 +94,6 @@ switch (mode) {
   }
   case 'london': {
     panoramaUrl = 'public/London_360_from_St_Paul\'s_Cathedral_-_Sept_2007.jpg';
-    texture1 = new THREE.TextureLoader().load(panoramaUrl);
-    texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xAACCED);
     groundColor = new THREE.Color(0x111121);
     panoramaRadius = ft2m(130 / 2);
@@ -110,8 +108,6 @@ switch (mode) {
   }
   default: {
     panoramaUrl = 'public/Barker_Panorama.jpg';
-    texture1 = new THREE.TextureLoader().load(panoramaUrl);
-    texture1.colorSpace = 'srgb'
     skyColor = new THREE.Color(0xDCD7B7);
     groundColor = new THREE.Color(0x212111);
     const imageWidth = 18237;
@@ -130,20 +126,20 @@ switch (mode) {
   }
 }
 
-const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-const renderer = new THREE.WebGLRenderer({antialias: true});
-renderer.setSize( window.innerWidth, window.innerHeight );
-
-const railingHeight = 0.8;
+const railingHeight = 0.9;
 const railingCount = Math.round(stageRadius * Math.PI * 8);
 const railingRadius = 0.02;
-const railingPostOffset = 0.05;
+const railingPostOffset = 0.1;
 const railingOnStageRadius = stageRadius - railingPostOffset - railingRadius;
 
 const averageHeight = 1.70; // Average height for UK in the 1800s.
 const breathingRatePerMin = 15; // Usually between 12-18 breaths per minute.
 const breathingBobHeight = 0.02;
+
+const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+const renderer = new THREE.WebGLRenderer({antialias: true});
+renderer.setSize( window.innerWidth, window.innerHeight );
 
 let controlState = {
   sagittal: 0, // forwards-backward
@@ -151,6 +147,7 @@ let controlState = {
   yaw: 0, // turning left-right
   pitch: 0, // looking up-down
 }
+let cameraZoom = 100;
 let cameraPosX = camera.position.x;
 let cameraPosZ = camera.position.z;
 let cameraSagittalVel = 0;
@@ -173,233 +170,65 @@ let cameraPitchVelDecel = 0.7;
 let cameraPitchAcc = 0;
 
 let keyboardRotationAcc = 0.005;
+let keyboardRotationAccFast = 0.050;
 let keyboardWalkingAcc = 0.02;
+let keyboardWalkingAccFast = 0.04;
+let keyboardShift = false;
 let keyboardW = false;
 let keyboardA = false;
 let keyboardS = false;
 let keyboardD = false;
 
-const panoramaGeom = new THREE.CylinderGeometry( panoramaRadius, panoramaRadius, panoramaHeight, 60, 1, true);
-const panoramaMat = new THREE.MeshBasicMaterial( { map: texture1 } );
-const panorama = new THREE.Mesh( panoramaGeom, panoramaMat );
-
-panorama.geometry.scale(-1, -1, -1)
-panorama.geometry.rotateZ(Math.PI)
-panorama.geometry.translate(0, panoramaHeight / 2 + panoramaY, 0);
-scene.add( panorama );
-
-const stageGeom = new THREE.CylinderGeometry( stageRadius, stageRadius, stageHeight, 60, 1, false);
-const stageMat = new THREE.MeshBasicMaterial( { color: 0x333343 } );
-const stage = new THREE.Mesh( stageGeom, stageMat );
-stage.translateY(stageHeight/2);
-scene.add( stage );
-
-const umbrellaGeom = new THREE.CylinderGeometry( umbrellaRadius, umbrellaRadius, 0.1, 60, 1, false);
-const umbrellaMat = new THREE.MeshBasicMaterial( { color: 0x333343 } );
-const umbrella = new THREE.Mesh( umbrellaGeom, umbrellaMat );
-umbrella.translateY(stageHeight + ceilingHeight)
-scene.add( umbrella );
-
-const railingGeom = new THREE.TorusGeometry( railingOnStageRadius, railingRadius, 16, 100 );
-const railingMat = new THREE.MeshBasicMaterial( { color: 0x222232 } );
-const railing = new THREE.Mesh( railingGeom, railingMat );
-railing.translateY(stageHeight + railingHeight)
-railing.rotateX(Math.PI/2);
-scene.add(railing);
-
-for (let i = 0; i < railingCount; i++) {
-  const theta = i / railingCount * Math.PI * 2;
-  const railingPostX = Math.sin(theta) * (railingOnStageRadius);
-  const railingPostZ = Math.cos(theta) * (railingOnStageRadius);
-  const railingPostGeom = new THREE.CylinderGeometry( railingRadius, railingRadius, railingHeight, 16, 1, false);
-  const railingPostMat = new THREE.MeshBasicMaterial( { color: 0x222232 } );
-  const railingPost = new THREE.Mesh( railingPostGeom, railingPostMat );
-  railingPost.translateX(railingPostX)
-  railingPost.translateZ(railingPostZ)
-  railingPost.translateY(stageHeight + railingHeight/2)
-  scene.add(railingPost);
-}
-
-const skyGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, skyYEnd - skyYStart, 60, 1, true);
-const skyMat = new THREE.ShaderMaterial({
-  uniforms: {
-    color1: {
-      value: skyColor.clone().convertLinearToSRGB()
-    },
-    color2: {
-      value: skyColor.clone().convertLinearToSRGB()
-    }
-  },
-  vertexShader: `
-    varying vec2 vUv;
-
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-    }
-  `,
-  fragmentShader: `
-    uniform vec3 color1;
-    uniform vec3 color2;
-
-    varying vec2 vUv;
-
-    void main() {
-
-      gl_FragColor = vec4(mix(color1, color2, vUv.y), vUv.y);
-    }
-  `
-});
-skyMat.transparent = true;
-const sky = new THREE.Mesh(skyGeom, skyMat);
-sky.geometry.scale(-1, -1, -1)
-sky.geometry.rotateZ(Math.PI)
-sky.geometry.translate(0, (skyYEnd - skyYStart) / 2 + skyYStart, 0);
-scene.add(sky);
-
-const panoramaCeilingGeom = new THREE.PlaneGeometry(
-    panoramaRadius * 2.2,
-    panoramaRadius * 2.2
+new Panorama(
+    scene,
+    panoramaUrl,
+    panoramaRadius,
+    panoramaHeight,
+    panoramaY
 );
-const panoramaCeilingMat = new THREE.MeshBasicMaterial( { color: skyColor, side: THREE.DoubleSide } );
-const panoramaCeiling = new THREE.Mesh(panoramaCeilingGeom, panoramaCeilingMat);
-panoramaCeiling.geometry.rotateX(Math.PI/2);
-panoramaCeiling.geometry.translate(0, panoramaCeilingY, 0);
-scene.add(panoramaCeiling);
 
-const groundGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, groundYEnd - groundYStart, 60, 1, true);
-const groundMat = new THREE.ShaderMaterial({
-  uniforms: {
-    color1: {
-      value: groundColor.clone().convertLinearToSRGB()
-    },
-    color2: {
-      value: groundColor.clone().convertLinearToSRGB()
-    }
-  },
-  vertexShader: `
-    varying vec2 vUv;
-
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-    }
-  `,
-  fragmentShader: `
-    uniform vec3 color1;
-    uniform vec3 color2;
-
-    varying vec2 vUv;
-
-    void main() {
-
-      gl_FragColor = vec4(mix(color1, color2, vUv.y), 1.0 - vUv.y);
-    }
-  `
-});
-groundMat.transparent = true;
-const ground = new THREE.Mesh(groundGeom, groundMat);
-ground.geometry.scale(-1, -1, -1)
-ground.geometry.rotateZ(Math.PI)
-ground.geometry.translate(0, (groundYEnd - groundYStart) / 2 + groundYStart, 0);
-scene.add(ground);
-
-const panoramaGroundGeom = new THREE.PlaneGeometry(
-    panoramaRadius * 2,
-    panoramaRadius * 2
+const stage = new Stage(
+    stageRadius,
+    stageHeight,
+    umbrellaRadius,
+    ceilingHeight,
+    railingHeight,
+    railingCount,
+    railingRadius,
+    railingOnStageRadius
 );
-const panoramaGroundMat = new THREE.MeshBasicMaterial( { color: groundColor, side: THREE.DoubleSide } );
-const panoramaGround = new THREE.Mesh(panoramaGroundGeom, panoramaGroundMat);
-panoramaGround.geometry.rotateX(Math.PI/2);
-panoramaGround.geometry.translate(0, groundYStart, 0);
-scene.add(panoramaGround);
+stage.addToScene(scene)
 
-const loader = new SVGLoader();
-const group = new THREE.Group();
+const sky = new Sky(
+    panoramaRadius,
+    panoramaCeilingY,
+    skyYStart,
+    skyYEnd,
+    skyColor,
+);
+sky.addToScene(scene)
 
-loader.load( 'person-2.svg', function ( data ) {
-  group.scale.multiplyScalar( 0.01 );
-  group.position.x = 0;
-  group.position.z = stageRadius - 0.5;
-  // group.position.y = 1.76;
-  group.position.y = 1.85;
-  group.rotation.y = Math.PI;
-  group.scale.y *= - 1;
+const ground = new Ground(
+    panoramaRadius,
+    groundYStart,
+    groundYEnd,
+    groundColor,
+);
+ground.addToScene(scene)
 
-  let renderOrder = 0;
+const person1 = new Person(
+    scene,
+    'person-1.svg',
+    1.76,
+)
+person1.setPosition(stageRadius - 0.7, stageHeight, 0)
 
-  for ( const path of data.paths ) {
-
-    const fillColor = path.userData.style.fill;
-
-    if ( fillColor !== undefined && fillColor !== 'none' ) {
-
-      const material = new THREE.MeshBasicMaterial( {
-        color: new THREE.Color().setStyle( fillColor ),
-        opacity: path.userData.style.fillOpacity,
-        transparent: true,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      } );
-
-      const shapes = SVGLoader.createShapes( path );
-
-      for ( const shape of shapes ) {
-
-        const geometry = new THREE.ShapeGeometry( shape );
-        const mesh = new THREE.Mesh( geometry, material );
-        mesh.renderOrder = renderOrder ++;
-
-        group.add( mesh );
-
-      }
-
-    }
-
-    const strokeColor = path.userData.style.stroke;
-
-    if ( strokeColor !== undefined && strokeColor !== 'none' ) {
-
-      const material = new THREE.MeshBasicMaterial( {
-        color: new THREE.Color().setStyle( strokeColor ),
-        opacity: path.userData.style.strokeOpacity,
-        transparent: true,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      } );
-
-      for ( const subPath of path.subPaths ) {
-
-        const geometry = SVGLoader.pointsToStroke( subPath.getPoints(), path.userData.style );
-
-        if ( geometry ) {
-
-          const mesh = new THREE.Mesh( geometry, material );
-          mesh.renderOrder = renderOrder ++;
-
-          group.add( mesh );
-
-        }
-
-      }
-
-    }
-
-  }
-
-  scene.add( group );
-} );
-
-function setOpacity( obj: THREE.Group | THREE.Mesh, opacity: number ) {
-  if (obj.children) {
-    obj.children.forEach((child: THREE.Object3D): void => {
-      setOpacity(child, opacity);
-    });
-  }
-  if ( obj.material ) {
-    obj.material.opacity = opacity ;
-  };
-};
+const person2 = new Person(
+    scene,
+    'person-2.svg',
+    1.85,
+)
+person2.setPosition(0, stageHeight, stageRadius - 1)
 
 camera.position.y = stageHeight + 1;
 
@@ -417,13 +246,13 @@ function resizeRendererToDisplaySize(renderer: THREE.Renderer) {
 
 window.addEventListener('keydown', (event) => {
   if (event.code === 'ArrowLeft') {
-    controlState.yaw = -keyboardRotationAcc;
+    controlState.yaw = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
   } else if (event.code === 'ArrowRight') {
-    controlState.yaw = keyboardRotationAcc;
+    controlState.yaw = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
   } else if (event.code === 'ArrowDown') {
-    controlState.pitch = keyboardRotationAcc;
+    controlState.pitch = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
   } else if (event.code === 'ArrowUp') {
-    controlState.pitch = -keyboardRotationAcc;
+    controlState.pitch = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
   } else if (event.code === 'KeyW') {
     keyboardW = true;
   } else if (event.code === 'KeyA') {
@@ -432,6 +261,8 @@ window.addEventListener('keydown', (event) => {
     keyboardS = true;
   } else if (event.code === 'KeyD') {
     keyboardD = true;
+  } else if (event.code === 'ShiftLeft' || event.code === 'KeyRight') {
+    keyboardShift = true;
   }
 })
 
@@ -460,8 +291,12 @@ window.addEventListener('keyup', (event) => {
     keyboardD = false;
     controlState.sagittal = 0;
     controlState.frontal = 0;
+  } else if (event.code === 'ShiftLeft' || event.code === 'KeyRight') {
+    keyboardShift = false;
   }
 })
+
+let lastRenderTime = new Date();
 
 function animate() {
   requestAnimationFrame( animate );
@@ -470,16 +305,16 @@ function animate() {
     controlState.sagittal = 0;
     controlState.frontal = 0;
     if (keyboardW) {
-      controlState.sagittal += keyboardWalkingAcc
+      controlState.sagittal += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
     }
     if (keyboardA) {
-      controlState.frontal -= keyboardWalkingAcc
+      controlState.frontal -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
     }
     if (keyboardS) {
-      controlState.sagittal -= keyboardWalkingAcc
+      controlState.sagittal -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
     }
     if (keyboardD) {
-      controlState.frontal += keyboardWalkingAcc
+      controlState.frontal += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
     }
     if (controlState.frontal !== 0 && controlState.sagittal !== 0 ) {
       controlState.sagittal *= 1 / Math.sqrt(2);
@@ -533,12 +368,44 @@ function animate() {
   camera.position.x = cameraPosX;
   camera.position.z = cameraPosZ;
   camera.position.y = stageHeight + averageHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
+  camera.zoom = cameraZoom;
+  // camera.setFocalLength(Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * 0.1 + 0.2)
 
-  group.rotation.y = -cameraYaw;
+  const person1Distance = Math.hypot(
+    camera.position.x - person1.getPosition().x,
+    camera.position.z - person1.getPosition().z,
+  );
+  const person1Theta = Math.atan2(
+      camera.position.x - person1.getPosition().x,
+      camera.position.z - person1.getPosition().z,
+  );
+  person1.setRotation(person1Theta);
+  let newOpacity: number;
+  if (person1Distance > stageRadius) {
+    newOpacity = Math.min(1, person1.getOpacity() + (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
+  } else {
+    newOpacity = Math.max(0, person1.getOpacity() - (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
+  }
+  person1.setOpacity(newOpacity);
 
-  setOpacity( group, Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) );
+  const person2Distance = Math.hypot(
+      camera.position.x - person2.getPosition().x,
+      camera.position.z - person2.getPosition().z,
+  );
+  const person2Theta = Math.atan2(
+      camera.position.x - person2.getPosition().x,
+      camera.position.z - person2.getPosition().z,
+  )
+  person2.setRotation(person2Theta);
+  if (person2Distance > stageRadius) {
+    newOpacity = Math.min(1, person2.getOpacity() + (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
+  } else {
+    newOpacity = Math.max(0, person2.getOpacity() - (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
+  }
+  person2.setOpacity(newOpacity);
 
   renderer.render( scene, camera );
+  lastRenderTime = new Date();
 }
 animate();
 
@@ -550,6 +417,16 @@ onMounted(() => {
   }
   canvas.value.appendChild(renderer.domElement);
 })
+
+window.addEventListener('resize', () => {
+  // @ts-ignore
+  camera.aspect = window.innerWidth / window.innerHeight;
+  // @ts-ignore
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.render(scene, camera);
+});
 </script>
 
 <template>
