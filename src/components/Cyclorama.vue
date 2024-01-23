@@ -21,7 +21,7 @@ import Panorama from "../sceneObjects/panorama.ts";
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'edinburgh' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
+const mode = 'london' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -146,8 +146,8 @@ let controlState = {
   frontal: 0, // crab-walk, left-right
   yaw: 0, // turning left-right
   pitch: 0, // looking up-down
+  zoom: 0, // zoom in-out
 }
-let cameraZoom = 100;
 let cameraPosX = camera.position.x;
 let cameraPosZ = camera.position.z;
 let cameraSagittalVel = 0;
@@ -168,9 +168,17 @@ let cameraPitchVel = 0;
 let cameraPitchVelMax = 0.7;
 let cameraPitchVelDecel = 0.7;
 let cameraPitchAcc = 0;
+let cameraZoom = camera.getFocalLength();
+let cameraZoomMin = cameraZoom;
+let cameraZoomMax = cameraZoom + 30;
+let cameraZoomVel = 0;
+let cameraZoomVelMax = 0.7;
+let cameraZoomVelDecel = 0.7;
+let cameraZoomAcc = 0;
 
 let keyboardRotationAcc = 0.005;
 let keyboardRotationAccFast = 0.050;
+let keyboardFovAccFast = 0.2;
 let keyboardWalkingAcc = 0.02;
 let keyboardWalkingAccFast = 0.04;
 let keyboardShift = false;
@@ -253,6 +261,10 @@ window.addEventListener('keydown', (event) => {
     controlState.pitch = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
   } else if (event.code === 'ArrowUp') {
     controlState.pitch = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
+  } else if (event.code === 'KeyQ') {
+    controlState.zoom = -keyboardFovAccFast;
+  } else if (event.code === 'KeyE') {
+    controlState.zoom = keyboardFovAccFast;
   } else if (event.code === 'KeyW') {
     keyboardW = true;
   } else if (event.code === 'KeyA') {
@@ -275,7 +287,11 @@ window.addEventListener('keyup', (event) => {
     controlState.pitch = 0;
   } else if (event.code === 'ArrowUp') {
     controlState.pitch = 0;
-  } else if (event.code === 'KeyW') {
+  } else if (event.code === 'KeyQ') {
+    controlState.zoom = 0;
+  } else if (event.code === 'KeyE') {
+    controlState.zoom = 0;
+  }if (event.code === 'KeyW') {
     keyboardW = false;
     controlState.sagittal = 0;
     controlState.frontal = 0;
@@ -333,9 +349,16 @@ function animate() {
   cameraPitchVel *= cameraPitchVelDecel;
   cameraPitchVel = THREE.MathUtils.clamp(cameraPitchVel, -cameraPitchVelMax, cameraPitchVelMax)
 
+  cameraZoomAcc = controlState.zoom;
+  cameraZoomVel += cameraZoomAcc;
+  cameraZoomVel *= cameraZoomVelDecel;
+  cameraZoomVel = THREE.MathUtils.clamp(cameraZoomVel, -cameraZoomVelMax, cameraZoomVelMax)
+
   cameraYaw += cameraYawVel;
   cameraPitch += cameraPitchVel;
+  cameraZoom += cameraZoomVel;
   cameraPitch = THREE.MathUtils.clamp(cameraPitch, -Math.PI/2, Math.PI/2);
+  cameraZoom = THREE.MathUtils.clamp(cameraZoom, cameraZoomMin, cameraZoomMax);
 
   // Update movement
   cameraSagittalAcc = controlState.sagittal;
@@ -368,7 +391,7 @@ function animate() {
   camera.position.x = cameraPosX;
   camera.position.z = cameraPosZ;
   camera.position.y = stageHeight + averageHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
-  camera.zoom = cameraZoom;
+  camera.setFocalLength(cameraZoom);
   // camera.setFocalLength(Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * 0.1 + 0.2)
 
   const person1Distance = Math.hypot(
