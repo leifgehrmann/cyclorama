@@ -117,5 +117,6 @@ export default class Person {
     }
     this.opacity = value;
     setOpacity(this.group, value);
+    this.group.visible = value !== 0;
   }
 }
