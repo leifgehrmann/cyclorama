@@ -261,9 +261,9 @@ window.addEventListener('keydown', (event) => {
     controlState.pitch = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
   } else if (event.code === 'ArrowUp') {
     controlState.pitch = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
-  } else if (event.code === 'KeyQ') {
+  } else if (event.code === 'Minus') {
     controlState.zoom = -keyboardFovAccFast;
-  } else if (event.code === 'KeyE') {
+  } else if (event.code === 'Equal') {
     controlState.zoom = keyboardFovAccFast;
   } else if (event.code === 'KeyW') {
     keyboardW = true;
@@ -287,9 +287,9 @@ window.addEventListener('keyup', (event) => {
     controlState.pitch = 0;
   } else if (event.code === 'ArrowUp') {
     controlState.pitch = 0;
-  } else if (event.code === 'KeyQ') {
+  } else if (event.code === 'Minus') {
     controlState.zoom = 0;
-  } else if (event.code === 'KeyE') {
+  } else if (event.code === 'Equal') {
     controlState.zoom = 0;
   }if (event.code === 'KeyW') {
     keyboardW = false;
