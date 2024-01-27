@@ -21,7 +21,7 @@ const ft2m = (feet: number): number => {
   return 0.3048 * feet;
 }
 
-let panoramaUrl: string;
+let panoramaUrls: string[];
 let panoramaRadius: number;
 let panoramaHeight: number;
 let panoramaCeilingY: number;
@@ -40,7 +40,7 @@ let initialCameraYaw = 0;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
   case 'constantinople': {
-    panoramaUrl = 'public/Constantinople.jpg';
+    panoramaUrls = ['Constantinople.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
     groundColor = new THREE.Color(0x000000);
     const imageWidth = 1875;
@@ -56,7 +56,7 @@ switch (mode) {
     break;
   }
   case 'alps': {
-    panoramaUrl = 'public/alps.jpg';
+    panoramaUrls = ['alps.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
     groundColor = new THREE.Color(0x000000);
     const imageWidth = 4096;
@@ -72,7 +72,7 @@ switch (mode) {
     break;
   }
   case 'edinburgh': {
-    panoramaUrl = 'public/lanorama.jpg';
+    panoramaUrls = ['lanorama.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4000;
     const imageHeight = 544;
@@ -87,7 +87,13 @@ switch (mode) {
     break;
   }
   case 'london': {
-    panoramaUrl = 'public/London_360_from_St_Paul\'s_Cathedral_-_Sept_2007.jpg';
+    panoramaUrls = [
+        'london-00.jpg',
+        'london-01.jpg',
+        'london-02.jpg',
+        'london-03.jpg',
+        'london-04.jpg',
+    ];
     skyColor = new THREE.Color(0xAACCED);
     groundColor = new THREE.Color(0x111121);
     panoramaRadius = ft2m(130 / 2);
@@ -101,7 +107,13 @@ switch (mode) {
     break;
   }
   default: {
-    panoramaUrl = 'public/Barker_Panorama.jpg';
+    panoramaUrls = [
+        'barker-00.jpg',
+        'barker-01.jpg',
+        'barker-02.jpg',
+        'barker-03.jpg',
+        'barker-04.jpg',
+    ];
     skyColor = new THREE.Color(0xDCD7B7);
     groundColor = new THREE.Color(0x212111);
     const imageWidth = 18237;
@@ -165,7 +177,7 @@ let cameraZoomAcc = 0;
 
 new Panorama(
     scene,
-    panoramaUrl,
+    panoramaUrls,
     panoramaRadius,
     panoramaHeight,
     panoramaY
