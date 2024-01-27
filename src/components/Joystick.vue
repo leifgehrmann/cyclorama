@@ -1,11 +1,15 @@
 <script setup lang="ts">
 
-import {onMounted, ref} from "vue";
+import {onMounted, ref, defineEmits} from "vue";
+
+const emit = defineEmits(['controlUpdate'])
 
 const joystick = ref(null as null | HTMLDivElement)
 const handle = ref(null as null | HTMLDivElement)
 
 let mouseDown: boolean = false;
+let originX = 0;
+let originY = 0;
 let handlePositionX = 0;
 let handlePositionY = 0;
 let angle = 0;
@@ -16,48 +20,56 @@ onMounted(() => {
     return;
   }
   joystick.value.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) {
+      return;
+    }
     mouseDown = true;
     e.preventDefault();
     e.stopPropagation();
-
-    // Todo: If the cursor is within the handle, don't move the handle's center
-    // to where the cursor is, instead use the difference.
-
     if (joystick.value === null || handle.value === null) {
       return
     }
     const rect = joystick.value.getBoundingClientRect();
-    handle.value.style.left = `${(e.clientX - rect.left - rect.width / 2)}px`;
-    handle.value.style.top = `${(e.clientY - rect.top - rect.height / 2)}px`;
+    const handleRect = handle.value.getBoundingClientRect();
+    originX = rect.left + rect.width / 2
+    originY = rect.top + rect.height / 2
+    if (Math.hypot(originX - e.clientX, originY - e.clientY) < handleRect.width / 2) {
+      originX = e.clientX
+      originY = e.clientY
+    }
+    handle.value.style.left = `${(e.clientX - originX)}px`;
+    handle.value.style.top = `${(e.clientY - originY)}px`;
     magnitude = Math.hypot(
-        e.clientX - rect.left - rect.width / 2,
-        e.clientY - rect.top - rect.height / 2
+        e.clientX - originX,
+        e.clientY - originY
     );
     angle = Math.atan2(
-        e.clientY - rect.top - rect.height / 2,
-        e.clientX - rect.left - rect.width / 2,
+        e.clientY - originY,
+        e.clientX - originX,
     );
+    animate();
   })
 
   window.addEventListener('mousemove', (e) => {
     if (joystick.value === null || handle.value === null || !mouseDown) {
       return
     }
-    const rect = joystick.value.getBoundingClientRect();
-    handle.value.style.left = `${(e.clientX - rect.left - rect.width / 2)}px`;
-    handle.value.style.top = `${(e.clientY - rect.top - rect.height / 2)}px`;
+    handle.value.style.left = `${(e.clientX - originX)}px`;
+    handle.value.style.top = `${(e.clientY - originY)}px`;
     magnitude = Math.hypot(
-        e.clientX - rect.left - rect.width / 2,
-        e.clientY - rect.top - rect.height / 2
+        e.clientX - originX,
+        e.clientY - originY
     );
     angle = Math.atan2(
-        e.clientY - rect.top - rect.height / 2,
-        e.clientX - rect.left - rect.width / 2,
+        e.clientY - originY,
+        e.clientX - originX,
     );
+    animate();
   })
 
-  function clearMouse(e: Event) {
+  function clearMouse() {
     mouseDown = false;
+    animate();
   }
 
   window.addEventListener('mouseleave', clearMouse)
@@ -71,15 +83,20 @@ onMounted(() => {
     const handleRect = handle.value.getBoundingClientRect();
     if (!mouseDown) {
       magnitude = Math.min((joyRect.width/2 - handleRect.width/2), magnitude);
-      magnitude *= 0.5;
+      magnitude *= 0.6;
     }
-    requestAnimationFrame(animate);
     handlePositionX = Math.cos(angle) * Math.min((joyRect.width/2 - handleRect.width/2), magnitude) + (joyRect.width / 2 - handleRect.width / 2);
     handlePositionY = Math.sin(angle) * Math.min((joyRect.width/2 - handleRect.width/2), magnitude) + (joyRect.width / 2 - handleRect.width / 2);
     handle.value.style.left = `${handlePositionX}px`
     handle.value.style.top = `${handlePositionY}px`
+
+    const valueX = (handlePositionX - (joyRect.width / 2 - handleRect.width / 2)) / (joyRect.width / 2 - handleRect.width / 2)
+    const valueY = (handlePositionY - (joyRect.width / 2 - handleRect.width / 2)) / (joyRect.width / 2 - handleRect.width / 2)
+    emit('controlUpdate', [valueX, valueY]);
+    if (!mouseDown && magnitude > 0.0001) {
+      requestAnimationFrame(animate);
+    }
   }
-  animate();
 })
 
 </script>
