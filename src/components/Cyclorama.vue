@@ -1,22 +1,16 @@
 <script setup lang="ts">
 import * as THREE from 'three';
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
 import Stage from "../sceneObjects/stage.ts";
 import Sky from "../sceneObjects/sky.ts";
 import Ground from "../sceneObjects/ground.ts";
 import Person from "../sceneObjects/person.ts";
 import Panorama from "../sceneObjects/panorama.ts";
+import {ControlState} from "../utils/types.ts";
 
-// Plan
-// -    Mouse navigation = click-drag changes angle, joystick changes position
-// -    Touch navigation = touch-drag changes angle, joystick changes position
-// - ✅ Keyboard navigation = LRUD changes angle, WASD changes position
-// -    joystick and other controls fades when no touch or mouse-movement on screen
-// -    velocity of mouse/touch release results in acceleration
-// -    Pinch to zoom changes FOV.
-// -    scroll changes FOV
-// -    + / - changes FOV
-// -    Q / E changes height
+const props = defineProps<{
+  controlState: ControlState
+}>()
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
@@ -141,13 +135,6 @@ const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.inner
 const renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setSize( window.innerWidth, window.innerHeight );
 
-let controlState = {
-  sagittal: 0, // forwards-backward
-  frontal: 0, // crab-walk, left-right
-  yaw: 0, // turning left-right
-  pitch: 0, // looking up-down
-  zoom: 0, // zoom in-out
-}
 let cameraPosX = camera.position.x;
 let cameraPosZ = camera.position.z;
 let cameraSagittalVel = 0;
@@ -175,17 +162,6 @@ let cameraZoomVel = 0;
 let cameraZoomVelMax = 0.7;
 let cameraZoomVelDecel = 0.7;
 let cameraZoomAcc = 0;
-
-let keyboardRotationAcc = 0.005;
-let keyboardRotationAccFast = 0.050;
-let keyboardFovAccFast = 0.2;
-let keyboardWalkingAcc = 0.02;
-let keyboardWalkingAccFast = 0.04;
-let keyboardShift = false;
-let keyboardW = false;
-let keyboardA = false;
-let keyboardS = false;
-let keyboardD = false;
 
 new Panorama(
     scene,
@@ -252,104 +228,23 @@ function resizeRendererToDisplaySize(renderer: THREE.Renderer) {
   return needResize;
 }
 
-window.addEventListener('keydown', (event) => {
-  if (event.code === 'ArrowLeft') {
-    controlState.yaw = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
-  } else if (event.code === 'ArrowRight') {
-    controlState.yaw = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
-  } else if (event.code === 'ArrowDown') {
-    controlState.pitch = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
-  } else if (event.code === 'ArrowUp') {
-    controlState.pitch = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
-  } else if (event.code === 'Minus') {
-    controlState.zoom = -keyboardFovAccFast;
-  } else if (event.code === 'Equal') {
-    controlState.zoom = keyboardFovAccFast;
-  } else if (event.code === 'KeyW') {
-    keyboardW = true;
-  } else if (event.code === 'KeyA') {
-    keyboardA = true;
-  } else if (event.code === 'KeyS') {
-    keyboardS = true;
-  } else if (event.code === 'KeyD') {
-    keyboardD = true;
-  } else if (event.code === 'ShiftLeft' || event.code === 'KeyRight') {
-    keyboardShift = true;
-  }
-})
-
-window.addEventListener('keyup', (event) => {
-  if (event.code === 'ArrowLeft') {
-    controlState.yaw = 0;
-  } else if (event.code === 'ArrowRight') {
-    controlState.yaw = 0;
-  } else if (event.code === 'ArrowDown') {
-    controlState.pitch = 0;
-  } else if (event.code === 'ArrowUp') {
-    controlState.pitch = 0;
-  } else if (event.code === 'Minus') {
-    controlState.zoom = 0;
-  } else if (event.code === 'Equal') {
-    controlState.zoom = 0;
-  }if (event.code === 'KeyW') {
-    keyboardW = false;
-    controlState.sagittal = 0;
-    controlState.frontal = 0;
-  } else if (event.code === 'KeyA') {
-    keyboardA = false;
-    controlState.sagittal = 0;
-    controlState.frontal = 0;
-  } else if (event.code === 'KeyS') {
-    keyboardS = false;
-    controlState.sagittal = 0;
-    controlState.frontal = 0;
-  } else if (event.code === 'KeyD') {
-    keyboardD = false;
-    controlState.sagittal = 0;
-    controlState.frontal = 0;
-  } else if (event.code === 'ShiftLeft' || event.code === 'KeyRight') {
-    keyboardShift = false;
-  }
-})
-
 let lastRenderTime = new Date();
 
 function animate() {
   requestAnimationFrame( animate );
-  // compute direction from keyboard. Keyboard overrides joystick controls.
-  if (keyboardW || keyboardA || keyboardS || keyboardD) {
-    controlState.sagittal = 0;
-    controlState.frontal = 0;
-    if (keyboardW) {
-      controlState.sagittal += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
-    }
-    if (keyboardA) {
-      controlState.frontal -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
-    }
-    if (keyboardS) {
-      controlState.sagittal -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
-    }
-    if (keyboardD) {
-      controlState.frontal += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
-    }
-    if (controlState.frontal !== 0 && controlState.sagittal !== 0 ) {
-      controlState.sagittal *= 1 / Math.sqrt(2);
-      controlState.frontal *= 1 / Math.sqrt(2);
-    }
-  }
 
   // Update View
-  cameraYawAcc = controlState.yaw;
+  cameraYawAcc = props.controlState.yaw;
   cameraYawVel += cameraYawAcc;
   cameraYawVel *= cameraYawVelDecel;
   cameraYawVel = THREE.MathUtils.clamp(cameraYawVel, -cameraYawVelMax, cameraYawVelMax)
 
-  cameraPitchAcc = controlState.pitch;
+  cameraPitchAcc = props.controlState.pitch;
   cameraPitchVel += cameraPitchAcc;
   cameraPitchVel *= cameraPitchVelDecel;
   cameraPitchVel = THREE.MathUtils.clamp(cameraPitchVel, -cameraPitchVelMax, cameraPitchVelMax)
 
-  cameraZoomAcc = controlState.zoom;
+  cameraZoomAcc = props.controlState.zoom;
   cameraZoomVel += cameraZoomAcc;
   cameraZoomVel *= cameraZoomVelDecel;
   cameraZoomVel = THREE.MathUtils.clamp(cameraZoomVel, -cameraZoomVelMax, cameraZoomVelMax)
@@ -361,12 +256,12 @@ function animate() {
   cameraZoom = THREE.MathUtils.clamp(cameraZoom, cameraZoomMin, cameraZoomMax);
 
   // Update movement
-  cameraSagittalAcc = controlState.sagittal;
+  cameraSagittalAcc = props.controlState.sagittal;
   cameraSagittalVel += cameraSagittalAcc;
   cameraSagittalVel *= cameraSagittalVelDecel;
   cameraSagittalVel = THREE.MathUtils.clamp(cameraSagittalVel, -cameraSagittalVelMax, cameraSagittalVelMax)
 
-  cameraFrontalAcc = controlState.frontal;
+  cameraFrontalAcc = props.controlState.frontal;
   cameraFrontalVel += cameraFrontalAcc;
   cameraFrontalVel *= cameraFrontalVelDecel;
   cameraFrontalVel = THREE.MathUtils.clamp(cameraFrontalVel, -cameraFrontalVelMax, cameraFrontalVelMax)
