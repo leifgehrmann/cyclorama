@@ -15,7 +15,7 @@ const props = defineProps<{
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'london' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
+const mode = 'barker' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;

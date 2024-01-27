@@ -29,7 +29,7 @@ const controlState = ref({
   zoom: 0,
 } as ControlState)
 
-let mouseDown: null | Position = null;
+let mouseDownOrigin: null | Position = null;
 let joystickMax = 0.025;
 let joystickMinThreshold = 0.1;
 let keyboardRotationAcc = 0.005;
@@ -69,18 +69,24 @@ function normaliseControlStateFromKeyboardState() {
 
 onMounted(() => {
   window.addEventListener('mousedown', (e) => {
-    mouseDown = [e.clientX, e.clientY];
+    mouseDownOrigin = [e.clientX, e.clientY];
   })
 
   window.addEventListener('mousemove', (e) => {
-    if (mouseDown === null) {
+    if (mouseDownOrigin === null) {
       return
     }
-    console.log([e.clientX - mouseDown[0], e.clientY - mouseDown[1]]);
+    const mouseXDiff = e.clientX - mouseDownOrigin[0];
+    const mouseYDiff = e.clientY - mouseDownOrigin[1];
+    controlState.value.yaw = -mouseXDiff * 0.001;
+    controlState.value.pitch = -mouseYDiff * 0.001;
+    mouseDownOrigin = [e.clientX, e.clientY];
   })
 
   function clearMouse() {
-    mouseDown = null;
+    mouseDownOrigin = null;
+    controlState.value.yaw = 0;
+    controlState.value.pitch = 0;
   }
 
   window.addEventListener('mouseleave', clearMouse)
