@@ -41,38 +41,6 @@
             aria-hidden="true"
         >
       </button>
-      <div
-          class="
-        bg-gray-800 bg-opacity-50
-        w-12
-        h-px
-        backdrop-filter backdrop-blur-xl backdrop-brightness-200
-        "
-      />
-      <button
-          type="button"
-          tabindex="5"
-          class="
-        px-3 py-3
-        w-12 h-12
-        "
-          aria-label="Toggle compare mode"
-          title="Toggle compare mode"
-          @click="mountedShowCompare = !mountedShowCompare"
-      >
-        <img
-            v-if="mountedShowCompare"
-            src="../assets/show-compare-active.svg"
-            alt="Compare mode is enabled"
-            aria-hidden="true"
-        >
-        <img
-            v-else
-            src="../assets/show-compare-inactive.svg"
-            alt="Compare mode is disabled"
-            aria-hidden="true"
-        >
-      </button>
     </div>
   </div>
 </template>
