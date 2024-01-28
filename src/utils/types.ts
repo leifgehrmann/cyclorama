@@ -1,11 +1,9 @@
 export interface ControlState {
-  sagittal: number; // forwards-backward
-  frontal: number; // crab-walk, left-right
-  yaw: number; // turning left-right
-  pitch: number; // looking up-down
-  yawOverride: number | null;
-  yawVelOverride: number | null;
-  pitchOverride: number | null;
-  pitchVelOverride: number | null;
-  zoom: number; // zoom in-out
+  sagittalAcc: number; // forwards-backward (acceleration)
+  frontalAcc: number; // crab-walk, left-right (acceleration)
+  yawAcc: number; // turning left-right (acceleration)
+  pitchAcc: number; // looking up-down (acceleration)
+  yawVel: number | null; // turning left-right (velocity)
+  pitchVel: number | null; // looking up-down (velocity)
+  zoomAcc: number; // zoom in-out (acceleration)
 }

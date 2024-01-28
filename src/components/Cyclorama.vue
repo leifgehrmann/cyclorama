@@ -13,10 +13,12 @@ const props = defineProps<{
   controlState: ControlState
 }>()
 
+const canvas = ref(null as null | HTMLDivElement)
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'barker' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
+const mode = 'edinburgh' as 'london' | 'barker' | 'edinburgh' | 'alps' | 'constantinople';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -161,20 +163,17 @@ let cameraFrontalVelDecel = 0.7;
 let cameraFrontalAcc = 0;
 let cameraYaw = initialCameraYaw;
 let cameraYawVel = 0;
-let cameraYawVelMax = 0.7;
-let cameraYawVelDecel = 0.7;
+let cameraYawVelDecel = 0.8;
 let cameraYawAcc = 0;
 let cameraPitch = 0;
 let cameraPitchVel = 0;
-let cameraPitchVelMax = 0.7;
-let cameraPitchVelDecel = 0.7;
+let cameraPitchVelDecel = 0.8;
 let cameraPitchAcc = 0;
 let cameraZoom = props.camera.getFocalLength();
 let cameraZoomMin = cameraZoom - 10;
 let cameraZoomMax = cameraZoom + 30;
 let cameraZoomVel = 0;
-let cameraZoomVelMax = 0.7;
-let cameraZoomVelDecel = 0.7;
+let cameraZoomVelDecel = 0.8;
 let cameraZoomAcc = 0;
 
 new Panorama(
@@ -248,39 +247,27 @@ function animate() {
   requestAnimationFrame( animate );
 
   // Update View
-  cameraYawAcc = props.controlState.yaw;
-  cameraYawVel += cameraYawAcc;
+  cameraYawAcc = props.controlState.yawAcc;
   cameraYawVel *= cameraYawVelDecel;
-  cameraYawVel = THREE.MathUtils.clamp(cameraYawVel, -cameraYawVelMax, cameraYawVelMax)
+  cameraYawVel += cameraYawAcc;
 
-  cameraPitchAcc = props.controlState.pitch;
-  cameraPitchVel += cameraPitchAcc;
+  cameraPitchAcc = props.controlState.pitchAcc;
   cameraPitchVel *= cameraPitchVelDecel;
-  cameraPitchVel = THREE.MathUtils.clamp(cameraPitchVel, -cameraPitchVelMax, cameraPitchVelMax)
+  cameraPitchVel += cameraPitchAcc;
 
-  cameraZoomAcc = props.controlState.zoom;
-  cameraZoomVel += cameraZoomAcc;
+  cameraZoomAcc = props.controlState.zoomAcc;
   cameraZoomVel *= cameraZoomVelDecel;
-  cameraZoomVel = THREE.MathUtils.clamp(cameraZoomVel, -cameraZoomVelMax, cameraZoomVelMax)
-
-
-  if (props.controlState.yawVelOverride !== null) {
-    cameraYawVel += props.controlState.yawVelOverride
-  }
-
-  if (props.controlState.pitchVelOverride !== null) {
-    cameraPitchVel += props.controlState.pitchVelOverride
-  }
+  cameraZoomVel += cameraZoomAcc;
 
   cameraYaw += cameraYawVel;
   cameraPitch += cameraPitchVel;
 
-  if (props.controlState.yawOverride !== null) {
-    cameraYaw += props.controlState.yawOverride
+  if (props.controlState.yawVel !== null) {
+    cameraYaw += props.controlState.yawVel
   }
 
-  if (props.controlState.pitchOverride !== null) {
-    cameraPitch += props.controlState.pitchOverride
+  if (props.controlState.pitchVel !== null) {
+    cameraPitch += props.controlState.pitchVel
   }
 
   cameraZoom += cameraZoomVel;
@@ -288,12 +275,12 @@ function animate() {
   cameraZoom = THREE.MathUtils.clamp(cameraZoom, cameraZoomMin, cameraZoomMax);
 
   // Update movement
-  cameraSagittalAcc = props.controlState.sagittal;
+  cameraSagittalAcc = props.controlState.sagittalAcc;
   cameraSagittalVel += cameraSagittalAcc;
   cameraSagittalVel *= cameraSagittalVelDecel;
   cameraSagittalVel = THREE.MathUtils.clamp(cameraSagittalVel, -cameraSagittalVelMax, cameraSagittalVelMax)
 
-  cameraFrontalAcc = props.controlState.frontal;
+  cameraFrontalAcc = props.controlState.frontalAcc;
   cameraFrontalVel += cameraFrontalAcc;
   cameraFrontalVel *= cameraFrontalVelDecel;
   cameraFrontalVel = THREE.MathUtils.clamp(cameraFrontalVel, -cameraFrontalVelMax, cameraFrontalVelMax)
@@ -319,7 +306,6 @@ function animate() {
   props.camera.position.z = cameraPosZ;
   props.camera.position.y = stageHeight + averageHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
   props.camera.setFocalLength(cameraZoom);
-  // camera.setFocalLength(Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * 0.1 + 0.2)
 
   const person1Distance = Math.hypot(
     props.camera.position.x - person1.getPosition().x,
@@ -358,8 +344,6 @@ function animate() {
   lastRenderTime = new Date();
 }
 animate();
-
-const canvas = ref(null as null | HTMLDivElement)
 
 onMounted(() => {
   if (canvas.value === null) {

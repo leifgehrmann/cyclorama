@@ -22,15 +22,13 @@ import * as THREE from 'three';
 // - ✅ velocity of mouse/touch release results in acceleration
 
 const controlState = ref({
-  sagittal: 0,
-  frontal: 0,
-  yaw: 0,
-  pitch: 0,
-  yawOverride: null,
-  yawVelOverride: null,
-  pitchOverride: null,
-  pitchVelOverride: null,
-  zoom: 0,
+  sagittalAcc: 0,
+  frontalAcc: 0,
+  yawAcc: 0,
+  pitchAcc: 0,
+  yawVel: null,
+  pitchVel: null,
+  zoomAcc: 0,
 } as ControlState)
 const camera = ref(new THREE.PerspectiveCamera());
 
@@ -42,8 +40,8 @@ let pointerPrev: null | Touch | MouseEvent = null;
 let touchId: number | null = null;
 let joystickMax = 0.025;
 let joystickMinThreshold = 0.1;
-let keyboardRotationAcc = 0.005;
-let keyboardRotationAccFast = 0.050;
+let keyboardRotationAcc = 0.002;
+let keyboardRotationAccFast = 0.020;
 let keyboardFovAccFast = 0.2;
 let keyboardWalkingAcc = 0.02;
 let keyboardWalkingAccFast = 0.04;
@@ -56,23 +54,23 @@ let keyboardD = false;
 function normaliseControlStateFromKeyboardState() {
   // compute direction from keyboard. Keyboard overrides joystick controls.
   if (keyboardW || keyboardA || keyboardS || keyboardD) {
-    controlState.value.sagittal = 0;
-    controlState.value.frontal = 0;
+    controlState.value.sagittalAcc = 0;
+    controlState.value.frontalAcc = 0;
     if (keyboardW) {
-      controlState.value.sagittal += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
+      controlState.value.sagittalAcc += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
     }
     if (keyboardA) {
-      controlState.value.frontal -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
+      controlState.value.frontalAcc -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
     }
     if (keyboardS) {
-      controlState.value.sagittal -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
+      controlState.value.sagittalAcc -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
     }
     if (keyboardD) {
-      controlState.value.frontal += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
+      controlState.value.frontalAcc += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
     }
-    if (controlState.value.frontal !== 0 && controlState.value.sagittal !== 0 ) {
-      controlState.value.sagittal *= 1 / Math.sqrt(2);
-      controlState.value.frontal *= 1 / Math.sqrt(2);
+    if (controlState.value.frontalAcc !== 0 && controlState.value.sagittalAcc !== 0 ) {
+      controlState.value.sagittalAcc *= 1 / Math.sqrt(2);
+      controlState.value.frontalAcc *= 1 / Math.sqrt(2);
     }
   }
 }
@@ -102,13 +100,13 @@ onMounted(() => {
         e,
         pointerPrev
     )
-    controlState.value.yawOverride = (controlState.value.yawOverride ?? 0) + yaw;
-    controlState.value.pitchOverride = (controlState.value.pitchOverride ?? 0) + pitch;
+    controlState.value.yawVel = (controlState.value.yawVel ?? 0) + yaw;
+    controlState.value.pitchVel = (controlState.value.pitchVel ?? 0) + pitch;
     pointer2ndPrev = pointerPrev;
     pointerPrev = e;
     requestAnimationFrame(() => {
-      controlState.value.yawOverride = null;
-      controlState.value.pitchOverride = null;
+      controlState.value.yawVel = null;
+      controlState.value.pitchVel = null;
     })
   })
 
@@ -125,13 +123,13 @@ onMounted(() => {
         touch,
         pointerPrev
     )
-    controlState.value.yawOverride = (controlState.value.yawOverride ?? 0) + yaw;
-    controlState.value.pitchOverride = (controlState.value.pitchOverride ?? 0) + pitch;
+    controlState.value.yawVel = (controlState.value.yawVel ?? 0) + yaw;
+    controlState.value.pitchVel = (controlState.value.pitchVel ?? 0) + pitch;
     pointer2ndPrev = pointerPrev;
     pointerPrev = touch;
     requestAnimationFrame(() => {
-      controlState.value.yawOverride = null;
-      controlState.value.pitchOverride = null;
+      controlState.value.yawVel = null;
+      controlState.value.pitchVel = null;
     })
   })
 
@@ -145,15 +143,15 @@ onMounted(() => {
         e,
         pointer2ndPrev
     )
-    controlState.value.yawOverride = null
-    controlState.value.pitchOverride = null
-    controlState.value.yawVelOverride = yaw;
-    controlState.value.pitchVelOverride = pitch;
+    controlState.value.yawVel = null
+    controlState.value.pitchVel = null
+    controlState.value.yawAcc = yaw;
+    controlState.value.pitchAcc = pitch;
     pointer2ndPrev = null;
     pointerPrev = null;
     requestAnimationFrame(() => {
-      controlState.value.yawVelOverride = null;
-      controlState.value.pitchVelOverride = null;
+      controlState.value.yawAcc = 0;
+      controlState.value.pitchAcc = 0;
     })
   }
 
@@ -177,16 +175,16 @@ onMounted(() => {
         touch,
         pointer2ndPrev
     )
-    controlState.value.yawOverride = null
-    controlState.value.pitchOverride = null
-    controlState.value.yawVelOverride = yaw;
-    controlState.value.pitchVelOverride = pitch;
+    controlState.value.yawVel = null
+    controlState.value.pitchVel = null
+    controlState.value.yawAcc = yaw;
+    controlState.value.pitchAcc = pitch;
     pointer2ndPrev = null;
     pointerPrev = null;
     touchId = null;
     requestAnimationFrame(() => {
-      controlState.value.yawVelOverride = null;
-      controlState.value.pitchVelOverride = null;
+      controlState.value.yawAcc = 0;
+      controlState.value.pitchAcc = 0;
     })
   }
 
@@ -198,17 +196,17 @@ onMounted(() => {
 
   window.addEventListener('keydown', (event) => {
     if (event.code === 'ArrowLeft') {
-      controlState.value.yaw = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
+      controlState.value.yawAcc = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
     } else if (event.code === 'ArrowRight') {
-      controlState.value.yaw = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
+      controlState.value.yawAcc = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
     } else if (event.code === 'ArrowDown') {
-      controlState.value.pitch = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
+      controlState.value.pitchAcc = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
     } else if (event.code === 'ArrowUp') {
-      controlState.value.pitch = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
+      controlState.value.pitchAcc = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
     } else if (event.code === 'Minus') {
-      controlState.value.zoom = -keyboardFovAccFast;
+      controlState.value.zoomAcc = -keyboardFovAccFast;
     } else if (event.code === 'Equal') {
-      controlState.value.zoom = keyboardFovAccFast;
+      controlState.value.zoomAcc = keyboardFovAccFast;
     } else if (event.code === 'KeyW') {
       keyboardW = true;
     } else if (event.code === 'KeyA') {
@@ -225,33 +223,33 @@ onMounted(() => {
 
   window.addEventListener('keyup', (event) => {
     if (event.code === 'ArrowLeft') {
-      controlState.value.yaw = 0;
+      controlState.value.yawAcc = 0;
     } else if (event.code === 'ArrowRight') {
-      controlState.value.yaw = 0;
+      controlState.value.yawAcc = 0;
     } else if (event.code === 'ArrowDown') {
-      controlState.value.pitch = 0;
+      controlState.value.pitchAcc = 0;
     } else if (event.code === 'ArrowUp') {
-      controlState.value.pitch = 0;
+      controlState.value.pitchAcc = 0;
     } else if (event.code === 'Minus') {
-      controlState.value.zoom = 0;
+      controlState.value.zoomAcc = 0;
     } else if (event.code === 'Equal') {
-      controlState.value.zoom = 0;
+      controlState.value.zoomAcc = 0;
     } else if (event.code === 'KeyW') {
       keyboardW = false;
-      controlState.value.sagittal = 0;
-      controlState.value.frontal = 0;
+      controlState.value.sagittalAcc = 0;
+      controlState.value.frontalAcc = 0;
     } else if (event.code === 'KeyA') {
       keyboardA = false;
-      controlState.value.sagittal = 0;
-      controlState.value.frontal = 0;
+      controlState.value.sagittalAcc = 0;
+      controlState.value.frontalAcc = 0;
     } else if (event.code === 'KeyS') {
       keyboardS = false;
-      controlState.value.sagittal = 0;
-      controlState.value.frontal = 0;
+      controlState.value.sagittalAcc = 0;
+      controlState.value.frontalAcc = 0;
     } else if (event.code === 'KeyD') {
       keyboardD = false;
-      controlState.value.sagittal = 0;
-      controlState.value.frontal = 0;
+      controlState.value.sagittalAcc = 0;
+      controlState.value.frontalAcc = 0;
     } else if (event.code === 'ShiftLeft' || event.code === 'KeyRight') {
       keyboardShift = false;
     }
@@ -262,15 +260,15 @@ onMounted(() => {
 function joystickUpdate(e: [number, number]) {
   if (Math.abs(e[1]) > joystickMinThreshold) {
     let sign = Math.sign(e[1])
-    controlState.value.sagittal = (-(e[1] + sign * joystickMinThreshold)) / (1 + joystickMinThreshold) * joystickMax
+    controlState.value.sagittalAcc = (-(e[1] + sign * joystickMinThreshold)) / (1 + joystickMinThreshold) * joystickMax
   } else {
-    controlState.value.sagittal = 0;
+    controlState.value.sagittalAcc = 0;
   }
   if (Math.abs(e[0]) > joystickMinThreshold) {
     let sign = Math.sign(e[0])
-    controlState.value.frontal = (e[0] + sign * joystickMinThreshold) / (1 + joystickMinThreshold) * joystickMax
+    controlState.value.frontalAcc = (e[0] + sign * joystickMinThreshold) / (1 + joystickMinThreshold) * joystickMax
   } else {
-    controlState.value.frontal = 0;
+    controlState.value.frontalAcc = 0;
   }
 }
 
