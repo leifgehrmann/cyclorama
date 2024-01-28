@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as THREE from 'three';
-import { ref, onMounted, defineProps } from 'vue'
+import {ref, onMounted, defineProps} from 'vue'
 import Stage from "../sceneObjects/stage.ts";
 import Sky from "../sceneObjects/sky.ts";
 import Ground from "../sceneObjects/ground.ts";
@@ -9,6 +9,7 @@ import Panorama from "../sceneObjects/panorama.ts";
 import {ControlState} from "../utils/types.ts";
 
 const props = defineProps<{
+  camera: THREE.PerspectiveCamera,
   controlState: ControlState
 }>()
 
@@ -142,13 +143,14 @@ const averageHeight = 1.70; // Average height for UK in the 1800s.
 const breathingRatePerMin = 15; // Usually between 12-18 breaths per minute.
 const breathingBobHeight = 0.02;
 
-const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
+props.camera.aspect = window.innerWidth / window.innerHeight;
+props.camera.updateProjectionMatrix();
 
 const renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setSize( window.innerWidth, window.innerHeight );
 
-let cameraPosX = camera.position.x;
-let cameraPosZ = camera.position.z;
+let cameraPosX = props.camera.position.x;
+let cameraPosZ = props.camera.position.z;
 let cameraSagittalVel = 0;
 let cameraSagittalVelMax = 0.7;
 let cameraSagittalVelDecel = 0.7;
@@ -167,8 +169,8 @@ let cameraPitchVel = 0;
 let cameraPitchVelMax = 0.7;
 let cameraPitchVelDecel = 0.7;
 let cameraPitchAcc = 0;
-let cameraZoom = camera.getFocalLength();
-let cameraZoomMin = cameraZoom;
+let cameraZoom = props.camera.getFocalLength();
+let cameraZoomMin = cameraZoom - 10;
 let cameraZoomMax = cameraZoom + 30;
 let cameraZoomVel = 0;
 let cameraZoomVelMax = 0.7;
@@ -226,7 +228,7 @@ const person2 = new Person(
 )
 person2.setPosition(0, stageHeight, stageRadius - 1)
 
-camera.position.y = stageHeight + 1;
+props.camera.position.y = stageHeight + 1;
 
 function resizeRendererToDisplaySize(renderer: THREE.Renderer) {
   const canvas = renderer.domElement;
@@ -261,8 +263,26 @@ function animate() {
   cameraZoomVel *= cameraZoomVelDecel;
   cameraZoomVel = THREE.MathUtils.clamp(cameraZoomVel, -cameraZoomVelMax, cameraZoomVelMax)
 
+
+  if (props.controlState.yawVelOverride !== null) {
+    cameraYawVel += props.controlState.yawVelOverride
+  }
+
+  if (props.controlState.pitchVelOverride !== null) {
+    cameraPitchVel += props.controlState.pitchVelOverride
+  }
+
   cameraYaw += cameraYawVel;
   cameraPitch += cameraPitchVel;
+
+  if (props.controlState.yawOverride !== null) {
+    cameraYaw += props.controlState.yawOverride
+  }
+
+  if (props.controlState.pitchOverride !== null) {
+    cameraPitch += props.controlState.pitchOverride
+  }
+
   cameraZoom += cameraZoomVel;
   cameraPitch = THREE.MathUtils.clamp(cameraPitch, -Math.PI/2, Math.PI/2);
   cameraZoom = THREE.MathUtils.clamp(cameraZoom, cameraZoomMin, cameraZoomMax);
@@ -289,25 +309,25 @@ function animate() {
   cameraPosZ = THREE.MathUtils.clamp(cameraPosZ, -maxDistAtRailingZ, maxDistAtRailingZ)
 
   resizeRendererToDisplaySize(renderer);
-  camera.setRotationFromEuler(new THREE.Euler(
+  props.camera.setRotationFromEuler(new THREE.Euler(
       -cameraPitch,
       -cameraYaw,
       0,
       'YZX'
   ))
-  camera.position.x = cameraPosX;
-  camera.position.z = cameraPosZ;
-  camera.position.y = stageHeight + averageHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
-  camera.setFocalLength(cameraZoom);
+  props.camera.position.x = cameraPosX;
+  props.camera.position.z = cameraPosZ;
+  props.camera.position.y = stageHeight + averageHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
+  props.camera.setFocalLength(cameraZoom);
   // camera.setFocalLength(Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * 0.1 + 0.2)
 
   const person1Distance = Math.hypot(
-    camera.position.x - person1.getPosition().x,
-    camera.position.z - person1.getPosition().z,
+    props.camera.position.x - person1.getPosition().x,
+    props.camera.position.z - person1.getPosition().z,
   );
   const person1Theta = Math.atan2(
-      camera.position.x - person1.getPosition().x,
-      camera.position.z - person1.getPosition().z,
+      props.camera.position.x - person1.getPosition().x,
+      props.camera.position.z - person1.getPosition().z,
   );
   person1.setRotation(person1Theta);
   let newOpacity: number;
@@ -319,12 +339,12 @@ function animate() {
   person1.setOpacity(newOpacity);
 
   const person2Distance = Math.hypot(
-      camera.position.x - person2.getPosition().x,
-      camera.position.z - person2.getPosition().z,
+      props.camera.position.x - person2.getPosition().x,
+      props.camera.position.z - person2.getPosition().z,
   );
   const person2Theta = Math.atan2(
-      camera.position.x - person2.getPosition().x,
-      camera.position.z - person2.getPosition().z,
+      props.camera.position.x - person2.getPosition().x,
+      props.camera.position.z - person2.getPosition().z,
   )
   person2.setRotation(person2Theta);
   if (person2Distance > stageRadius) {
@@ -334,7 +354,7 @@ function animate() {
   }
   person2.setOpacity(newOpacity);
 
-  renderer.render( scene, camera );
+  renderer.render( scene, props.camera );
   lastRenderTime = new Date();
 }
 animate();
@@ -350,12 +370,12 @@ onMounted(() => {
 
 window.addEventListener('resize', () => {
   // @ts-ignore
-  camera.aspect = window.innerWidth / window.innerHeight;
+  props.camera.aspect = window.innerWidth / window.innerHeight;
   // @ts-ignore
-  camera.updateProjectionMatrix();
+  props.camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.render(scene, camera);
+  renderer.render(scene, props.camera);
 });
 </script>
 

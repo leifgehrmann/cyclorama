@@ -4,32 +4,42 @@ import Joystick from './components/Joystick.vue';
 import Controls from "./components/Controls.vue";
 import {onMounted, ref} from "vue";
 import {ControlState} from "./utils/types.ts";
-
-type Position = [number, number];
+import getTouchById, {getAngularDifferenceFromPointers} from "./utils/pointerUtils.ts";
+import * as THREE from 'three';
 
 // Plan
-// -    Mouse navigation = click-drag changes angle
+// - ✅ Mouse navigation = click-drag changes angle
 // - ✅ Mouse navigation = joystick changes position
 // -    Mouse navigation = mouse scroll changes zoom
-// -    Touch navigation = touch-drag changes angle
-// -    Touch navigation = joystick changes position
+// - ✅ Touch navigation = touch-drag changes angle
+// - ✅ Touch navigation = joystick changes position
 // -    Touch navigation = pinch gesture changes zoom
 // - ✅ Keyboard navigation = LRUD changes angle
 // - ✅ Keyboard navigation = WASD changes position
 // - ✅ Keyboard navigation = + / - changes zoom
 // -    Keyboard navigation = Q / E changes height
 // -    joystick and other controls fades when no touch or mouse-movement on screen
-// -    velocity of mouse/touch release results in acceleration
+// - ✅ velocity of mouse/touch release results in acceleration
 
 const controlState = ref({
   sagittal: 0,
   frontal: 0,
   yaw: 0,
   pitch: 0,
+  yawOverride: null,
+  yawVelOverride: null,
+  pitchOverride: null,
+  pitchVelOverride: null,
   zoom: 0,
 } as ControlState)
+const camera = ref(new THREE.PerspectiveCamera());
 
-let mouseDownOrigin: null | Position = null;
+camera.value.aspect = window.innerWidth / window.innerHeight;
+camera.value.updateProjectionMatrix()
+
+let pointer2ndPrev: null | Touch | MouseEvent = null;
+let pointerPrev: null | Touch | MouseEvent = null;
+let touchId: number | null = null;
 let joystickMax = 0.025;
 let joystickMinThreshold = 0.1;
 let keyboardRotationAcc = 0.005;
@@ -69,29 +79,122 @@ function normaliseControlStateFromKeyboardState() {
 
 onMounted(() => {
   window.addEventListener('mousedown', (e) => {
-    mouseDownOrigin = [e.clientX, e.clientY];
+    pointerPrev = e;
+  })
+
+  window.addEventListener('touchstart', (e) => {
+    if (touchId !== null) {
+      return;
+    }
+    e.preventDefault();
+    let touch = e.changedTouches[0];
+    touchId = touch.identifier;
+    pointer2ndPrev = null;
+    pointerPrev = touch;
   })
 
   window.addEventListener('mousemove', (e) => {
-    if (mouseDownOrigin === null) {
+    if (pointerPrev === null) {
       return
     }
-    const mouseXDiff = e.clientX - mouseDownOrigin[0];
-    const mouseYDiff = e.clientY - mouseDownOrigin[1];
-    controlState.value.yaw = -mouseXDiff * 0.001;
-    controlState.value.pitch = -mouseYDiff * 0.001;
-    mouseDownOrigin = [e.clientX, e.clientY];
+    const {yaw, pitch} = getAngularDifferenceFromPointers(
+        camera.value,
+        e,
+        pointerPrev
+    )
+    controlState.value.yawOverride = (controlState.value.yawOverride ?? 0) + yaw;
+    controlState.value.pitchOverride = (controlState.value.pitchOverride ?? 0) + pitch;
+    pointer2ndPrev = pointerPrev;
+    pointerPrev = e;
+    requestAnimationFrame(() => {
+      controlState.value.yawOverride = null;
+      controlState.value.pitchOverride = null;
+    })
   })
 
-  function clearMouse() {
-    mouseDownOrigin = null;
-    controlState.value.yaw = 0;
-    controlState.value.pitch = 0;
+  window.addEventListener('touchmove', (e) => {
+    if (touchId === null || pointerPrev === null) {
+      return;
+    }
+    const touch = getTouchById(e.changedTouches, touchId)
+    if (touch === null) {
+      return;
+    }
+    const {yaw, pitch} = getAngularDifferenceFromPointers(
+        camera.value,
+        touch,
+        pointerPrev
+    )
+    controlState.value.yawOverride = (controlState.value.yawOverride ?? 0) + yaw;
+    controlState.value.pitchOverride = (controlState.value.pitchOverride ?? 0) + pitch;
+    pointer2ndPrev = pointerPrev;
+    pointerPrev = touch;
+    requestAnimationFrame(() => {
+      controlState.value.yawOverride = null;
+      controlState.value.pitchOverride = null;
+    })
+  })
+
+  function clearMouse(e: MouseEvent) {
+    if (pointer2ndPrev === null) {
+      pointerPrev = null;
+      return;
+    }
+    const {yaw, pitch} = getAngularDifferenceFromPointers(
+        camera.value,
+        e,
+        pointer2ndPrev
+    )
+    controlState.value.yawOverride = null
+    controlState.value.pitchOverride = null
+    controlState.value.yawVelOverride = yaw;
+    controlState.value.pitchVelOverride = pitch;
+    pointer2ndPrev = null;
+    pointerPrev = null;
+    requestAnimationFrame(() => {
+      controlState.value.yawVelOverride = null;
+      controlState.value.pitchVelOverride = null;
+    })
+  }
+
+  function clearTouch(e: TouchEvent) {
+    if (touchId === null) {
+      return;
+    }
+    const touch = getTouchById(e.changedTouches, touchId)
+    if (touch === null) {
+      // This means the touchend has not yet fired for the touch that is
+      // actively controlling the view.
+      return;
+    }
+    if (pointer2ndPrev === null) {
+      pointerPrev = null;
+      touchId = null;
+      return
+    }
+    const {yaw, pitch} = getAngularDifferenceFromPointers(
+        camera.value,
+        touch,
+        pointer2ndPrev
+    )
+    controlState.value.yawOverride = null
+    controlState.value.pitchOverride = null
+    controlState.value.yawVelOverride = yaw;
+    controlState.value.pitchVelOverride = pitch;
+    pointer2ndPrev = null;
+    pointerPrev = null;
+    touchId = null;
+    requestAnimationFrame(() => {
+      controlState.value.yawVelOverride = null;
+      controlState.value.pitchVelOverride = null;
+    })
   }
 
   window.addEventListener('mouseleave', clearMouse)
   window.addEventListener('mouseup', clearMouse)
   window.addEventListener('mouseout', clearMouse)
+  window.addEventListener('touchend', clearTouch)
+  window.addEventListener('touchcancel', clearTouch)
 
   window.addEventListener('keydown', (event) => {
     if (event.code === 'ArrowLeft') {
@@ -175,7 +278,7 @@ function joystickUpdate(e: [number, number]) {
 
 <template>
   <div class="touch-none">
-    <Cyclorama :controlState="controlState"/>
+    <Cyclorama :camera="camera" :controlState="controlState"/>
     <Joystick @controlUpdate="joystickUpdate"/>
     <div
         class="absolute top-0 right-0"

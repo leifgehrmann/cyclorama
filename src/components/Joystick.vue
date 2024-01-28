@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {onMounted, ref, defineEmits} from "vue";
-import getTouchById from "../utils/touchUtils.ts";
+import getTouchById from "../utils/pointerUtils.ts";
 
 const emit = defineEmits(['controlUpdate'])
 
