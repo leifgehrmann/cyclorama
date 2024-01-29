@@ -149,16 +149,14 @@ props.camera.aspect = window.innerWidth / window.innerHeight;
 props.camera.updateProjectionMatrix();
 
 const renderer = new THREE.WebGLRenderer({antialias: true});
-renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setSize( window.visualViewport.width, window.innerHeight );
 
 let cameraPosX = props.camera.position.x;
 let cameraPosZ = props.camera.position.z;
 let cameraSagittalVel = 0;
-let cameraSagittalVelMax = 0.7;
 let cameraSagittalVelDecel = 0.7;
 let cameraSagittalAcc = 0;
 let cameraFrontalVel = 0;
-let cameraFrontalVelMax = 0.7;
 let cameraFrontalVelDecel = 0.7;
 let cameraFrontalAcc = 0;
 let cameraYaw = initialCameraYaw;
@@ -169,12 +167,22 @@ let cameraPitch = 0;
 let cameraPitchVel = 0;
 let cameraPitchVelDecel = 0.8;
 let cameraPitchAcc = 0;
+let cameraRoll = 0;
+let cameraRollVel = 0;
+let cameraRollVelDecel = 0.8;
+let cameraRollAcc = 0;
 let cameraZoom = props.camera.getFocalLength();
 let cameraZoomMin = cameraZoom - 10;
 let cameraZoomMax = cameraZoom + 30;
 let cameraZoomVel = 0;
 let cameraZoomVelDecel = 0.8;
 let cameraZoomAcc = 0;
+let cameraHeight = 0;
+let cameraHeightAcc = 0;
+let cameraHeightVel = 0;
+let cameraHeightVelDecel = 0.8;
+let cameraHeightMin = cameraHeight - 1.0;
+let cameraHeightMax = cameraHeight + 1.0;
 
 new Panorama(
     scene,
@@ -255,12 +263,23 @@ function animate() {
   cameraPitchVel *= cameraPitchVelDecel;
   cameraPitchVel += cameraPitchAcc;
 
+  cameraRollAcc = props.controlState.rollAcc;
+  cameraRollVel *= cameraRollVelDecel;
+  cameraRollVel += cameraRollAcc;
+
   cameraZoomAcc = props.controlState.zoomAcc;
   cameraZoomVel *= cameraZoomVelDecel;
   cameraZoomVel += cameraZoomAcc;
 
+  cameraHeightAcc = props.controlState.heightAcc;
+  cameraHeightVel *= cameraHeightVelDecel;
+  cameraHeightVel += cameraHeightAcc;
+
   cameraYaw += cameraYawVel;
   cameraPitch += cameraPitchVel;
+  cameraRoll += cameraRollVel;
+  cameraZoom += cameraZoomVel;
+  cameraHeight += cameraHeightVel;
 
   if (props.controlState.yawVel !== null) {
     cameraYaw += props.controlState.yawVel
@@ -270,41 +289,44 @@ function animate() {
     cameraPitch += props.controlState.pitchVel
   }
 
-  cameraZoom += cameraZoomVel;
-  cameraPitch = THREE.MathUtils.clamp(cameraPitch, -Math.PI/2, Math.PI/2);
-  cameraZoom = THREE.MathUtils.clamp(cameraZoom, cameraZoomMin, cameraZoomMax);
+  if (!props.controlState.boundaryBreak) {
+    cameraPitch = THREE.MathUtils.clamp(cameraPitch, -Math.PI / 2, Math.PI / 2);
+    cameraRoll = THREE.MathUtils.clamp(cameraRoll, -Math.PI / 2, Math.PI / 2);
+    cameraZoom = THREE.MathUtils.clamp(cameraZoom, cameraZoomMin, cameraZoomMax);
+    cameraHeight = THREE.MathUtils.clamp(cameraHeight, cameraHeightMin, cameraHeightMax);
+  }
 
   // Update movement
   cameraSagittalAcc = props.controlState.sagittalAcc;
-  cameraSagittalVel += cameraSagittalAcc;
   cameraSagittalVel *= cameraSagittalVelDecel;
-  cameraSagittalVel = THREE.MathUtils.clamp(cameraSagittalVel, -cameraSagittalVelMax, cameraSagittalVelMax)
+  cameraSagittalVel += cameraSagittalAcc;
 
   cameraFrontalAcc = props.controlState.frontalAcc;
-  cameraFrontalVel += cameraFrontalAcc;
   cameraFrontalVel *= cameraFrontalVelDecel;
-  cameraFrontalVel = THREE.MathUtils.clamp(cameraFrontalVel, -cameraFrontalVelMax, cameraFrontalVelMax)
+  cameraFrontalVel += cameraFrontalAcc;
 
   cameraPosX -= Math.sin(-cameraYaw) * cameraSagittalVel + Math.sin(-cameraYaw - Math.PI / 2) * cameraFrontalVel;
   cameraPosZ -= Math.cos(-cameraYaw) * cameraSagittalVel + Math.cos(-cameraYaw - Math.PI / 2) * cameraFrontalVel;
 
   // Prevent out of bounds by resetting position to railing radius
-  const angleFromCenter = Math.atan2(cameraPosX, cameraPosZ)
-  const maxDistAtRailingX = Math.abs(Math.sin(angleFromCenter) * railingOnStageRadius);
-  const maxDistAtRailingZ = Math.abs(Math.cos(angleFromCenter) * railingOnStageRadius);
-  cameraPosX = THREE.MathUtils.clamp(cameraPosX, -maxDistAtRailingX, maxDistAtRailingX)
-  cameraPosZ = THREE.MathUtils.clamp(cameraPosZ, -maxDistAtRailingZ, maxDistAtRailingZ)
+  if (!props.controlState.boundaryBreak) {
+    const angleFromCenter = Math.atan2(cameraPosX, cameraPosZ)
+    const maxDistAtRailingX = Math.abs(Math.sin(angleFromCenter) * railingOnStageRadius);
+    const maxDistAtRailingZ = Math.abs(Math.cos(angleFromCenter) * railingOnStageRadius);
+    cameraPosX = THREE.MathUtils.clamp(cameraPosX, -maxDistAtRailingX, maxDistAtRailingX)
+    cameraPosZ = THREE.MathUtils.clamp(cameraPosZ, -maxDistAtRailingZ, maxDistAtRailingZ)
+  }
 
   resizeRendererToDisplaySize(renderer);
   props.camera.setRotationFromEuler(new THREE.Euler(
       -cameraPitch,
       -cameraYaw,
-      0,
+      -cameraRoll,
       'YZX'
   ))
   props.camera.position.x = cameraPosX;
   props.camera.position.z = cameraPosZ;
-  props.camera.position.y = stageHeight + averageHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
+  props.camera.position.y = stageHeight + averageHeight + cameraHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
   props.camera.setFocalLength(cameraZoom);
 
   const person1Distance = Math.hypot(
@@ -353,12 +375,14 @@ onMounted(() => {
 })
 
 window.addEventListener('resize', () => {
+  const width = window.innerWidth
+  const height = window.innerHeight
   // @ts-ignore
-  props.camera.aspect = window.innerWidth / window.innerHeight;
+  props.camera.aspect = width / height;
   // @ts-ignore
   props.camera.updateProjectionMatrix();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(width, height);
   renderer.render(scene, props.camera);
 });
 </script>

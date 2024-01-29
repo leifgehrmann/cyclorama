@@ -6,4 +6,7 @@ export interface ControlState {
   yawVel: number | null; // turning left-right (velocity)
   pitchVel: number | null; // looking up-down (velocity)
   zoomAcc: number; // zoom in-out (acceleration)
+  heightAcc: number;
+  rollAcc: number;
+  boundaryBreak: boolean;
 }

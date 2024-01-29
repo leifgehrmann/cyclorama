@@ -52,7 +52,7 @@ export default class Ground {
       panoramaRadius * 2,
       panoramaRadius * 2
     );
-    const panoramaGroundMat = new THREE.MeshBasicMaterial( { color: groundColor, side: THREE.DoubleSide } );
+    const panoramaGroundMat = new THREE.MeshBasicMaterial( { color: groundColor, side: THREE.BackSide } );
     const panoramaGround = new THREE.Mesh(panoramaGroundGeom, panoramaGroundMat);
     panoramaGround.geometry.rotateX(Math.PI/2);
     panoramaGround.geometry.translate(0, groundYStart, 0);

@@ -146,6 +146,11 @@ onMounted(() => {
     );
     animate();
   }
+
+  window.addEventListener('resize', () => {
+    // The same transition duration that is in style.css.
+    setTimeout(animate, 150)
+  });
 })
 
 </script>

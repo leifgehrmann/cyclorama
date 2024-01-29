@@ -10,14 +10,14 @@ import * as THREE from 'three';
 // Plan
 // - ✅ Mouse navigation = click-drag changes angle
 // - ✅ Mouse navigation = joystick changes position
-// -    Mouse navigation = mouse scroll changes zoom
 // - ✅ Touch navigation = touch-drag changes angle
 // - ✅ Touch navigation = joystick changes position
 // -    Touch navigation = pinch gesture changes zoom
 // - ✅ Keyboard navigation = LRUD changes angle
 // - ✅ Keyboard navigation = WASD changes position
 // - ✅ Keyboard navigation = + / - changes zoom
-// -    Keyboard navigation = Q / E changes height
+// - ✅ Keyboard navigation = I / K changes height
+// - ✅ Keyboard navigation = J / L changes roll
 // -    joystick and other controls fades when no touch or mouse-movement on screen
 // - ✅ velocity of mouse/touch release results in acceleration
 
@@ -29,6 +29,9 @@ const controlState = ref({
   yawVel: null,
   pitchVel: null,
   zoomAcc: 0,
+  heightAcc: 0,
+  rollAcc: 0,
+  boundaryBreak: false,
 } as ControlState)
 const camera = ref(new THREE.PerspectiveCamera());
 
@@ -38,11 +41,12 @@ camera.value.updateProjectionMatrix()
 let pointer2ndPrev: null | Touch | MouseEvent = null;
 let pointerPrev: null | Touch | MouseEvent = null;
 let touchId: number | null = null;
-let joystickMax = 0.025;
+let joystickMax = 0.015;
 let joystickMinThreshold = 0.1;
 let keyboardRotationAcc = 0.002;
 let keyboardRotationAccFast = 0.020;
 let keyboardFovAccFast = 0.2;
+let keyboardHeightAcc = 0.01;
 let keyboardWalkingAcc = 0.02;
 let keyboardWalkingAccFast = 0.04;
 let keyboardShift = false;
@@ -196,17 +200,31 @@ onMounted(() => {
 
   window.addEventListener('keydown', (event) => {
     if (event.code === 'ArrowLeft') {
+      event.preventDefault();
       controlState.value.yawAcc = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
     } else if (event.code === 'ArrowRight') {
+      event.preventDefault();
       controlState.value.yawAcc = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
     } else if (event.code === 'ArrowDown') {
+      event.preventDefault();
       controlState.value.pitchAcc = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
     } else if (event.code === 'ArrowUp') {
+      event.preventDefault();
       controlState.value.pitchAcc = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
     } else if (event.code === 'Minus') {
       controlState.value.zoomAcc = -keyboardFovAccFast;
     } else if (event.code === 'Equal') {
       controlState.value.zoomAcc = keyboardFovAccFast;
+    } else if (event.code === 'KeyI') {
+      controlState.value.heightAcc = keyboardHeightAcc;
+    } else if (event.code === 'KeyK') {
+      controlState.value.heightAcc = -keyboardHeightAcc;
+    } else if (event.code === 'KeyJ') {
+      controlState.value.rollAcc = -keyboardRotationAcc;
+    } else if (event.code === 'KeyL') {
+      controlState.value.rollAcc = keyboardRotationAcc;
+    } else if (event.code === 'KeyB') {
+      controlState.value.boundaryBreak = !controlState.value.boundaryBreak;
     } else if (event.code === 'KeyW') {
       keyboardW = true;
     } else if (event.code === 'KeyA') {
@@ -234,6 +252,14 @@ onMounted(() => {
       controlState.value.zoomAcc = 0;
     } else if (event.code === 'Equal') {
       controlState.value.zoomAcc = 0;
+    } else if (event.code === 'KeyI') {
+      controlState.value.heightAcc = 0;
+    } else if (event.code === 'KeyK') {
+      controlState.value.heightAcc = 0;
+    } else if (event.code === 'KeyJ') {
+      controlState.value.rollAcc = 0;
+    } else if (event.code === 'KeyL') {
+      controlState.value.rollAcc = 0;
     } else if (event.code === 'KeyW') {
       keyboardW = false;
       controlState.value.sagittalAcc = 0;
