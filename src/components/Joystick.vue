@@ -156,14 +156,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="absolute bottom-10 left-10">
-    <div ref="joystick" class="rounded-full w-24 aspect-square bg-gray-800 bg-opacity-40 backdrop-filter backdrop-blur-xl flex justify-center items-center relative shadow-lg">
-      <div class="absolute left-[0.45rem] w-1.5 aspect-square text-white"><img src="../assets/arrow.svg" aria-hidden="true" class="w-full rotate-[270deg]"></div>
-      <div class="absolute right-[0.45rem] w-1.5 aspect-square text-white"><img src="../assets/arrow.svg" aria-hidden="true" class="w-full rotate-[90deg]"></div>
-      <div class="absolute top-[0.45rem] w-1.5 aspect-square text-white"><img src="../assets/arrow.svg" aria-hidden="true" class="w-full rotate-[0deg]"></div>
-      <div class="absolute bottom-[0.45rem] w-1.5 aspect-square text-white"><img src="../assets/arrow.svg" aria-hidden="true" class="w-full rotate-[180deg]"></div>
-      <div ref="handle" class="absolute rounded-full w-14 aspect-square bg-gray-400 bg-opacity-90 backdrop-blur-sm shadow-[0_4px_8px_0_rgba(0,0,0,0.3),inset_0_4px_4px_0_rgba(255,255,255,0.1),inset_0px_-4px_4px_0_rgba(0,0,0,0.1),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0px_-1px_1px_0_rgba(0,0,0,0.3)]">
-      </div>
+  <div ref="joystick" class="rounded-full w-24 aspect-square bg-neutral-800 bg-opacity-40 backdrop-filter backdrop-blur-xl flex justify-center items-center relative shadow-lg">
+    <div class="absolute left-[0.45rem] w-1.5 aspect-square text-white"><img src="../assets/arrow.svg" aria-hidden="true" class="w-full rotate-[270deg]"></div>
+    <div class="absolute right-[0.45rem] w-1.5 aspect-square text-white"><img src="../assets/arrow.svg" aria-hidden="true" class="w-full rotate-[90deg]"></div>
+    <div class="absolute top-[0.45rem] w-1.5 aspect-square text-white"><img src="../assets/arrow.svg" aria-hidden="true" class="w-full rotate-[0deg]"></div>
+    <div class="absolute bottom-[0.45rem] w-1.5 aspect-square text-white"><img src="../assets/arrow.svg" aria-hidden="true" class="w-full rotate-[180deg]"></div>
+    <div ref="handle" class="absolute rounded-full w-14 aspect-square bg-neutral-400 bg-opacity-90 backdrop-blur-sm shadow-[0_4px_8px_0_rgba(0,0,0,0.3),inset_0_4px_4px_0_rgba(255,255,255,0.1),inset_0px_-4px_4px_0_rgba(0,0,0,0.1),inset_0_1px_1px_0_rgba(255,255,255,0.3),inset_0px_-1px_1px_0_rgba(0,0,0,0.3)]">
     </div>
   </div>
 </template>

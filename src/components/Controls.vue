@@ -9,7 +9,7 @@
   >
     <div
         class="
-      bg-gray-800 bg-opacity-70
+      bg-neutral-800 bg-opacity-70
       backdrop-filter backdrop-blur-xl
       rounded-xl
       text-center
@@ -26,10 +26,9 @@
         "
           aria-label="Toggle labels"
           title="Toggle labels"
-          @click="mountedShowLabels = !mountedShowLabels"
       >
         <img
-            v-if="mountedShowLabels"
+            v-if="false"
             src="../assets/show-labels-active.svg"
             alt="Labels are enabled"
             aria-hidden="true"
@@ -40,6 +39,52 @@
             alt="labels are disabled"
             aria-hidden="true"
         >
+      </button>
+    </div>
+    <div
+        class="
+      bg-neutral-800 bg-opacity-70
+      flex
+      flex-col
+      backdrop-filter backdrop-blur-xl
+      rounded-xl
+      text-center
+      shadow-lg
+      "
+    >
+      <button
+          type="button"
+          tabindex="4"
+          class="
+        px-3 py-3
+        w-12 h-12
+        group
+        text-2xl
+        font-medium
+        text-center
+        leading-[0rem]
+        "
+          aria-label="Toggle labels"
+          title="Toggle labels"
+      >
+        &plus;
+      </button>
+      <button
+          type="button"
+          tabindex="4"
+          class="
+        px-3 py-3
+        w-12 h-12
+        group
+        text-2xl
+        font-medium
+        text-center
+        leading-[0rem]
+        "
+          aria-label="Toggle labels"
+          title="Toggle labels"
+      >
+        &minus;
       </button>
     </div>
   </div>

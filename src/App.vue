@@ -303,7 +303,13 @@ function joystickUpdate(e: [number, number]) {
 <template>
   <div class="touch-none">
     <Cyclorama :camera="camera" :controlState="controlState"/>
-    <Joystick @controlUpdate="joystickUpdate"/>
+    <div
+        class="absolute bottom-0 left-0"
+    >
+      <div class="p-6">
+        <Joystick @controlUpdate="joystickUpdate"/>
+      </div>
+    </div>
     <div
         class="absolute top-0 right-0"
     >
