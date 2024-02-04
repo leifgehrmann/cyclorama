@@ -18,7 +18,7 @@ const canvas = ref(null as null | HTMLDivElement)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'elba' as 'treport' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria';
+const mode = 'blondon' as 'treport' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
