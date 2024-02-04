@@ -18,7 +18,7 @@ const canvas = ref(null as null | HTMLDivElement)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'blondon' as 'treport' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria';
+const mode = 'trafalgar' as 'treport' | 'trafalgar' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -53,6 +53,22 @@ switch (mode) {
     panoramaY = -panoramaHeight * 0.4;
     skyYStart = panoramaY + panoramaHeight - 0.25
     skyYEnd = panoramaY + panoramaHeight + 0.05
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 0.1;
+    break;
+  }
+  case 'trafalgar': {
+    panoramaUrls = ['40348i-panorama.jpg'];
+    skyColor = new THREE.Color(0xCABAAB);
+    groundColor = new THREE.Color(0x939E95);
+    const imageWidth = 26112;
+    const imageHeight = 2974;
+    panoramaRadius = ft2m(84 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = -panoramaHeight * 0.1;
+    skyYStart = panoramaY + panoramaHeight - 4
+    skyYEnd = panoramaY + panoramaHeight -3
     panoramaCeilingY = skyYEnd;
     groundYStart = panoramaY;
     groundYEnd = panoramaY + 0.1;
