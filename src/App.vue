@@ -6,6 +6,7 @@ import {onMounted, ref} from "vue";
 import {ControlState} from "./utils/types.ts";
 import getTouchById, {getAngularDifferenceFromPointers} from "./utils/pointerUtils.ts";
 import * as THREE from 'three';
+import Info from "./components/Info.vue";
 
 // Plan
 // - ✅ Mouse navigation = click-drag changes angle
@@ -34,6 +35,8 @@ const controlState = ref({
   boundaryBreak: false,
 } as ControlState)
 const camera = ref(new THREE.PerspectiveCamera());
+const interactive = ref(null as null | HTMLDivElement)
+const showInfo = ref(false)
 
 camera.value.aspect = window.innerWidth / window.innerHeight;
 camera.value.updateProjectionMatrix()
@@ -45,7 +48,7 @@ let joystickMax = 0.015;
 let joystickMinThreshold = 0.1;
 let keyboardRotationAcc = 0.002;
 let keyboardRotationAccFast = 0.020;
-let keyboardFovAccFast = 0.2;
+let keyboardFovAcc = 0.01;
 let keyboardHeightAcc = 0.01;
 let keyboardWalkingAcc = 0.02;
 let keyboardWalkingAccFast = 0.04;
@@ -96,13 +99,14 @@ onMounted(() => {
   })
 
   window.addEventListener('mousemove', (e) => {
-    if (pointerPrev === null) {
+    if (pointerPrev === null || interactive.value === null) {
       return
     }
     const {yaw, pitch} = getAngularDifferenceFromPointers(
         camera.value,
         e,
-        pointerPrev
+        pointerPrev,
+        interactive.value
     )
     controlState.value.yawVel = (controlState.value.yawVel ?? 0) + yaw;
     controlState.value.pitchVel = (controlState.value.pitchVel ?? 0) + pitch;
@@ -115,7 +119,7 @@ onMounted(() => {
   })
 
   window.addEventListener('touchmove', (e) => {
-    if (touchId === null || pointerPrev === null) {
+    if (touchId === null || pointerPrev === null || interactive.value === null) {
       return;
     }
     const touch = getTouchById(e.changedTouches, touchId)
@@ -125,7 +129,8 @@ onMounted(() => {
     const {yaw, pitch} = getAngularDifferenceFromPointers(
         camera.value,
         touch,
-        pointerPrev
+        pointerPrev,
+        interactive.value
     )
     controlState.value.yawVel = (controlState.value.yawVel ?? 0) + yaw;
     controlState.value.pitchVel = (controlState.value.pitchVel ?? 0) + pitch;
@@ -138,19 +143,20 @@ onMounted(() => {
   })
 
   function clearMouse(e: MouseEvent) {
-    if (pointer2ndPrev === null) {
+    if (pointer2ndPrev === null || interactive.value === null) {
       pointerPrev = null;
       return;
     }
     const {yaw, pitch} = getAngularDifferenceFromPointers(
         camera.value,
         e,
-        pointer2ndPrev
+        pointer2ndPrev,
+        interactive.value
     )
     controlState.value.yawVel = null
     controlState.value.pitchVel = null
-    controlState.value.yawAcc = yaw;
-    controlState.value.pitchAcc = pitch;
+    controlState.value.yawAcc = yaw * 2;
+    controlState.value.pitchAcc = pitch * 2;
     pointer2ndPrev = null;
     pointerPrev = null;
     requestAnimationFrame(() => {
@@ -160,7 +166,7 @@ onMounted(() => {
   }
 
   function clearTouch(e: TouchEvent) {
-    if (touchId === null) {
+    if (touchId === null || interactive.value === null) {
       return;
     }
     const touch = getTouchById(e.changedTouches, touchId)
@@ -177,7 +183,8 @@ onMounted(() => {
     const {yaw, pitch} = getAngularDifferenceFromPointers(
         camera.value,
         touch,
-        pointer2ndPrev
+        pointer2ndPrev,
+        interactive.value
     )
     controlState.value.yawVel = null
     controlState.value.pitchVel = null
@@ -212,9 +219,9 @@ onMounted(() => {
       event.preventDefault();
       controlState.value.pitchAcc = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
     } else if (event.code === 'Minus') {
-      controlState.value.zoomAcc = -keyboardFovAccFast;
+      controlState.value.zoomAcc = -keyboardFovAcc;
     } else if (event.code === 'Equal') {
-      controlState.value.zoomAcc = keyboardFovAccFast;
+      controlState.value.zoomAcc = keyboardFovAcc;
     } else if (event.code === 'KeyI') {
       controlState.value.heightAcc = keyboardHeightAcc;
     } else if (event.code === 'KeyK') {
@@ -298,25 +305,45 @@ function joystickUpdate(e: [number, number]) {
   }
 }
 
+function toggleInfo() {
+  showInfo.value = !showInfo.value;
+}
+
 </script>
 
 <template>
-  <div class="touch-none">
-    <Cyclorama :camera="camera" :controlState="controlState"/>
-    <div
-        class="absolute bottom-0 left-0"
+  <div
+      class="grid w-screen h-screen max-h-screen min-h-screen grid-rows-1 grid-cols-1"
+      :class="{
+    'md:grid-rows-2 md:grid-cols-1 lg:grid-rows-1 lg:grid-cols-[1fr_minmax(20rem,_33%)]': showInfo,
+      }"
+      style="height: 100dvh; min-height: 100dvh; max-height: 100dvh;">
+    <div ref="interactive" class="touch-none relative md:block"
+         :class="{ hidden: showInfo }"
     >
-      <div class="p-6">
-        <Joystick @controlUpdate="joystickUpdate"/>
+      <Cyclorama :camera="camera" :controlState="controlState"/>
+      <div
+          class="absolute bottom-0 left-0 pointer-events-none"
+      >
+        <div class="p-6">
+          <Joystick @controlUpdate="joystickUpdate"/>
+        </div>
+      </div>
+      <div
+          class="absolute top-0 right-0 pointer-events-none"
+      >
+        <div class="p-4 pointer-events-auto">
+          <Controls
+              :show-info="showInfo"
+              @toggle-info="toggleInfo"
+          />
+        </div>
       </div>
     </div>
-    <div
-        class="absolute top-0 right-0"
+    <div class="overflow-y-auto"
+         :class="{ hidden: !showInfo, 'md:block': showInfo }"
     >
-      <div class="p-4">
-        <Controls
-        />
-      </div>
+      <Info @toggle-info="toggleInfo"/>
     </div>
   </div>
 </template>

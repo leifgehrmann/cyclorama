@@ -3,18 +3,20 @@ import * as THREE from 'three';
 export function getAngularDifferenceFromPointers(
   camera: THREE.Camera,
   pointerStart: Touch | MouseEvent,
-  pointerEnd: Touch | MouseEvent
+  pointerEnd: Touch | MouseEvent,
+  interactiveBlock: HTMLDivElement,
 ): {yaw: number, pitch: number} {
   const raycaster = new THREE.Raycaster();
   const coords = new THREE.Vector2();
+  const { width, height } = interactiveBlock.getBoundingClientRect();
 
-  coords.x = ( pointerStart.clientX / window.innerWidth ) * 2 - 1;
-  coords.y = - ( pointerStart.clientY / window.innerHeight ) * 2 + 1;
+  coords.x = ( pointerStart.clientX / width ) * 2 - 1;
+  coords.y = - ( pointerStart.clientY / height ) * 2 + 1;
   raycaster.setFromCamera( coords, camera );
   const directionStart = raycaster.ray.direction.clone();
 
-  coords.x = ( pointerEnd.clientX / window.innerWidth ) * 2 - 1;
-  coords.y = - ( pointerEnd.clientY / window.innerHeight ) * 2 + 1;
+  coords.x = ( pointerEnd.clientX / width ) * 2 - 1;
+  coords.y = - ( pointerEnd.clientY / height ) * 2 + 1;
   raycaster.setFromCamera( coords, camera );
   const directionEnd = raycaster.ray.direction.clone();
 

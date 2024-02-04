@@ -22,22 +22,25 @@
           class="
         px-3 py-3
         w-12 h-12
+        rounded-xl
         group
+        cursor-pointer
         "
-          aria-label="Toggle labels"
-          title="Toggle labels"
+        aria-label="Show info"
+        title="Show info"
+          @click="emit('toggleInfo')"
       >
         <img
-            v-if="false"
-            src="../assets/show-labels-active.svg"
-            alt="Labels are enabled"
+            v-if="!showInfo"
+            src="../assets/show-info-inactive.svg"
             aria-hidden="true"
+            alt="Info is hidden"
         >
         <img
             v-else
-            src="../assets/show-labels-inactive.svg"
-            alt="labels are disabled"
+            src="../assets/show-info-active.svg"
             aria-hidden="true"
+            alt="Info is displayed"
         >
       </button>
     </div>
@@ -58,14 +61,15 @@
           class="
         px-3 py-3
         w-12 h-12
+        rounded-t-xl
         group
         text-2xl
         font-medium
         text-center
         leading-[0rem]
         "
-          aria-label="Toggle labels"
-          title="Toggle labels"
+          aria-label="Zoom in"
+          title="Zoom in"
       >
         &plus;
       </button>
@@ -75,14 +79,15 @@
           class="
         px-3 py-3
         w-12 h-12
+        rounded-b-xl
         group
         text-2xl
         font-medium
         text-center
         leading-[0rem]
         "
-          aria-label="Toggle labels"
-          title="Toggle labels"
+          aria-label="Zoom out"
+          title="Zoom out"
       >
         &minus;
       </button>
@@ -91,6 +96,11 @@
 </template>
 
 <script setup lang="ts">
+import {onMounted, ref, defineEmits, defineProps} from "vue";
+defineProps<{
+  showInfo: boolean,
+}>()
+const emit = defineEmits(['toggleInfo', 'zoomUpdate'])
 //
 //  props: {
 //    showLabels: {

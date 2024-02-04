@@ -18,7 +18,7 @@ const canvas = ref(null as null | HTMLDivElement)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'treport' as 'treport' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria';
+const mode = 'elba' as 'treport' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -403,12 +403,9 @@ const averageHeight = 1.70; // Average height for UK in the 1800s.
 const breathingRatePerMin = 15; // Usually between 12-18 breaths per minute.
 const breathingBobHeight = 0.02;
 
-props.camera.aspect = window.innerWidth / window.innerHeight;
-props.camera.updateProjectionMatrix();
-
 const renderer = new THREE.WebGLRenderer({antialias: true});
-renderer.setSize( window.visualViewport.width, window.innerHeight );
 
+let cameraFov = 50;
 let cameraPosX = props.camera.position.x;
 let cameraPosZ = props.camera.position.z;
 let cameraSagittalVel = 0;
@@ -429,9 +426,9 @@ let cameraRoll = 0;
 let cameraRollVel = 0;
 let cameraRollVelDecel = 0.8;
 let cameraRollAcc = 0;
-let cameraZoom = props.camera.getFocalLength();
-let cameraZoomMin = cameraZoom - 10;
-let cameraZoomMax = cameraZoom + 30;
+let cameraZoom = 1;
+let cameraZoomMin = cameraZoom - 0.25;
+let cameraZoomMax = cameraZoom + 1.75;
 let cameraZoomVel = 0;
 let cameraZoomVelDecel = 0.8;
 let cameraZoomAcc = 0;
@@ -585,7 +582,8 @@ function animate() {
   props.camera.position.x = cameraPosX;
   props.camera.position.z = cameraPosZ;
   props.camera.position.y = stageHeight + averageHeight + cameraHeight + Math.sin(new Date().getTime() / (60 / breathingRatePerMin * 1000) * Math.PI) * breathingBobHeight / 2;
-  props.camera.setFocalLength(cameraZoom);
+  props.camera.fov = cameraFov * (1 / cameraZoom);
+  props.camera.updateProjectionMatrix();
 
   const person1Distance = Math.hypot(
     props.camera.position.x - person1.getPosition().x,
@@ -625,16 +623,13 @@ function animate() {
 }
 animate();
 
-onMounted(() => {
+function updateSize() {
   if (canvas.value === null) {
     return;
   }
-  canvas.value.appendChild(renderer.domElement);
-})
-
-window.addEventListener('resize', () => {
-  const width = window.innerWidth
-  const height = window.innerHeight
+  const rect = canvas.value.parentElement?.getBoundingClientRect();
+  const width = rect?.width ?? 1;
+  const height = rect?.height ?? 1;
   // @ts-ignore
   props.camera.aspect = width / height;
   // @ts-ignore
@@ -642,11 +637,31 @@ window.addEventListener('resize', () => {
 
   renderer.setSize(width, height);
   renderer.render(scene, props.camera);
-});
+}
+
+onMounted(() => {
+  if (canvas.value === null) {
+    return;
+  }
+  canvas.value.appendChild(renderer.domElement);
+  updateSize();
+
+  window.addEventListener('resize', () => {
+    updateSize();
+  });
+  // When the element is hidden and displayed, we need to
+  // make sure the canvas is correctly sized.
+  const resizeObserver = new ResizeObserver(() => {
+    requestAnimationFrame(updateSize);
+  });
+  if (canvas.value.parentElement !== null) {
+    resizeObserver.observe(canvas.value.parentElement);
+  }
+})
 </script>
 
 <template>
-  <div ref="canvas"></div>
+  <div id="canvas" ref="canvas" class="absolute"></div>
 </template>
 
 <style scoped>
