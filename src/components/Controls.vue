@@ -56,6 +56,7 @@
       "
     >
       <button
+          ref="zoomIn"
           type="button"
           tabindex="4"
           class="
@@ -74,6 +75,7 @@
         &plus;
       </button>
       <button
+          ref="zoomOut"
           type="button"
           tabindex="4"
           class="
@@ -96,43 +98,73 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref, defineEmits, defineProps} from "vue";
+import {defineEmits, defineProps, onMounted, ref} from "vue";
 defineProps<{
   showInfo: boolean,
 }>()
 const emit = defineEmits(['toggleInfo', 'zoomUpdate'])
-//
-//  props: {
-//    showLabels: {
-//      type: Boolean,
-//      required: true,
-//    },
-//    showCompare: {
-//      type: Boolean,
-//      required: true,
-//    },
-//  },
-//  emits: [
-//    'update:showLabels',
-//    'update:showCompare',
-//  ],
-//  data: () => ({
-//    mountedShowLabels: false,
-//    mountedShowCompare: false,
-//  }),
-//  watch: {
-//    mountedShowLabels(): void {
-//      this.$emit('update:showLabels', this.mountedShowLabels);
-//    },
-//    mountedShowCompare(): void {
-//      this.$emit('update:showCompare', this.mountedShowCompare);
-//    },
-//  },
-//  mounted(): void {
-//    this.mountedShowLabels = this.showLabels;
-//    this.mountedShowCompare = this.showCompare;
-//  },
-//});
+const zoomIn = ref(null as null | HTMLButtonElement)
+const zoomOut = ref(null as null | HTMLButtonElement)
+
+onMounted(() => {
+  if (zoomIn.value === null || zoomOut.value === null) {
+    return;
+  }
+  zoomIn.value.addEventListener('touchstart', (e: TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    emit('zoomUpdate', [1])
+  })
+  zoomIn.value.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    emit('zoomUpdate', [1])
+  })
+
+  zoomOut.value.addEventListener('touchstart', (e: TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    emit('zoomUpdate', [-1])
+  })
+  zoomOut.value.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    emit('zoomUpdate', [-1])
+  })
+
+  zoomIn.value.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    emit('zoomUpdate', [10])
+    requestAnimationFrame(() => {
+      emit('zoomUpdate', [0])
+    })
+  })
+
+  zoomOut.value.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    emit('zoomUpdate', [-10])
+    requestAnimationFrame(() => {
+      emit('zoomUpdate', [0])
+    })
+  })
+
+  function clearPress() {
+    emit('zoomUpdate', [0])
+  }
+
+  window.addEventListener('mouseleave', clearPress)
+  window.addEventListener('mouseup', clearPress)
+  window.addEventListener('touchend', clearPress)
+  window.addEventListener('touchcancel', clearPress)
+});
 </script>
 
 <style scoped>

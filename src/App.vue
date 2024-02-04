@@ -46,6 +46,7 @@ let pointerPrev: null | Touch | MouseEvent = null;
 let touchId: number | null = null;
 let joystickMax = 0.015;
 let joystickMinThreshold = 0.1;
+let controlZoomMax = 0.005;
 let keyboardRotationAcc = 0.002;
 let keyboardRotationAccFast = 0.020;
 let keyboardFovAcc = 0.01;
@@ -305,6 +306,10 @@ function joystickUpdate(e: [number, number]) {
   }
 }
 
+function controlZoomUpdate(e: [number]) {
+  controlState.value.zoomAcc = e[0] * controlZoomMax;
+}
+
 function toggleInfo() {
   showInfo.value = !showInfo.value;
 }
@@ -336,6 +341,7 @@ function toggleInfo() {
           <Controls
               :show-info="showInfo"
               @toggle-info="toggleInfo"
+              @zoom-update="controlZoomUpdate"
           />
         </div>
       </div>
