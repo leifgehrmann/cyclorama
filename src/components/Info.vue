@@ -3,6 +3,7 @@ import {defineEmits, onMounted, ref} from "vue";
 import Treport from "./explanations/Treport.vue";
 import Elba from "./explanations/Elba.vue";
 import LondonBarker from "./explanations/LondonBarker.vue";
+import CaltonHill from "./explanations/CaltonHill.vue";
 
 const emit = defineEmits(['toggleInfo'])
 const info = ref(null as null | HTMLDivElement)
@@ -58,7 +59,8 @@ onMounted(() => {
     >
 <!--      <Treport/>-->
 <!--      <Elba/>-->
-      <LondonBarker/>
+<!--      <LondonBarker/>-->
+      <CaltonHill/>
     </div>
   </div>
 </template>
@@ -98,7 +100,7 @@ onMounted(() => {
 }
 
 #info img {
-  @apply rounded-xl opacity-85;
+  @apply rounded-sm opacity-85;
 }
 
 </style>
