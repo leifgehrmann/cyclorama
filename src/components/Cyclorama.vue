@@ -42,7 +42,27 @@ let ceilingHeight = 4;
 let initialCameraYaw = 0;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
+  // https://collections.britishart.yale.edu/catalog/orbis:205530 <--- Incredible detail!
+  // https://www.rmg.co.uk/collections/objects/rmgc-object-128877 (duplicate of trafalgar)
+  // https://collections.library.yale.edu/catalog?f%5Bcreator_ssim%5D%5B%5D=Burford,%20Robert,%201791-1861
+  // https://www.loc.gov/pictures/search/?q=Panorama%2C%20Leicester%20Square
+  // https://digital.bodleian.ox.ac.uk/objects/92d22d1e-8e83-4a81-b776-688d71c1cc1b/
+  // https://digital.bodleian.ox.ac.uk/objects/fdbeed42-899d-491f-9246-4b95e04db5bb/
+  // https://digital.bodleian.ox.ac.uk/objects/8ff0a731-6fad-4a6b-a327-2a4120ced41f/
+  // https://digital.bodleian.ox.ac.uk/objects/22e9e513-e1c9-4c54-b39a-2c188f86fb0a/
+  // https://digital.bodleian.ox.ac.uk/objects/f482232f-37e8-4fb6-9269-bb9ebb1e6570/
+  // https://www.britishmuseum.org/collection/object/P_1982-U-3981
+  case 'new-york': {
+    // https://loc.gov/pictures/resource/pga.04569/
+    break;
+  }
+  case 'cornwallis': {
+    // https://digital.bodleian.ox.ac.uk/objects/28c26df5-1cb7-45c3-8beb-50306d4cf4a9/surfaces/28c26df5-1cb7-45c3-8beb-50306d4cf4a9/
+    break;
+  }
   case 'treport': {
+    // Context: Royal visit to Louis-Philippe: arrival of Queen Victoria at Le Tréport, 2 September 1843
+    // https://www.rct.uk/collection/919997/royal-visit-to-louis-philippe-arrival-of-queen-victoria-at-le-treport-2-september
     panoramaUrls = ['1982,U.3982-panorama.jpg'];
     skyColor = new THREE.Color(0xF3D3AC);
     groundColor = new THREE.Color(0xF3D3AC);
