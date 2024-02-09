@@ -351,6 +351,7 @@ switch (mode) {
     break;
   }
   case 'edinburgh': {
+    // http://resumbrae.com/ub/dms259_s06/11/
     panoramaUrls = ['lanorama.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4000;
