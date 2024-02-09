@@ -351,7 +351,8 @@ switch (mode) {
     break;
   }
   case 'edinburgh': {
-    // http://resumbrae.com/ub/dms259_s06/11/
+    // http://www.edvec.ed.ac.uk/html/projects/panorama/lanorama.jpg
+    // http://www.edvec.ed.ac.uk/html/projects/panorama/i2.html
     panoramaUrls = ['lanorama.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4000;
