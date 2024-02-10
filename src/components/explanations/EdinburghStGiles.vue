@@ -4,7 +4,7 @@ import Attribution from "./Attribution.vue";
 </script>
 
 <template>
-  <h1 class="text-center text-xl leading-4"><span class="text-3xl font-bold">EDINBURGH</span><br><em>from the crown of</em><br><span class="text-2xl font-bold" style="font-variant: small-caps">St. Giles'</span><br><span class="text-2xl font-bold leading-[0rem]" style="font-variant: small-caps">Cathedral</span></h1>
+  <h1 class="text-center text-xl leading-4"><span class="text-3xl font-bold">EDINBURGH</span><br><em>from the crown of</em><br><span class="text-2xl font-bold" style="font-variant: small-caps">St Giles'</span><br><span class="text-2xl font-bold leading-[0rem]" style="font-variant: small-caps">Cathedral</span></h1>
   <p class="text-center text-sm"><small>Attributed to</small><br>HENRY ASTON BARKER</p>
   <p class="text-center text-xl">1807*</p>
   <hr>
