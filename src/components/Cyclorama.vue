@@ -79,6 +79,7 @@ switch (mode) {
     break;
   }
   case 'trafalgar': {
+    // https://wellcomecollection.org/works/vqj7wh9j
     panoramaUrls = ['40348i-panorama.jpg'];
     skyColor = new THREE.Color(0xCABAAB);
     groundColor = new THREE.Color(0x939E95);
@@ -303,6 +304,9 @@ switch (mode) {
     break;
   }
   case 'constantinople': {
+    // Some historic facts about the aquatint: https://collections.vam.ac.uk/item/O516369/barker-panorama-of-constantinople-etching-and-aquatint-henry-aston-barker/
+    // High-resolution of black and white: https://www.loc.gov/item/2013646602/
+    // Low-resolution of color: http://george3.splrarebooks.com/collection/search/search&XID=90264f6ed84d2033753b92dc8b595dad16f52168&keywords=PANORAMA%20OF%20CONSTANTINOPLE/
     panoramaUrls = ['Constantinople.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
     groundColor = new THREE.Color(0x000000);
@@ -351,6 +355,7 @@ switch (mode) {
     break;
   }
   case 'edinburgh': {
+    // Paper origin: https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=8a237aad3850a686343bb997fa3c456059f914db
     // Bridewell prison was built in 1791
     // David Allan supposedly created these two pieces, both dates unknown:
     // https://www.nationalgalleries.org/art-and-artists/29574
@@ -358,7 +363,7 @@ switch (mode) {
     // David Allan died in 6 August 1796.
     // Battle of Trafalgar took place: 21 October 1805
     // Robert Barker died: 8 April 1806
-    // Nelson Monument construction started 1807
+    // Nelson Monument construction started 1807, There certainly was no foundation at 1805 when this panorama was created: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1160&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/39158
     // This recording from capital collections claims to be from 1820.
     // https://www.capitalcollections.org.uk/view-item?i=11046
     // Another entry from 1820, but there is no information on what the record actually contains
@@ -373,13 +378,17 @@ switch (mode) {
     // present: 1800: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=203&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/40660
     // present: 1800: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=44&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/529
     // present: 1803: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=24&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/14917
+    // present-ish?: 1804: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1215&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/14891
     // present: 1816: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=478&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/535
     // present: 1817: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=49&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/679
     // present: 1817: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=51&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/772
+    // present: 1817: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1268&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/622
     // absent: 1817: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=47&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/677
     // absent: 1820: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=687&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/40376
     // absent: 1822: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=547&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/500
     // absent: 1822: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=340&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/461
+    // absent: 1822: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=998&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/21115
+    // absent: 1824: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1230&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/943
     // absent: 1825: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=83&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/1905
     // absent: 1827: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=292&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/14703
     // absent: 1829: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=361&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/2005
@@ -441,6 +450,7 @@ switch (mode) {
     break;
   }
   default: {
+    // Biographic details about Barker: https://play.google.com/store/books/details?id=dI1CAAAAcAAJ&rdid=book-dI1CAAAAcAAJ&rdot=1
     panoramaUrls = [
         'barker-00.jpg',
         'barker-01.jpg',
