@@ -18,13 +18,14 @@ const canvas = ref(null as null | HTMLDivElement)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'trafalgar' as 'treport' | 'trafalgar' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria';
+const mode = 'blondon2' as 'treport' | 'trafalgar' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria' | 'new-york' | 'cornwallis' | 'blondon2';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
 }
 
 let panoramaUrls: string[];
+let panoramaUrlHeights: number[];
 let panoramaRadius: number;
 let panoramaHeight: number;
 let panoramaCeilingY: number;
@@ -42,7 +43,6 @@ let ceilingHeight = 4;
 let initialCameraYaw = 0;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
-  // https://collections.britishart.yale.edu/catalog/orbis:205530 <--- Incredible detail!
   // https://www.rmg.co.uk/collections/objects/rmgc-object-128877 (duplicate of trafalgar)
   // https://collections.library.yale.edu/catalog?f%5Bcreator_ssim%5D%5B%5D=Burford,%20Robert,%201791-1861
   // https://www.loc.gov/pictures/search/?q=Panorama%2C%20Leicester%20Square
@@ -68,6 +68,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xF3D3AC);
     const imageWidth = 9334;
     const imageHeight = 1249;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.4;
@@ -85,6 +86,7 @@ switch (mode) {
     groundColor = new THREE.Color(0x939E95);
     const imageWidth = 26112;
     const imageHeight = 2974;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.1;
@@ -101,6 +103,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xFFFBDA);
     const imageWidth = 7941;
     const imageHeight = 619;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.3;
@@ -117,6 +120,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xF1D4AC);
     const imageWidth = 27595;
     const imageHeight = 2488;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.3;
@@ -133,6 +137,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xF1D4AC);
     const imageWidth = 20797;
     const imageHeight = 1134;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.1;
@@ -149,6 +154,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xD1B594);
     const imageWidth = 22996;
     const imageHeight = 1526;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.2;
@@ -165,6 +171,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xF1D4AC);
     const imageWidth = 22782;
     const imageHeight = 1812;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.35;
@@ -181,6 +188,7 @@ switch (mode) {
     groundColor = new THREE.Color(0x000000);
     const imageWidth = 22782;
     const imageHeight = 1812;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.35;
@@ -197,6 +205,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xF1D4AC);
     const imageWidth = 21312;
     const imageHeight = 1936;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.65;
@@ -213,6 +222,7 @@ switch (mode) {
     groundColor = new THREE.Color(0x1E1F22);
     const imageWidth = 20671;
     const imageHeight = 1800;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.3;
@@ -229,6 +239,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xE9C9A1);
     const imageWidth = 22556;
     const imageHeight = 1158;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.01;
@@ -245,6 +256,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xE9C9A1);
     const imageWidth = 22946;
     const imageHeight = 1742;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.35;
@@ -261,6 +273,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xE9C9A1);
     const imageWidth = 15909;
     const imageHeight = 1206;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.2;
@@ -277,10 +290,48 @@ switch (mode) {
     groundColor = new THREE.Color(0x1E1F22);
     const imageWidth = 24190;
     const imageHeight = 2224;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.4;
     skyYStart = panoramaY + panoramaHeight - 0.5
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 0.2;
+    break;
+  }
+  case 'blondon2': {
+    // https://collections.britishart.yale.edu/catalog/orbis:205530 <--- Incredible detail!
+    panoramaUrls = [
+      'yale-orbis-205530-stitch-00.jpg',
+      'yale-orbis-205530-stitch-01.jpg',
+      'yale-orbis-205530-stitch-02.jpg',
+      'yale-orbis-205530-stitch-03.jpg',
+      'yale-orbis-205530-stitch-04.jpg',
+      'yale-orbis-205530-stitch-05.jpg',
+      'yale-orbis-205530-stitch-06.jpg',
+      'yale-orbis-205530-stitch-07.jpg',
+      'yale-orbis-205530-stitch-08.jpg',
+      'yale-orbis-205530-stitch-09.jpg',
+      'yale-orbis-205530-stitch-10.jpg',
+      'yale-orbis-205530-stitch-11.jpg',
+      'yale-orbis-205530-stitch-12.jpg',
+      'yale-orbis-205530-stitch-13.jpg',
+      'yale-orbis-205530-stitch-14.jpg',
+      'yale-orbis-205530-stitch-15.jpg',
+      'yale-orbis-205530-stitch-16.jpg',
+      'yale-orbis-205530-stitch-17.jpg',
+    ];
+    skyColor = new THREE.Color(0xC2C2BF);
+    groundColor = new THREE.Color(0x1E1F22);
+    const imageWidth = 34684;
+    const imageHeight = 4559;
+    panoramaUrlHeights = [2280, 2279];
+    panoramaRadius = ft2m(84 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = -panoramaHeight * 0.4;
+    skyYStart = 4
     skyYEnd = panoramaY + panoramaHeight
     panoramaCeilingY = skyYEnd;
     groundYStart = panoramaY;
@@ -293,6 +344,7 @@ switch (mode) {
     groundColor = new THREE.Color(0x1E1F22);
     const imageWidth = 6219;
     const imageHeight = 790;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.4;
@@ -312,6 +364,7 @@ switch (mode) {
     groundColor = new THREE.Color(0x000000);
     const imageWidth = 1875;
     const imageHeight = 319;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.4;
@@ -328,6 +381,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xFFFBC4);
     const imageWidth = 24165;
     const imageHeight = 2258;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.46;
@@ -344,6 +398,7 @@ switch (mode) {
     groundColor = new THREE.Color(0x000000);
     const imageWidth = 4096;
     const imageHeight = 1491;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(227 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.4;
@@ -401,6 +456,7 @@ switch (mode) {
     skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4000;
     const imageHeight = 544;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(84 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.45;
@@ -419,6 +475,7 @@ switch (mode) {
     groundColor = new THREE.Color(0xFFFEDF);
     const imageWidth = 12786;
     const imageHeight = 1090;
+    panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(130 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.65;
@@ -437,6 +494,7 @@ switch (mode) {
         'london-03.jpg',
         'london-04.jpg',
     ];
+    panoramaUrlHeights = [2904];
     skyColor = new THREE.Color(0xAACCED);
     groundColor = new THREE.Color(0x111121);
     panoramaRadius = ft2m(130 / 2);
@@ -463,6 +521,7 @@ switch (mode) {
     const imageWidth = 18237;
     const imageHeight = 2248;
     panoramaRadius = ft2m(84 / 2);
+    panoramaUrlHeights = [imageHeight];
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.5;
     stageRadius = ft2m(27/2);
@@ -525,6 +584,7 @@ let cameraHeightMax = cameraHeight + 1.0;
 new Panorama(
     scene,
     panoramaUrls,
+    panoramaUrlHeights,
     panoramaRadius,
     panoramaHeight,
     panoramaY
