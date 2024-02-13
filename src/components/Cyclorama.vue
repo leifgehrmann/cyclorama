@@ -410,7 +410,9 @@ switch (mode) {
     break;
   }
   case 'edinburgh': {
+    // An Edinburgh panorama from 1806, which is NOT the same as the st giles panorama: https://collections.britishart.yale.edu/catalog/orbis:12828979
     // Paper origin: https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=8a237aad3850a686343bb997fa3c456059f914db
+    // Claim that image is 2.5m and 0.3m, which matches the manuscript listing: https://web.archive.org/web/20110227204942/https://www.acmi.net.au/aic/PANORAMA.html/
     // Bridewell prison was built in 1791
     // David Allan supposedly created these two pieces, both dates unknown:
     // https://www.nationalgalleries.org/art-and-artists/29574
