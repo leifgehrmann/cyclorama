@@ -4,7 +4,7 @@ import Joystick from './components/Joystick.vue';
 import Controls from "./components/Controls.vue";
 import {onMounted, ref} from "vue";
 import {ControlState} from "./utils/types.ts";
-import getTouchById, {getAngularDifferenceFromPointers} from "./utils/pointerUtils.ts";
+import getTouchById, {getAngularDifferenceFromPointers, getDistanceBetweenPointers} from "./utils/pointerUtils.ts";
 import * as THREE from 'three';
 import Info from "./components/Info.vue";
 
@@ -29,6 +29,8 @@ const controlState = ref({
   pitchAcc: 0,
   yawVel: null,
   pitchVel: null,
+  yawVelDeceleration: 0,
+  pitchVelDeceleration: 0,
   zoomAcc: 0,
   heightAcc: 0,
   rollAcc: 0,
@@ -58,6 +60,8 @@ let keyboardW = false;
 let keyboardA = false;
 let keyboardS = false;
 let keyboardD = false;
+let keyboardRotationDeceleration = 0.8;
+let pointerRotationDeceleration = 0.95;
 
 function normaliseControlStateFromKeyboardState() {
   // compute direction from keyboard. Keyboard overrides joystick controls.
@@ -85,6 +89,12 @@ function normaliseControlStateFromKeyboardState() {
 
 onMounted(() => {
   window.addEventListener('mousedown', (e) => {
+    controlState.value.yawVel = 0
+    controlState.value.pitchVel = 0
+    controlState.value.yawAcc = 0;
+    controlState.value.pitchAcc = 0;
+    controlState.value.yawVelDeceleration = pointerRotationDeceleration;
+    controlState.value.pitchVelDeceleration = pointerRotationDeceleration;
     pointerPrev = e;
   })
 
@@ -95,6 +105,12 @@ onMounted(() => {
     e.preventDefault();
     let touch = e.changedTouches[0];
     touchId = touch.identifier;
+    controlState.value.yawVel = 0
+    controlState.value.pitchVel = 0
+    controlState.value.yawAcc = 0;
+    controlState.value.pitchAcc = 0;
+    controlState.value.yawVelDeceleration = pointerRotationDeceleration;
+    controlState.value.pitchVelDeceleration = pointerRotationDeceleration;
     pointer2ndPrev = null;
     pointerPrev = touch;
   })
@@ -154,10 +170,13 @@ onMounted(() => {
         pointer2ndPrev,
         interactive.value
     )
-    controlState.value.yawVel = null
-    controlState.value.pitchVel = null
-    controlState.value.yawAcc = yaw * 2;
-    controlState.value.pitchAcc = pitch * 2;
+    // Only perform momentum if the difference is big enough.
+    if (getDistanceBetweenPointers(e, pointer2ndPrev) > 2) {
+      controlState.value.yawVel = null
+      controlState.value.pitchVel = null
+      controlState.value.yawAcc = yaw;
+      controlState.value.pitchAcc = pitch;
+    }
     pointer2ndPrev = null;
     pointerPrev = null;
     requestAnimationFrame(() => {
@@ -187,10 +206,13 @@ onMounted(() => {
         pointer2ndPrev,
         interactive.value
     )
-    controlState.value.yawVel = null
-    controlState.value.pitchVel = null
-    controlState.value.yawAcc = yaw;
-    controlState.value.pitchAcc = pitch;
+    // Only perform momentum if the difference is big enough.
+    if (getDistanceBetweenPointers(touch, pointer2ndPrev) > 2) {
+      controlState.value.yawVel = null
+      controlState.value.pitchVel = null
+      controlState.value.yawAcc = yaw;
+      controlState.value.pitchAcc = pitch;
+    }
     pointer2ndPrev = null;
     pointerPrev = null;
     touchId = null;
@@ -207,6 +229,16 @@ onMounted(() => {
   window.addEventListener('touchcancel', clearTouch)
 
   window.addEventListener('keydown', (event) => {
+    if (
+        event.code === 'ArrowLeft' ||
+        event.code === 'ArrowRight' ||
+        event.code === 'ArrowDown' ||
+        event.code === 'ArrowUp'
+    ) {
+      controlState.value.yawVelDeceleration = keyboardRotationDeceleration;
+      controlState.value.pitchVelDeceleration = keyboardRotationDeceleration;
+    }
+
     if (event.code === 'ArrowLeft') {
       event.preventDefault();
       controlState.value.yawAcc = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;

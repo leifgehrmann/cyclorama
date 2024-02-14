@@ -1,5 +1,15 @@
 import * as THREE from 'three';
 
+export function getDistanceBetweenPointers(
+  pointerStart: Touch | MouseEvent,
+  pointerEnd: Touch | MouseEvent,
+): number {
+  return Math.hypot(
+    pointerEnd.clientX - pointerStart.clientX,
+    pointerEnd.clientY - pointerStart.clientY,
+  );
+}
+
 export function getAngularDifferenceFromPointers(
   camera: THREE.Camera,
   pointerStart: Touch | MouseEvent,

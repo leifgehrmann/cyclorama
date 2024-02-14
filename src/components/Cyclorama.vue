@@ -560,11 +560,9 @@ let cameraFrontalVelDecel = 0.7;
 let cameraFrontalAcc = 0;
 let cameraYaw = initialCameraYaw;
 let cameraYawVel = 0;
-let cameraYawVelDecel = 0.8;
 let cameraYawAcc = 0;
 let cameraPitch = 0;
 let cameraPitchVel = 0;
-let cameraPitchVelDecel = 0.8;
 let cameraPitchAcc = 0;
 let cameraRoll = 0;
 let cameraRollVel = 0;
@@ -656,11 +654,11 @@ function animate() {
 
   // Update View
   cameraYawAcc = props.controlState.yawAcc;
-  cameraYawVel *= cameraYawVelDecel;
+  cameraYawVel *= props.controlState.yawVelDeceleration;
   cameraYawVel += cameraYawAcc;
 
   cameraPitchAcc = props.controlState.pitchAcc;
-  cameraPitchVel *= cameraPitchVelDecel;
+  cameraPitchVel *= props.controlState.pitchVelDeceleration;
   cameraPitchVel += cameraPitchAcc;
 
   cameraRollAcc = props.controlState.rollAcc;
@@ -675,18 +673,22 @@ function animate() {
   cameraHeightVel *= cameraHeightVelDecel;
   cameraHeightVel += cameraHeightAcc;
 
-  cameraYaw += cameraYawVel;
-  cameraPitch += cameraPitchVel;
   cameraRoll += cameraRollVel;
   cameraZoom += cameraZoomVel;
   cameraHeight += cameraHeightVel;
 
   if (props.controlState.yawVel !== null) {
+    cameraYawVel = 0;
     cameraYaw += props.controlState.yawVel
+  } else {
+    cameraYaw += cameraYawVel;
   }
 
   if (props.controlState.pitchVel !== null) {
+    cameraPitchVel = 0;
     cameraPitch += props.controlState.pitchVel
+  } else {
+    cameraPitch += cameraPitchVel;
   }
 
   if (!props.controlState.boundaryBreak) {
