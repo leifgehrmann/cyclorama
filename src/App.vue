@@ -29,8 +29,8 @@ const controlState = ref({
   pitchAcc: 0,
   yawVel: null,
   pitchVel: null,
-  yawVelDeceleration: 0,
-  pitchVelDeceleration: 0,
+  yawVelDeceleration: 0.8,
+  pitchVelDeceleration: 0.8,
   zoomAcc: 0,
   heightAcc: 0,
   rollAcc: 0,
@@ -60,6 +60,16 @@ let keyboardW = false;
 let keyboardA = false;
 let keyboardS = false;
 let keyboardD = false;
+let keyboardUp = false;
+let keyboardDown = false;
+let keyboardLeft = false;
+let keyboardRight = false;
+let keyboardPlus = false;
+let keyboardMinus = false;
+let keyboardI = false;
+let keyboardK = false;
+let keyboardJ = false;
+let keyboardL = false;
 let keyboardRotationDeceleration = 0.8;
 let pointerRotationDeceleration = 0.95;
 
@@ -83,6 +93,54 @@ function normaliseControlStateFromKeyboardState() {
     if (controlState.value.frontalAcc !== 0 && controlState.value.sagittalAcc !== 0 ) {
       controlState.value.sagittalAcc *= 1 / Math.sqrt(2);
       controlState.value.frontalAcc *= 1 / Math.sqrt(2);
+    }
+  }
+  if (keyboardLeft || keyboardRight) {
+    controlState.value.yawAcc = 0
+    if (keyboardLeft) {
+      controlState.value.yawAcc -= keyboardShift ? keyboardRotationAccFast : keyboardRotationAcc;
+    }
+    if (keyboardRight) {
+      controlState.value.yawAcc += keyboardShift ? keyboardRotationAccFast : keyboardRotationAcc;
+    }
+  }
+  if (keyboardUp || keyboardDown) {
+    controlState.value.pitchAcc = 0
+    if (keyboardUp) {
+      controlState.value.pitchAcc -= keyboardShift ? keyboardRotationAccFast : keyboardRotationAcc;
+    }
+    if (keyboardDown) {
+      controlState.value.pitchAcc += keyboardShift ? keyboardRotationAccFast : keyboardRotationAcc;
+    }
+  }
+
+  if (keyboardMinus || keyboardPlus) {
+    controlState.value.zoomAcc = 0;
+    if (keyboardMinus) {
+      controlState.value.zoomAcc -= keyboardFovAcc;
+    }
+    if (keyboardPlus) {
+      controlState.value.zoomAcc += keyboardFovAcc;
+    }
+  }
+
+  if (keyboardI || keyboardK) {
+    controlState.value.heightAcc = 0;
+    if (keyboardK) {
+      controlState.value.heightAcc -= keyboardHeightAcc;
+    }
+    if (keyboardI) {
+      controlState.value.heightAcc += keyboardHeightAcc;
+    }
+  }
+
+  if (keyboardJ || keyboardL) {
+    controlState.value.rollAcc = 0;
+    if (keyboardJ) {
+      controlState.value.rollAcc -= keyboardRotationAcc;
+    }
+    if (keyboardL) {
+      controlState.value.rollAcc += keyboardRotationAcc;
     }
   }
 }
@@ -241,27 +299,33 @@ onMounted(() => {
 
     if (event.code === 'ArrowLeft') {
       event.preventDefault();
-      controlState.value.yawAcc = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
+      keyboardLeft = true;
     } else if (event.code === 'ArrowRight') {
       event.preventDefault();
-      controlState.value.yawAcc = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
+      keyboardRight = true;
     } else if (event.code === 'ArrowDown') {
       event.preventDefault();
-      controlState.value.pitchAcc = event.shiftKey ? keyboardRotationAccFast : keyboardRotationAcc;
+      keyboardDown = true;
     } else if (event.code === 'ArrowUp') {
       event.preventDefault();
-      controlState.value.pitchAcc = event.shiftKey ? -keyboardRotationAccFast : -keyboardRotationAcc;
+      keyboardUp = true;
     } else if (event.code === 'Minus') {
+      keyboardMinus = true;
       controlState.value.zoomAcc = -keyboardFovAcc;
     } else if (event.code === 'Equal') {
+      keyboardPlus = true;
       controlState.value.zoomAcc = keyboardFovAcc;
     } else if (event.code === 'KeyI') {
+      keyboardI = true;
       controlState.value.heightAcc = keyboardHeightAcc;
     } else if (event.code === 'KeyK') {
+      keyboardK = true;
       controlState.value.heightAcc = -keyboardHeightAcc;
     } else if (event.code === 'KeyJ') {
+      keyboardJ = true;
       controlState.value.rollAcc = -keyboardRotationAcc;
     } else if (event.code === 'KeyL') {
+      keyboardL = true;
       controlState.value.rollAcc = keyboardRotationAcc;
     } else if (event.code === 'KeyB') {
       controlState.value.boundaryBreak = !controlState.value.boundaryBreak;
@@ -273,7 +337,8 @@ onMounted(() => {
       keyboardS = true;
     } else if (event.code === 'KeyD') {
       keyboardD = true;
-    } else if (event.code === 'ShiftLeft' || event.code === 'KeyRight') {
+    }
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
       keyboardShift = true;
     }
     normaliseControlStateFromKeyboardState();
@@ -282,24 +347,34 @@ onMounted(() => {
   window.addEventListener('keyup', (event) => {
     if (event.code === 'ArrowLeft') {
       controlState.value.yawAcc = 0;
+      keyboardLeft = false;
     } else if (event.code === 'ArrowRight') {
       controlState.value.yawAcc = 0;
+      keyboardRight = false;
     } else if (event.code === 'ArrowDown') {
       controlState.value.pitchAcc = 0;
+      keyboardDown = false;
     } else if (event.code === 'ArrowUp') {
       controlState.value.pitchAcc = 0;
+      keyboardUp = false;
     } else if (event.code === 'Minus') {
       controlState.value.zoomAcc = 0;
+      keyboardMinus = false;
     } else if (event.code === 'Equal') {
       controlState.value.zoomAcc = 0;
+      keyboardPlus = false;
     } else if (event.code === 'KeyI') {
       controlState.value.heightAcc = 0;
+      keyboardI = false;
     } else if (event.code === 'KeyK') {
       controlState.value.heightAcc = 0;
+      keyboardK = false;
     } else if (event.code === 'KeyJ') {
       controlState.value.rollAcc = 0;
+      keyboardJ = false;
     } else if (event.code === 'KeyL') {
       controlState.value.rollAcc = 0;
+      keyboardL = false;
     } else if (event.code === 'KeyW') {
       keyboardW = false;
       controlState.value.sagittalAcc = 0;
@@ -316,7 +391,8 @@ onMounted(() => {
       keyboardD = false;
       controlState.value.sagittalAcc = 0;
       controlState.value.frontalAcc = 0;
-    } else if (event.code === 'ShiftLeft' || event.code === 'KeyRight') {
+    }
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
       keyboardShift = false;
     }
     normaliseControlStateFromKeyboardState();
