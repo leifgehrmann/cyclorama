@@ -4,22 +4,30 @@ import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 export default class Person {
   private group: THREE.Group;
+  private svgUrl: string;
   private svgHeight: number;
+  private svgScale: number;
   private opacity: number;
 
   constructor(
-    scene: THREE.Scene,
     svgUrl: string,
     svgHeight: number,
     svgScale: number = 0.01, // 1px = 1cm,
   ) {
-    const loader = new SVGLoader();
     this.group = new THREE.Group();
+    this.svgUrl = svgUrl;
     this.svgHeight = svgHeight;
+    this.svgScale = svgScale;
     this.opacity = 1;
+  }
 
-    loader.load( svgUrl, ( data ) => {
-      this.group.scale.multiplyScalar( svgScale );
+  addToScene(
+    scene: THREE.Scene,
+    loadedTextureCallback: () => void
+  ): void {
+    const loader = new SVGLoader();
+    loader.load( this.svgUrl, ( data ) => {
+      this.group.scale.multiplyScalar( this.svgScale );
       this.group.position.y = this.svgHeight;
       this.group.rotation.y = Math.PI;
       this.group.scale.y *= - 1;
@@ -86,6 +94,7 @@ export default class Person {
       }
 
       scene.add( this.group );
+      loadedTextureCallback()
     });
   }
 

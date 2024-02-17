@@ -7,6 +7,7 @@ import {ControlState} from "./utils/types.ts";
 import getTouchById, {getAngularDifferenceFromPointers, getDistanceBetweenPointers} from "./utils/pointerUtils.ts";
 import * as THREE from 'three';
 import Info from "./components/Info.vue";
+import Loading from "./components/Loading.vue";
 
 // Plan
 // - ✅ Mouse navigation = click-drag changes angle
@@ -39,6 +40,7 @@ const controlState = ref({
 const camera = ref(new THREE.PerspectiveCamera());
 const interactive = ref(null as null | HTMLDivElement)
 const showInfo = ref(false)
+const progress = ref(0)
 
 camera.value.aspect = window.innerWidth / window.innerHeight;
 camera.value.updateProjectionMatrix()
@@ -422,9 +424,19 @@ function toggleInfo() {
   showInfo.value = !showInfo.value;
 }
 
+function updateProgress (e: [number]) {
+  progress.value = e[0];
+}
+
 </script>
 
 <template>
+  <div
+      class="absolute w-screen h-screen max-h-screen min-h-screen bg-black z-10 pointer-events-none flex items-center justify-center flex-col gap-5"
+      :class="{hidden: progress === 1}"
+  >
+    <Loading :progress="progress" />
+  </div>
   <div
       class="grid w-screen h-screen max-h-screen min-h-screen grid-rows-1 grid-cols-1"
       :class="{
@@ -434,7 +446,11 @@ function toggleInfo() {
     <div ref="interactive" class="touch-none relative md:block"
          :class="{ hidden: showInfo }"
     >
-      <Cyclorama :camera="camera" :controlState="controlState"/>
+      <Cyclorama
+          :camera="camera"
+          :controlState="controlState"
+          @progressUpdate="updateProgress"
+      />
       <div
           class="absolute bottom-0 left-0 pointer-events-none"
       >

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as THREE from 'three';
-import {ref, onMounted, defineProps} from 'vue'
+import {ref, onMounted, defineProps, defineEmits} from 'vue'
 import Stage from "../sceneObjects/stage.ts";
 import Sky from "../sceneObjects/sky.ts";
 import Ground from "../sceneObjects/ground.ts";
@@ -12,6 +12,8 @@ const props = defineProps<{
   camera: THREE.PerspectiveCamera,
   controlState: ControlState
 }>()
+
+const emit = defineEmits(['progressUpdate'])
 
 const canvas = ref(null as null | HTMLDivElement)
 
@@ -581,13 +583,21 @@ let cameraHeightVelDecel = 0.8;
 let cameraHeightMin = cameraHeight - 1.0;
 let cameraHeightMax = cameraHeight + 1.0;
 
+let totalItemsToLoad = panoramaUrls.length + 2;
+let itemsLoaded = 0;
+const loadedTextureCallback = () => {
+  itemsLoaded += 1;
+  emit('progressUpdate', [itemsLoaded/totalItemsToLoad])
+}
+
 new Panorama(
     scene,
     panoramaUrls,
     panoramaUrlHeights,
     panoramaRadius,
     panoramaHeight,
-    panoramaY
+    panoramaY,
+    loadedTextureCallback
 );
 
 const stage = new Stage(
@@ -620,18 +630,18 @@ const ground = new Ground(
 ground.addToScene(scene)
 
 const person1 = new Person(
-    scene,
     'person-1.svg',
     1.76,
 )
 person1.setPosition(stageRadius - 0.7, stageHeight, 0)
+person1.addToScene(scene, loadedTextureCallback);
 
 const person2 = new Person(
-    scene,
     'person-2.svg',
     1.85,
 )
 person2.setPosition(0, stageHeight, stageRadius - 1)
+person2.addToScene(scene, loadedTextureCallback);
 
 props.camera.position.y = stageHeight + 1;
 
