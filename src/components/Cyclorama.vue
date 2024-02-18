@@ -54,14 +54,8 @@ switch (mode) {
   // https://digital.bodleian.ox.ac.uk/objects/22e9e513-e1c9-4c54-b39a-2c188f86fb0a/
   // https://digital.bodleian.ox.ac.uk/objects/f482232f-37e8-4fb6-9269-bb9ebb1e6570/
   // https://www.britishmuseum.org/collection/object/P_1982-U-3981
-  case 'new-york': {
-    // https://loc.gov/pictures/resource/pga.04569/
-    break;
-  }
-  case 'cornwallis': {
-    // https://digital.bodleian.ox.ac.uk/objects/28c26df5-1cb7-45c3-8beb-50306d4cf4a9/surfaces/28c26df5-1cb7-45c3-8beb-50306d4cf4a9/
-    break;
-  }
+  // https://digital.bodleian.ox.ac.uk/objects/28c26df5-1cb7-45c3-8beb-50306d4cf4a9/surfaces/28c26df5-1cb7-45c3-8beb-50306d4cf4a9/
+  // https://loc.gov/pictures/resource/pga.04569/
   case 'treport': {
     // Context: Royal visit to Louis-Philippe: arrival of Queen Victoria at Le Tréport, 2 September 1843
     // https://www.rct.uk/collection/919997/royal-visit-to-louis-philippe-arrival-of-queen-victoria-at-le-treport-2-september
@@ -304,6 +298,9 @@ switch (mode) {
     break;
   }
   case 'blondon2': {
+    // Copy at the NLS: https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21527956940004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,Ralph%20Hyde&offset=20
+    // Not the first panorama to be exhibited:
+    //  - https://www.erudit.org/en/journals/ron/2007-n46-ron1782/016130ar/
     // https://collections.britishart.yale.edu/catalog/orbis:205530 <--- Incredible detail!
     panoramaUrls = [
       'yale-orbis-205530-stitch-00.jpg',
@@ -419,13 +416,16 @@ switch (mode) {
     // David Allan supposedly created these two pieces, both dates unknown:
     // https://www.nationalgalleries.org/art-and-artists/29574
     // https://www.nationalgalleries.org/art-and-artists/29575
+    // https://maps.nls.uk/towns/rec/3895, https://maps.nls.uk/view/117743026 1793-1794/1795 - Weigh house should be present, but isn't in painting
     // David Allan died in 6 August 1796.
+    // Bank of Scotland was constructed between 1801-1806 https://portal.historicenvironment.scot/designation/LB28263
+    //  - The building is clearly visible in 1809: https://www.capitalcollections.org.uk/view-item?i=11033
     // Battle of Trafalgar took place: 21 October 1805
     // Robert Barker died: 8 April 1806
     // Nelson Monument construction started 1807, There certainly was no foundation at 1805 when this panorama was created: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1160&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/39158
     // This recording from capital collections claims to be from 1820.
     // https://www.capitalcollections.org.uk/view-item?i=11046
-    // Another entry from 1820, but there is no information on what the record actually contains
+    // Another entry from "circa 1820", but there is no information on what the record actually contains
     // https://manuscripts.nls.uk/repositories/2/archival_objects/23346
     // The Tron kirk spire was burnt down in 1824, meaning this cannot be older than that.
     // Scott monument foundation stone was placed 1840, nearly completed 1844
@@ -453,6 +453,11 @@ switch (mode) {
     // absent: 1829: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=361&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/2005
     // absent: 1830: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=17&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/6214
     // absent: 1851: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=53&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/1387
+    // W. Wells could be:
+    // - William Wells of Redleaf: https://www.britishmuseum.org/collection/term/BIOG50754 individual; scientist/engineer; collector; British; Male
+    // - William Fredrick Wells: https://www.britishmuseum.org/collection/term/BIOG50755 individual; printmaker; painter/draughtsman; British; Male
+    // - William Wells: https://www.britishmuseum.org/collection/term/BIOG63838 individual; dealer/auction house; British; Male
+    // - W Wells https://www.britishmuseum.org/collection/term/BIOG237166 individual; printmaker; publisher/printer; British; Male Opposite Salisbury Court, Fleet Street, London (in 1780)
 
     // http://www.edvec.ed.ac.uk/html/projects/panorama/lanorama.jpg
     // http://www.edvec.ed.ac.uk/html/projects/panorama/i2.html
@@ -472,6 +477,8 @@ switch (mode) {
     break;
   }
   case 'horner': {
+    // Some information from Ralph Hyde
+    // https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21572339690004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=default_tab&query=any,contains,The%20Regent%27s%20Park%20Colosseum&mode=basic
     panoramaUrls = [
       '1880,1113.1214.jpg',
     ];
@@ -512,7 +519,24 @@ switch (mode) {
     break;
   }
   default: {
+    // Consult these books:
+    // - https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21520991280004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,Panoramania!:%20Art%20and%20Entertainment%20of%20the%20All-embracing%20View&offset=0
+    // - https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21519947450004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,The%20first%20panoramas%20:%20visions%20of%20British%20imperialism&offset=0
+
+    // Viewable at the NLS: https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21523987470004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,Ralph%20Hyde&offset=40
+
     // Biographic details about Barker: https://play.google.com/store/books/details?id=dI1CAAAAcAAJ&rdid=book-dI1CAAAAcAAJ&rdot=1
+    // Source CC-BY University of Edinburgh Coll-1709: https://images.is.ed.ac.uk/luna/servlet/detail/UoEgal~5~5~150794~165555:Panorama-of-Edinburgh-From-Calton-H;JSESSIONID=cad4a81b-4d6e-4d95-95f3-f7f0f955da59?qvq=q%3Apanorama&mi=6&trs=7
+    // The Name "John Wells" comes from: http://nms.scran.ac.uk/database/record.php?usi=000-100-104-237-C
+    // Potential answer who John Wells is: https://www.britishmuseum.org/collection/term/BIOG50749
+    // individual; printmaker; publisher/printer; British; Male
+    // 1789-1809 (fl.)
+    // Maybe responsible for these other artworks:
+    //  - https://wellcomecollection.org/works/v2h75pzh
+    //  - http://george3.splrarebooks.com/collection/view/elgin-cathedral.-drawn-on-the-spot-by-a.-grant.-aquatinta-by-j.-wells
+    // Alternative John Wells?
+    // https://www.royalacademy.org.uk/art-artists/name/john-wells
+    // No 6 Clerkenwell Green, London (in 1801)
     panoramaUrls = [
         'barker-00.jpg',
         'barker-01.jpg',
