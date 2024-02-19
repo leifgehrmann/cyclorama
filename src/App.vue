@@ -362,6 +362,8 @@ onMounted(() => {
         event.code === 'ArrowDown' ||
         event.code === 'ArrowUp'
     ) {
+      controlState.value.yawVel = null;
+      controlState.value.pitchVel = null;
       controlState.value.yawVelDeceleration = keyboardRotationDeceleration;
       controlState.value.pitchVelDeceleration = keyboardRotationDeceleration;
     }
