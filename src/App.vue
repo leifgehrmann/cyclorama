@@ -51,13 +51,16 @@ let touchId: number | null = null;
 let joystickMax = 0.015;
 let joystickMinThreshold = 0.1;
 let controlZoomMax = 0.005;
-let keyboardRotationAcc = 0.002;
+let keyboardRotationAcc = 0.0015;
+let keyboardRotationAccSlow = 0.0001;
 let keyboardRotationAccFast = 0.020;
 let keyboardFovAcc = 0.01;
 let keyboardHeightAcc = 0.01;
-let keyboardWalkingAcc = 0.02;
-let keyboardWalkingAccFast = 0.04;
+let keyboardWalkingAcc = 0.01;
+let keyboardWalkingAccFast = 0.02;
+let keyboardWalkingAccSlow = 0.001;
 let keyboardShift = false;
+let keyboardAlt = false;
 let keyboardW = false;
 let keyboardA = false;
 let keyboardS = false;
@@ -75,22 +78,62 @@ let keyboardL = false;
 let keyboardRotationDeceleration = 0.8;
 let pointerRotationDeceleration = 0.95;
 
+function selectNormSlowFast(
+    fastSelected: boolean,
+    slowSelected: boolean,
+    normSpeed: number,
+    slowSpeed: number,
+    fastSpeed: number,
+) {
+  if (fastSelected && !slowSelected) {
+    return fastSpeed;
+  } else if (slowSelected && !fastSelected) {
+    return slowSpeed;
+  } else {
+    return normSpeed;
+  }
+}
+
 function normaliseControlStateFromKeyboardState() {
   // compute direction from keyboard. Keyboard overrides joystick controls.
   if (keyboardW || keyboardA || keyboardS || keyboardD) {
     controlState.value.sagittalAcc = 0;
     controlState.value.frontalAcc = 0;
     if (keyboardW) {
-      controlState.value.sagittalAcc += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
+      controlState.value.sagittalAcc += selectNormSlowFast(
+          keyboardShift,
+          keyboardAlt,
+          keyboardWalkingAcc,
+          keyboardWalkingAccSlow,
+          keyboardWalkingAccFast
+      );
     }
     if (keyboardA) {
-      controlState.value.frontalAcc -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
+      controlState.value.frontalAcc -= selectNormSlowFast(
+          keyboardShift,
+          keyboardAlt,
+          keyboardWalkingAcc,
+          keyboardWalkingAccSlow,
+          keyboardWalkingAccFast
+      );
     }
     if (keyboardS) {
-      controlState.value.sagittalAcc -= keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
+      controlState.value.sagittalAcc -= selectNormSlowFast(
+          keyboardShift,
+          keyboardAlt,
+          keyboardWalkingAcc,
+          keyboardWalkingAccSlow,
+          keyboardWalkingAccFast
+      );
     }
     if (keyboardD) {
-      controlState.value.frontalAcc += keyboardShift ? keyboardWalkingAccFast : keyboardWalkingAcc
+      controlState.value.frontalAcc += selectNormSlowFast(
+          keyboardShift,
+          keyboardAlt,
+          keyboardWalkingAcc,
+          keyboardWalkingAccSlow,
+          keyboardWalkingAccFast
+      );
     }
     if (controlState.value.frontalAcc !== 0 && controlState.value.sagittalAcc !== 0 ) {
       controlState.value.sagittalAcc *= 1 / Math.sqrt(2);
@@ -100,19 +143,43 @@ function normaliseControlStateFromKeyboardState() {
   if (keyboardLeft || keyboardRight) {
     controlState.value.yawAcc = 0
     if (keyboardLeft) {
-      controlState.value.yawAcc -= keyboardShift ? keyboardRotationAccFast : keyboardRotationAcc;
+      controlState.value.yawAcc -= selectNormSlowFast(
+        keyboardShift,
+        keyboardAlt,
+        keyboardRotationAcc,
+        keyboardRotationAccSlow,
+        keyboardRotationAccFast
+      );
     }
     if (keyboardRight) {
-      controlState.value.yawAcc += keyboardShift ? keyboardRotationAccFast : keyboardRotationAcc;
+      controlState.value.yawAcc += selectNormSlowFast(
+        keyboardShift,
+        keyboardAlt,
+        keyboardRotationAcc,
+        keyboardRotationAccSlow,
+        keyboardRotationAccFast
+      );
     }
   }
   if (keyboardUp || keyboardDown) {
     controlState.value.pitchAcc = 0
     if (keyboardUp) {
-      controlState.value.pitchAcc -= keyboardShift ? keyboardRotationAccFast : keyboardRotationAcc;
+      controlState.value.pitchAcc -= selectNormSlowFast(
+          keyboardShift,
+          keyboardAlt,
+          keyboardRotationAcc,
+          keyboardRotationAccSlow,
+          keyboardRotationAccFast
+      );
     }
     if (keyboardDown) {
-      controlState.value.pitchAcc += keyboardShift ? keyboardRotationAccFast : keyboardRotationAcc;
+      controlState.value.pitchAcc += selectNormSlowFast(
+          keyboardShift,
+          keyboardAlt,
+          keyboardRotationAcc,
+          keyboardRotationAccSlow,
+          keyboardRotationAccFast
+      );
     }
   }
 
@@ -343,6 +410,9 @@ onMounted(() => {
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
       keyboardShift = true;
     }
+    if (event.code === 'AltLeft' || event.code === 'AltRight') {
+      keyboardAlt = true;
+    }
     normaliseControlStateFromKeyboardState();
   })
 
@@ -396,6 +466,9 @@ onMounted(() => {
     }
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
       keyboardShift = false;
+    }
+    if (event.code === 'AltLeft' || event.code === 'AltRight') {
+      keyboardAlt = false;
     }
     normaliseControlStateFromKeyboardState();
   })
