@@ -1,23 +1,25 @@
 import * as THREE from 'three';
 import {setOpacity} from "../utils/meshOpacity.ts";
-import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
 export default class Person {
   private group: THREE.Group;
-  private svgUrl: string;
-  private svgHeight: number;
-  private svgScale: number;
+  private textureUrl: string;
+  private textureWidth: number;
+  private textureHeight: number;
+  private scale: number;
   private opacity: number;
 
   constructor(
-    svgUrl: string,
-    svgHeight: number,
-    svgScale: number = 0.01, // 1px = 1cm,
+    textureUrl: string,
+    textureWidth: number,
+    textureHeight: number,
+    textureScale: number = 0.01, // 1px = 1cm,
   ) {
     this.group = new THREE.Group();
-    this.svgUrl = svgUrl;
-    this.svgHeight = svgHeight;
-    this.svgScale = svgScale;
+    this.textureUrl = textureUrl;
+    this.textureWidth = textureWidth;
+    this.textureHeight = textureHeight;
+    this.scale = textureScale;
     this.opacity = 1;
   }
 
@@ -25,75 +27,16 @@ export default class Person {
     scene: THREE.Scene,
     loadedTextureCallback: () => void
   ): void {
-    const loader = new SVGLoader();
-    loader.load( this.svgUrl, ( data ) => {
-      this.group.scale.multiplyScalar( this.svgScale );
-      this.group.position.y = this.svgHeight;
-      this.group.rotation.y = Math.PI;
-      this.group.scale.y *= - 1;
-
-      let renderOrder = 0;
-
-      for ( const path of data.paths ) {
-
-        const fillColor = path.userData.style.fill;
-
-        if ( fillColor !== undefined && fillColor !== 'none' ) {
-
-          const material = new THREE.MeshBasicMaterial( {
-            color: new THREE.Color().setStyle( fillColor ),
-            opacity: path.userData.style.fillOpacity,
-            transparent: true,
-            side: THREE.DoubleSide,
-            depthWrite: false,
-          } );
-
-          const shapes = SVGLoader.createShapes( path );
-
-          for ( const shape of shapes ) {
-
-            const geometry = new THREE.ShapeGeometry( shape );
-            const mesh = new THREE.Mesh( geometry, material );
-            mesh.renderOrder = renderOrder ++;
-
-            this.group.add( mesh );
-
-          }
-
-        }
-
-        const strokeColor = path.userData.style.stroke;
-
-        if ( strokeColor !== undefined && strokeColor !== 'none' ) {
-
-          const material = new THREE.MeshBasicMaterial( {
-            color: new THREE.Color().setStyle( strokeColor ),
-            opacity: path.userData.style.strokeOpacity,
-            transparent: true,
-            side: THREE.DoubleSide,
-            depthWrite: false,
-          } );
-
-          for ( const subPath of path.subPaths ) {
-
-            const geometry = SVGLoader.pointsToStroke( subPath.getPoints(), path.userData.style );
-
-            if ( geometry ) {
-
-              const mesh = new THREE.Mesh( geometry, material );
-              mesh.renderOrder = renderOrder ++;
-
-              this.group.add( mesh );
-
-            }
-
-          }
-
-        }
-
-      }
-
-      scene.add( this.group );
+    new THREE.TextureLoader().load(this.textureUrl, (texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      const mat = new THREE.MeshBasicMaterial( { map: texture, transparent: true, alphaTest: 0.01, side: THREE.DoubleSide } );
+      const geom = new THREE.PlaneGeometry(
+        this.textureWidth * this.scale,
+        this.textureHeight * this.scale,
+      );
+      const mesh = new THREE.Mesh( geom, mat );
+      this.group.add(mesh);
+      scene.add(this.group);
       loadedTextureCallback()
     });
   }
@@ -101,14 +44,14 @@ export default class Person {
   getPosition(): {x: number, y: number, z: number} {
     return {
       x: this.group.position.x,
-      y: this.group.position.y - this.svgHeight,
+      y: this.group.position.y - this.textureHeight / 2 * this.scale,
       z: this.group.position.z,
     }
   }
 
   setPosition(x: number, y: number, z: number): void {
     this.group.position.x = x;
-    this.group.position.y = y + this.svgHeight;
+    this.group.position.y = y + this.textureHeight / 2 * this.scale;
     this.group.position.z = z;
   }
 

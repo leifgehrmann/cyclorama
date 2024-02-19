@@ -654,15 +654,19 @@ const ground = new Ground(
 ground.addToScene(scene)
 
 const person1 = new Person(
-    'person-1.svg',
-    1.76,
+    'person-1.png',
+    425,
+    880,
+    0.01 / 5
 )
 person1.setPosition(stageRadius - 0.7, stageHeight, 0)
 person1.addToScene(scene, loadedTextureCallback);
 
 const person2 = new Person(
-    'person-2.svg',
-    1.85,
+    'person-2.png',
+    500,
+    925,
+    0.01 / 5
 )
 person2.setPosition(0, stageHeight, stageRadius - 1)
 person2.addToScene(scene, loadedTextureCallback);
