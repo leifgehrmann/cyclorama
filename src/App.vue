@@ -39,6 +39,7 @@ const controlState = ref({
 } as ControlState)
 const camera = ref(new THREE.PerspectiveCamera());
 const interactive = ref(null as null | HTMLDivElement)
+const hiddenControls = ref(false)
 const showInfo = ref(false)
 const progress = ref(0)
 
@@ -400,6 +401,8 @@ onMounted(() => {
       controlState.value.rollAcc = keyboardRotationAcc;
     } else if (event.code === 'KeyB') {
       controlState.value.boundaryBreak = !controlState.value.boundaryBreak;
+    } else if (event.code === 'KeyH') {
+      hiddenControls.value = !hiddenControls.value;
     } else if (event.code === 'KeyW') {
       keyboardW = true;
     } else if (event.code === 'KeyA') {
@@ -528,6 +531,7 @@ function updateProgress (e: [number]) {
       />
       <div
           class="absolute bottom-0 left-0 pointer-events-none"
+          :class="{ hidden: hiddenControls }"
       >
         <div class="p-6">
           <Joystick @controlUpdate="joystickUpdate"/>
@@ -535,6 +539,7 @@ function updateProgress (e: [number]) {
       </div>
       <div
           class="absolute top-0 right-0 pointer-events-none"
+          :class="{ hidden: hiddenControls }"
       >
         <div class="p-4 pointer-events-auto">
           <Controls
