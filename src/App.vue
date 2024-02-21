@@ -550,7 +550,7 @@ function updateProgress (e: [number]) {
         </div>
       </div>
     </div>
-    <div class="overflow-y-auto"
+    <div class="overflow-y-scroll overflow-x-hidden"
          :class="{ hidden: !showInfo, 'md:block': showInfo }"
     >
       <Info @toggle-info="toggleInfo"/>
