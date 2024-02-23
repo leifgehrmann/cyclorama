@@ -79,8 +79,16 @@ onMounted(() => {
   @apply font-serif;
 }
 
-#info a {
-  @apply underline;
+#info p {
+  @apply rounded;
+}
+
+#info a, #info a > * {
+  @apply text-indigo-400;
+}
+
+#info p:target {
+  @apply bg-indigo-500/30 ring-8 ring-indigo-500/30;
 }
 
 #info ol {
