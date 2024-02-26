@@ -391,6 +391,34 @@ switch (mode) {
     groundYEnd = panoramaY + 0.5;
     break;
   }
+  case 'constantinople-4': {
+    // Some historic facts about the aquatint: https://collections.vam.ac.uk/item/O516369/barker-panorama-of-constantinople-etching-and-aquatint-henry-aston-barker/
+    // High-resolution of black and white: https://www.loc.gov/item/2013646602/
+    // Low-resolution of color: http://george3.splrarebooks.com/collection/search/search&XID=90264f6ed84d2033753b92dc8b595dad16f52168&keywords=PANORAMA%20OF%20CONSTANTINOPLE/
+    panoramaUrls = [
+      'constantinople-color-small-00.jpg',
+      'constantinople-color-small-01.jpg',
+      'constantinople-color-small-02.jpg',
+      'constantinople-color-small-03.jpg',
+      'constantinople-color-small-04.jpg',
+      'constantinople-color-small-05.jpg',
+      'constantinople-color-small-06.jpg',
+    ];
+    skyColor = new THREE.Color(0xD8CFC8);
+    groundColor = new THREE.Color(0x000000);
+    const imageWidth = 25172;
+    const imageHeight = 3136;
+    panoramaUrlHeights = [imageHeight];
+    panoramaRadius = ft2m(84 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = -panoramaHeight * 0.5;
+    skyYStart = 4
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 0.25;
+    break;
+  }
   case 'alps': {
     panoramaUrls = ['alps.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
@@ -523,11 +551,12 @@ switch (mode) {
     // - https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21520991280004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,Panoramania!:%20Art%20and%20Entertainment%20of%20the%20All-embracing%20View&offset=0
     // - https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21519947450004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,The%20first%20panoramas%20:%20visions%20of%20British%20imperialism&offset=0
 
-    // Viewable at the NLS: https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21523987470004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,Ralph%20Hyde&offset=40
-
     // Biographic details about Barker: https://play.google.com/store/books/details?id=dI1CAAAAcAAJ&rdid=book-dI1CAAAAcAAJ&rdot=1
     // Source CC-BY University of Edinburgh Coll-1709: https://images.is.ed.ac.uk/luna/servlet/detail/UoEgal~5~5~150794~165555:Panorama-of-Edinburgh-From-Calton-H;JSESSIONID=cad4a81b-4d6e-4d95-95f3-f7f0f955da59?qvq=q%3Apanorama&mi=6&trs=7
-    // The Name "John Wells" comes from: http://nms.scran.ac.uk/database/record.php?usi=000-100-104-237-C
+    // The same artifact is viewable at: https://artsandculture.google.com/asset/coloured-panorama-of-edinburgh-robert-barker/agGsIJXxUJ_Sgg?hl=en
+    // A colourless version by J. Wells is viewable at Capital Collections: https://www.capitalcollections.org.uk/view-item?i=43991&WINID=1708372166649
+    // A colourless version by J. Wells is viewable at the NLS: https://maps.nls.uk/towns/rec/10180 or https://search.nls.uk/permalink/f/sbbkgr/44NLS_ALMA21523987470004341
+    // A colour version by John Wells engraved in 1790 is viewable at: http://nms.scran.ac.uk/database/record.php?usi=000-100-104-237-C
     // Potential answer who John Wells is: https://www.britishmuseum.org/collection/term/BIOG50749
     // individual; printmaker; publisher/printer; British; Male
     // 1789-1809 (fl.)
