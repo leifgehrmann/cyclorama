@@ -636,7 +636,7 @@ let cameraHeightVelDecel = 0.8;
 let cameraHeightMin = cameraHeight - 1.0;
 let cameraHeightMax = cameraHeight + 1.0;
 
-let totalItemsToLoad = panoramaUrls.length + 2;
+let totalItemsToLoad = panoramaUrls.length + 4;
 let itemsLoaded = 0;
 const loadedTextureCallback = () => {
   itemsLoaded += 1;
@@ -699,6 +699,25 @@ const person2 = new Person(
 )
 person2.setPosition(0, stageHeight, stageRadius - 1)
 person2.addToScene(scene, loadedTextureCallback);
+
+const person3 = new Person(
+    'person-3.png',
+    855,
+    950,
+    0.01 / 5
+)
+person3.setPosition(0, stageHeight, (stageRadius - 0.7) * -1)
+person3.addToScene(scene, loadedTextureCallback);
+
+const person4 = new Person(
+    'person-4.png',
+    350,
+    865,
+    0.01 / 5
+)
+person4.setPosition((stageRadius - 0.7) * -1, stageHeight, 0)
+person4.addToScene(scene, loadedTextureCallback);
+let people = [person1, person2, person3, person4];
 
 props.camera.position.y = stageHeight + 1;
 
@@ -799,39 +818,24 @@ function animate() {
   props.camera.fov = cameraFov * (1 / cameraZoom);
   props.camera.updateProjectionMatrix();
 
-  const person1Distance = Math.hypot(
-    props.camera.position.x - person1.getPosition().x,
-    props.camera.position.z - person1.getPosition().z,
-  );
-  const person1Theta = Math.atan2(
-      props.camera.position.x - person1.getPosition().x,
-      props.camera.position.z - person1.getPosition().z,
-  );
-  person1.setRotation(person1Theta);
-  let newOpacity: number;
-  if (person1Distance > stageRadius) {
-    newOpacity = Math.min(1, person1.getOpacity() + (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
-  } else {
-    newOpacity = Math.max(0, person1.getOpacity() - (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
-  }
-  person1.setOpacity(newOpacity);
-
-  const person2Distance = Math.hypot(
-      props.camera.position.x - person2.getPosition().x,
-      props.camera.position.z - person2.getPosition().z,
-  );
-  const person2Theta = Math.atan2(
-      props.camera.position.x - person2.getPosition().x,
-      props.camera.position.z - person2.getPosition().z,
-  )
-  person2.setRotation(person2Theta);
-  if (person2Distance > stageRadius) {
-    newOpacity = Math.min(1, person2.getOpacity() + (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
-  } else {
-    newOpacity = Math.max(0, person2.getOpacity() - (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
-  }
-  person2.setOpacity(newOpacity);
-
+  people.forEach((person) => {
+    const personDistance = Math.hypot(
+        props.camera.position.x - person.getPosition().x,
+        props.camera.position.z - person.getPosition().z,
+    );
+    const personTheta = Math.atan2(
+        props.camera.position.x - person.getPosition().x,
+        props.camera.position.z - person.getPosition().z,
+    );
+    person.setRotation(personTheta);
+    let newOpacity: number;
+    if (personDistance > stageRadius) {
+      newOpacity = Math.min(1, person.getOpacity() + (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
+    } else {
+      newOpacity = Math.max(0, person.getOpacity() - (new Date().getTime() - lastRenderTime.getTime()) / 1000 / 0.3)
+    }
+    person.setOpacity(newOpacity);
+  });
   renderer.render( scene, props.camera );
   lastRenderTime = new Date();
 }
