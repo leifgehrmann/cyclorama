@@ -20,7 +20,34 @@ const canvas = ref(null as null | HTMLDivElement)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'blondon2' as 'treport' | 'trafalgar' | 'lausanne' | 'london' | 'horner' | 'barker' | 'edinburgh' | 'blondon' | 'alps' | 'constantinople' | 'constantinople-2' | 'waterloo' | 'montmartre' | 'cairo' | 'naples' | 'malta' | 'lisbon' | 'berlin' | 'badajoz' | 'paris' | 'elba' | 'vittoria' | 'new-york' | 'cornwallis' | 'blondon2';
+const mode = 'edinburgh-2' as
+    | 'treport'
+    | 'trafalgar'
+    | 'lausanne'
+    | 'london'
+    | 'horner'
+    | 'barker'
+    | 'edinburgh'
+    | 'edinburgh-2'
+    | 'blondon'
+    | 'alps'
+    | 'constantinople'
+    | 'constantinople-2'
+    | 'constantinople-4'
+    | 'waterloo'
+    | 'montmartre'
+    | 'cairo'
+    | 'naples'
+    | 'malta'
+    | 'lisbon'
+    | 'berlin'
+    | 'badajoz'
+    | 'paris'
+    | 'elba'
+    | 'vittoria'
+    | 'new-york'
+    | 'cornwallis'
+    | 'blondon2';
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -45,20 +72,7 @@ let ceilingHeight = 4;
 let initialCameraYaw = 0;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
-  // https://www.rmg.co.uk/collections/objects/rmgc-object-128877 (duplicate of trafalgar)
-  // https://collections.library.yale.edu/catalog?f%5Bcreator_ssim%5D%5B%5D=Burford,%20Robert,%201791-1861
-  // https://www.loc.gov/pictures/search/?q=Panorama%2C%20Leicester%20Square
-  // https://digital.bodleian.ox.ac.uk/objects/92d22d1e-8e83-4a81-b776-688d71c1cc1b/
-  // https://digital.bodleian.ox.ac.uk/objects/fdbeed42-899d-491f-9246-4b95e04db5bb/
-  // https://digital.bodleian.ox.ac.uk/objects/8ff0a731-6fad-4a6b-a327-2a4120ced41f/
-  // https://digital.bodleian.ox.ac.uk/objects/22e9e513-e1c9-4c54-b39a-2c188f86fb0a/
-  // https://digital.bodleian.ox.ac.uk/objects/f482232f-37e8-4fb6-9269-bb9ebb1e6570/
-  // https://www.britishmuseum.org/collection/object/P_1982-U-3981
-  // https://digital.bodleian.ox.ac.uk/objects/28c26df5-1cb7-45c3-8beb-50306d4cf4a9/surfaces/28c26df5-1cb7-45c3-8beb-50306d4cf4a9/
-  // https://loc.gov/pictures/resource/pga.04569/
   case 'treport': {
-    // Context: Royal visit to Louis-Philippe: arrival of Queen Victoria at Le Tréport, 2 September 1843
-    // https://www.rct.uk/collection/919997/royal-visit-to-louis-philippe-arrival-of-queen-victoria-at-le-treport-2-september
     panoramaUrls = ['1982,U.3982-panorama.jpg'];
     skyColor = new THREE.Color(0xF3D3AC);
     groundColor = new THREE.Color(0xF3D3AC);
@@ -76,7 +90,6 @@ switch (mode) {
     break;
   }
   case 'trafalgar': {
-    // https://wellcomecollection.org/works/vqj7wh9j
     panoramaUrls = ['40348i-panorama.jpg'];
     skyColor = new THREE.Color(0xCABAAB);
     groundColor = new THREE.Color(0x939E95);
@@ -298,10 +311,6 @@ switch (mode) {
     break;
   }
   case 'blondon2': {
-    // Copy at the NLS: https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21527956940004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,Ralph%20Hyde&offset=20
-    // Not the first panorama to be exhibited:
-    //  - https://www.erudit.org/en/journals/ron/2007-n46-ron1782/016130ar/
-    // https://collections.britishart.yale.edu/catalog/orbis:205530 <--- Incredible detail!
     panoramaUrls = [
       'yale-orbis-205530-stitch-00.jpg',
       'yale-orbis-205530-stitch-01.jpg',
@@ -355,9 +364,6 @@ switch (mode) {
     break;
   }
   case 'constantinople': {
-    // Some historic facts about the aquatint: https://collections.vam.ac.uk/item/O516369/barker-panorama-of-constantinople-etching-and-aquatint-henry-aston-barker/
-    // High-resolution of black and white: https://www.loc.gov/item/2013646602/
-    // Low-resolution of color: http://george3.splrarebooks.com/collection/search/search&XID=90264f6ed84d2033753b92dc8b595dad16f52168&keywords=PANORAMA%20OF%20CONSTANTINOPLE/
     panoramaUrls = ['Constantinople.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
     groundColor = new THREE.Color(0x000000);
@@ -392,9 +398,6 @@ switch (mode) {
     break;
   }
   case 'constantinople-4': {
-    // Some historic facts about the aquatint: https://collections.vam.ac.uk/item/O516369/barker-panorama-of-constantinople-etching-and-aquatint-henry-aston-barker/
-    // High-resolution of black and white: https://www.loc.gov/item/2013646602/
-    // Low-resolution of color: http://george3.splrarebooks.com/collection/search/search&XID=90264f6ed84d2033753b92dc8b595dad16f52168&keywords=PANORAMA%20OF%20CONSTANTINOPLE/
     panoramaUrls = [
       'constantinople-color-small-00.jpg',
       'constantinople-color-small-01.jpg',
@@ -437,58 +440,6 @@ switch (mode) {
     break;
   }
   case 'edinburgh': {
-    // An Edinburgh panorama from 1806, which is NOT the same as the st giles panorama: https://collections.britishart.yale.edu/catalog/orbis:12828979
-    // Paper origin: https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=8a237aad3850a686343bb997fa3c456059f914db
-    // Claim that image is 2.5m and 0.3m, which matches the manuscript listing: https://web.archive.org/web/20110227204942/https://www.acmi.net.au/aic/PANORAMA.html/
-    // Bridewell prison was built in 1791
-    // David Allan supposedly created these two pieces, both dates unknown:
-    // https://www.nationalgalleries.org/art-and-artists/29574
-    // https://www.nationalgalleries.org/art-and-artists/29575
-    // https://maps.nls.uk/towns/rec/3895, https://maps.nls.uk/view/117743026 1793-1794/1795 - Weigh house should be present, but isn't in painting
-    // David Allan died in 6 August 1796.
-    // Bank of Scotland was constructed between 1801-1806 https://portal.historicenvironment.scot/designation/LB28263
-    //  - The building is clearly visible in 1809: https://www.capitalcollections.org.uk/view-item?i=11033
-    // Battle of Trafalgar took place: 21 October 1805
-    // Robert Barker died: 8 April 1806
-    // Nelson Monument construction started 1807, There certainly was no foundation at 1805 when this panorama was created: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1160&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/39158
-    // This recording from capital collections claims to be from 1820.
-    // https://www.capitalcollections.org.uk/view-item?i=11046
-    // Another entry from "circa 1820", but there is no information on what the record actually contains
-    // https://manuscripts.nls.uk/repositories/2/archival_objects/23346
-    // The Tron kirk spire was burnt down in 1824, meaning this cannot be older than that.
-    // Scott monument foundation stone was placed 1840, nearly completed 1844
-    // George Heriot resevoir existed long past 1840s
-    // Edinburgh castle royal palace spire < 1830?
-    // absent: 1746: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=260&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/1886
-    // absent: 1753: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=348&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/10982
-    // present: 1781: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=302&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/522
-    // present: 1800: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=203&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/40660
-    // present: 1800: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=44&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/529
-    // present: 1803: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=24&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/14917
-    // present-ish?: 1804: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1215&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/14891
-    // present: 1816: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=478&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/535
-    // present: 1817: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=49&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/679
-    // present: 1817: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=51&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/772
-    // present: 1817: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1268&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/622
-    // absent: 1817: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=47&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/677
-    // absent: 1820: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=687&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/40376
-    // absent: 1822: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=547&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/500
-    // absent: 1822: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=340&WINID=1707598629559&fullPage=1#4WuLCiXznKcAAAGNkD_v9w/461
-    // absent: 1822: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=998&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/21115
-    // absent: 1824: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=1230&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/943
-    // absent: 1825: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=83&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/1905
-    // absent: 1827: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=292&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/14703
-    // absent: 1829: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=361&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/2005
-    // absent: 1830: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=17&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/6214
-    // absent: 1851: https://www.capitalcollections.org.uk/view-item?key=SXsiUCI6eyJ2YWx1ZSI6IkVkaW5idXJnaCBjYXN0bGUiLCJvcGVyYXRvciI6MSwiZnV6enlQcmVmaXhMZW5ndGgiOjMsImZ1enp5TWluU2ltaWxhcml0eSI6MC43LCJtYXhTdWdnZXN0aW9ucyI6MywiYWx3YXlzU3VnZ2VzdCI6ZmFsc2UsImluZGV4IjoxfX0&pg=53&WINID=1707598629559#4WuLCiXznKcAAAGNkD_v9w/1387
-    // W. Wells could be:
-    // - William Wells of Redleaf: https://www.britishmuseum.org/collection/term/BIOG50754 individual; scientist/engineer; collector; British; Male
-    // - William Fredrick Wells: https://www.britishmuseum.org/collection/term/BIOG50755 individual; printmaker; painter/draughtsman; British; Male
-    // - William Wells: https://www.britishmuseum.org/collection/term/BIOG63838 individual; dealer/auction house; British; Male
-    // - W Wells https://www.britishmuseum.org/collection/term/BIOG237166 individual; printmaker; publisher/printer; British; Male Opposite Salisbury Court, Fleet Street, London (in 1780)
-
-    // http://www.edvec.ed.ac.uk/html/projects/panorama/lanorama.jpg
-    // http://www.edvec.ed.ac.uk/html/projects/panorama/i2.html
     panoramaUrls = ['lanorama.jpg'];
     skyColor = new THREE.Color(0xD8CFC8);
     const imageWidth = 4000;
@@ -505,8 +456,6 @@ switch (mode) {
     break;
   }
   case 'horner': {
-    // Some information from Ralph Hyde
-    // https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21572339690004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=default_tab&query=any,contains,The%20Regent%27s%20Park%20Colosseum&mode=basic
     panoramaUrls = [
       '1880,1113.1214.jpg',
     ];
@@ -547,25 +496,6 @@ switch (mode) {
     break;
   }
   default: {
-    // Consult these books:
-    // - https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21520991280004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,Panoramania!:%20Art%20and%20Entertainment%20of%20the%20All-embracing%20View&offset=0
-    // - https://search.nls.uk/primo-explore/fulldisplay?docid=44NLS_ALMA21519947450004341&context=L&vid=44NLS_VU1&lang=en_US&search_scope=SCOPE1&adaptor=Local%20Search%20Engine&tab=tab1_local&query=any,contains,The%20first%20panoramas%20:%20visions%20of%20British%20imperialism&offset=0
-
-    // Biographic details about Barker: https://play.google.com/store/books/details?id=dI1CAAAAcAAJ&rdid=book-dI1CAAAAcAAJ&rdot=1
-    // Source CC-BY University of Edinburgh Coll-1709: https://images.is.ed.ac.uk/luna/servlet/detail/UoEgal~5~5~150794~165555:Panorama-of-Edinburgh-From-Calton-H;JSESSIONID=cad4a81b-4d6e-4d95-95f3-f7f0f955da59?qvq=q%3Apanorama&mi=6&trs=7
-    // The same artifact is viewable at: https://artsandculture.google.com/asset/coloured-panorama-of-edinburgh-robert-barker/agGsIJXxUJ_Sgg?hl=en
-    // A colourless version by J. Wells is viewable at Capital Collections: https://www.capitalcollections.org.uk/view-item?i=43991&WINID=1708372166649
-    // A colourless version by J. Wells is viewable at the NLS: https://maps.nls.uk/towns/rec/10180 or https://search.nls.uk/permalink/f/sbbkgr/44NLS_ALMA21523987470004341
-    // A colour version by John Wells engraved in 1790 is viewable at: http://nms.scran.ac.uk/database/record.php?usi=000-100-104-237-C
-    // Potential answer who John Wells is: https://www.britishmuseum.org/collection/term/BIOG50749
-    // individual; printmaker; publisher/printer; British; Male
-    // 1789-1809 (fl.)
-    // Maybe responsible for these other artworks:
-    //  - https://wellcomecollection.org/works/v2h75pzh
-    //  - http://george3.splrarebooks.com/collection/view/elgin-cathedral.-drawn-on-the-spot-by-a.-grant.-aquatinta-by-j.-wells
-    // Alternative John Wells?
-    // https://www.royalacademy.org.uk/art-artists/name/john-wells
-    // No 6 Clerkenwell Green, London (in 1801)
     panoramaUrls = [
         'barker-00.jpg',
         'barker-01.jpg',
