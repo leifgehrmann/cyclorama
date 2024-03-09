@@ -455,6 +455,29 @@ switch (mode) {
     groundYEnd = panoramaY + 1;
     break;
   }
+  case 'edinburgh-2': {
+    panoramaUrls = [
+        'edinburgh-2.png-00.jpg',
+        'edinburgh-2.png-01.jpg',
+        'edinburgh-2.png-02.jpg',
+        'edinburgh-2.png-03.jpg',
+    ];
+    initialCameraYaw=Math.PI/5
+    skyColor = new THREE.Color(0x8A918F);
+    groundColor = new THREE.Color(0x000000);
+    const imageWidth = 4049 * 4;
+    const imageHeight = 2136;
+    panoramaUrlHeights = [imageHeight];
+    panoramaRadius = ft2m(84 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = -panoramaHeight * 0.45;
+    skyYStart = panoramaY + panoramaHeight - 1
+    skyYEnd = panoramaY + panoramaHeight - 0.25
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY;
+    break;
+  }
   case 'horner': {
     panoramaUrls = [
       '1880,1113.1214.jpg',
