@@ -25,7 +25,8 @@ const mode = 'edinburgh-2' as
     | 'trafalgar'
     | 'lausanne'
     | 'london'
-    | 'horner'
+    | 'horner-illustrative'
+    | 'horner-descriptive'
     | 'barker'
     | 'edinburgh'
     | 'edinburgh-2'
@@ -478,7 +479,26 @@ switch (mode) {
     groundYEnd = panoramaY;
     break;
   }
-  case 'horner': {
+  case 'horner-illustrative': {
+    panoramaUrls = [
+      '1880,1113.1213.jpg',
+    ];
+    skyColor = new THREE.Color(0xFDFDDA);
+    groundColor = new THREE.Color(0x2D291E);
+    const imageWidth = 12569;
+    const imageHeight = 1109;
+    panoramaUrlHeights = [imageHeight];
+    panoramaRadius = ft2m(130 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = -panoramaHeight * 0.75;
+    skyYStart = panoramaY + panoramaHeight - 1
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 0.4;
+    break;
+  }
+  case 'horner-descriptive': {
     panoramaUrls = [
       '1880,1113.1214.jpg',
     ];
