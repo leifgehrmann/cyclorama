@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
+import Attribution from "./Attribution.vue";
 </script>
 
 <template>
-  <h1 class="text-center text-xl">EXPLANATION of a View of TREPORT, the surrounding Country, and CHATEAU D'EU, now exhibiting at the PANORAMA, LEICESTER SQUARE.</h1>
+  <h1 class="text-center text-xl mb-4">
+    <span class="uppercase">Explanation</span> of a View of <span class="uppercase">Treport</span>, the surrounding Country, and <span class="uppercase whitespace-nowrap">Chateau d'Eu</span>, now exhibiting at the <span class="uppercase">Panorama, Leicester Square</span>.</h1>
   <ol>
     <li>Drawbridge</li>
     <li>Royal Barge House</li>
@@ -22,7 +24,7 @@
     <li>The King's Barge</li>
     <li>The Royal Pleasure Yacht, “La Reine des Belges”</li>
     <li>Officers of State, and Privileged Persons</li>
-    <li>The Royal Group (See Vignette page 10)*</li>
+    <li>The Royal Group (See Vignette page 10)<a href="#vignette"><sup>[1]</sup></a></li>
     <li>Carabiniers à Cheval</li>
     <li>Royal Tent</li>
     <li>Royal Carriage</li>
@@ -52,9 +54,17 @@
     <li>South Pier</li>
     <li>King's Dock yard</li>
   </ol>
-  <p>* The "Vignette" pages are not available from the British Museum online archive.</p>
-  <img src="/public/1886,0111.23.2.jpg">
-  <small>1886,0111.23.2</small>
+  <hr>
+  <p id="vignette"><sup>[1]</sup> The "Vignette" pages are not available from the British Museum online archive.</p>
+  <Attribution
+      identifier="1982,U.3982"
+      license-url="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+      license="CC BY-NC-SA 4.0"
+      url="https://www.britishmuseum.org/collection/object/P_1982-U-3982"
+      entity="the British Museum"
+  />
+  <!-- Todo: Replace with original image. -->
+  <img src="/public/1982,U.3982-panorama.jpg">
 </template>
 
 <style scoped>

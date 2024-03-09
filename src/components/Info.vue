@@ -4,6 +4,9 @@ import Treport from "./explanations/Treport.vue";
 import Elba from "./explanations/Elba.vue";
 import LondonBarker from "./explanations/LondonBarker.vue";
 import CaltonHill from "./explanations/CaltonHill.vue";
+import EdinburghStGiles from "./explanations/EdinburghStGiles.vue";
+import LondonToday from "./explanations/LondonToday.vue";
+import Constantinople from "./explanations/Constantinople.vue";
 
 const emit = defineEmits(['toggleInfo'])
 const info = ref(null as null | HTMLDivElement)
@@ -60,7 +63,10 @@ onMounted(() => {
 <!--      <Treport/>-->
 <!--      <Elba/>-->
 <!--      <LondonBarker/>-->
-      <CaltonHill/>
+<!--      <CaltonHill/>-->
+      <EdinburghStGiles/>
+<!--      <LondonToday/>-->
+<!--      <Constantinople/>-->
     </div>
   </div>
 </template>

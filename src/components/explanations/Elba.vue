@@ -4,11 +4,11 @@ import Attribution from "./Attribution.vue";
 </script>
 
 <template>
-  <h1 class="text-center text-xl leading-4"><small>EXPLANATION</small><br><small><small>OF THE</small><br></small> <span class="font-extrabold">ISLAND <small>OF</small> ELBA</span><br><small style="font-variant-caps: small-caps">And PORTO-FERRAJO,</small></h1>
+  <h1 class="text-center text-3xl leading-5 mb-4"><small>EXPLANATION</small><br><small><small>OF THE</small><br></small> <span class="font-extrabold">ISLAND <small>OF</small> ELBA</span><br><small style="font-variant-caps: small-caps">And PORTO-FERRAJO,</small></h1>
   <p class="text-center text-sm">Taken on the Spot by HENRY ASTON BARKER,</p>
   <p class="text-center text-sm"><em>Painted on</em> 10,000 <em>square Feet of Canvass, and exhibiting in the GREAT ROTUNDA of his</em></p>
   <h2 class="text-center font-extrabold text-2xl" style="font-variant-caps: small-caps;">Panorama, Leicester Square.</h2>
-  <div class="opacity-50 grid gap-1">
+  <div class="opacity-60 grid gap-1">
     <p class="text-center leading-4"><small>THE UPPER CIRCLE CONTAINS</small><br><small><small>A REPRESENTATION OF</small></small><br><span class="text-xl" style="font-variant-caps: small-caps">The BATTLE of PARIS,</span><br><small><em>Fought by the Allies in March</em>, 1814,</small><br><small><span style="font-variant-caps: small-caps">with a VIEW of</span></small><br><small class="font-bold">THE CITY AND ENVIRONS.</small></p>
     <hr class="w-6 m-auto">
     <p class="text-center text-xs">Admittance to each Painting One Shilling.</p>
@@ -70,7 +70,10 @@ import Attribution from "./Attribution.vue";
   <hr>
   <Attribution
       identifier="1886,0111.23.2"
-      license="CC BY-NC-SA 4.0" url="https://www.britishmuseum.org/collection/image/1613542973" entity="the British Museum"
+      license-url="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+      license="CC BY-NC-SA 4.0"
+      url="https://www.britishmuseum.org/collection/image/1613542973"
+      entity="the British Museum"
   />
   <img src="/public/1886,0111.23.2.jpg">
 </template>
