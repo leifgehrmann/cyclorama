@@ -5,14 +5,23 @@ export default class Ground {
 
   constructor(
     panoramaRadius: number,
+    panoramaGroundY: number,
     groundYStart: number,
     groundYEnd: number,
     groundColor: THREE.Color,
   ) {
     this.objects = [];
 
-    const groundGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, groundYEnd - groundYStart, 60, 1, true);
-    const groundMat = new THREE.ShaderMaterial({
+    const groundGeom = new THREE.CylinderGeometry(panoramaRadius + 0.05, panoramaRadius + 0.05, groundYStart - panoramaGroundY, 60, 1, true);
+    const groundMat = new THREE.MeshBasicMaterial( { color: groundColor, side: THREE.FrontSide } );
+    const ground = new THREE.Mesh(groundGeom, groundMat);
+    ground.geometry.scale(-1, -1, -1)
+    ground.geometry.rotateZ(Math.PI)
+    ground.geometry.translate(0, (groundYStart - panoramaGroundY) / 2, 0);
+    this.objects.push(ground);
+
+    const fadeGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, groundYEnd - groundYStart, 60, 1, true);
+    const fadeMat = new THREE.ShaderMaterial({
       uniforms: {
         color1: {
           value: groundColor.clone().convertLinearToSRGB()
@@ -41,12 +50,12 @@ export default class Ground {
     }
   `
     });
-    groundMat.transparent = true;
-    const ground = new THREE.Mesh(groundGeom, groundMat);
-    ground.geometry.scale(-1, -1, -1)
-    ground.geometry.rotateZ(Math.PI)
-    ground.geometry.translate(0, (groundYEnd - groundYStart) / 2 + groundYStart, 0);
-    this.objects.push(ground);
+    fadeMat.transparent = true;
+    const fade = new THREE.Mesh(fadeGeom, fadeMat);
+    fade.geometry.scale(-1, -1, -1)
+    fade.geometry.rotateZ(Math.PI)
+    fade.geometry.translate(0, (groundYEnd - groundYStart) / 2 + groundYStart, 0);
+    this.objects.push(fade);
 
     const panoramaGroundGeom = new THREE.PlaneGeometry(
       panoramaRadius * 2,
@@ -55,7 +64,7 @@ export default class Ground {
     const panoramaGroundMat = new THREE.MeshBasicMaterial( { color: groundColor, side: THREE.BackSide } );
     const panoramaGround = new THREE.Mesh(panoramaGroundGeom, panoramaGroundMat);
     panoramaGround.geometry.rotateX(Math.PI/2);
-    panoramaGround.geometry.translate(0, groundYStart, 0);
+    panoramaGround.geometry.translate(0, panoramaGroundY, 0);
     this.objects.push(panoramaGround);
   }
 

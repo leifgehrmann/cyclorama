@@ -490,10 +490,14 @@ switch (mode) {
     panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(130 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.75;
-    skyYStart = panoramaY + panoramaHeight - 1
-    skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd;
+    stageHeight = panoramaRadius * 0.26 * 2;
+    panoramaY = -panoramaHeight * 0.8 + stageHeight;
+    stageRadius = panoramaRadius * 0.3;
+    umbrellaRadius = panoramaRadius * 0.35;
+    ceilingHeight = panoramaRadius * 0.07 * 2;
+    skyYStart = panoramaY + panoramaHeight - 1.5;
+    skyYEnd = panoramaY + panoramaHeight;
+    panoramaCeilingY = skyYEnd + stageHeight;
     groundYStart = panoramaY;
     groundYEnd = panoramaY + 0.4;
     break;
@@ -509,10 +513,14 @@ switch (mode) {
     panoramaUrlHeights = [imageHeight];
     panoramaRadius = ft2m(130 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.75;
-    skyYStart = panoramaY + panoramaHeight - 0.25
+    stageHeight = panoramaRadius * 0.26 * 2;
+    panoramaY = -panoramaHeight * 0.8 + stageHeight;
+    stageRadius = panoramaRadius * 0.3;
+    umbrellaRadius = panoramaRadius * 0.35;
+    ceilingHeight = panoramaRadius * 0.07 * 2;
+    skyYStart = panoramaY + panoramaHeight - 0.25;
     skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd;
+    panoramaCeilingY = skyYEnd + stageHeight;
     groundYStart = panoramaY;
     groundYEnd = panoramaY;
     break;
@@ -532,8 +540,12 @@ switch (mode) {
     const imageHeight = 2904;
     panoramaRadius = ft2m(130 / 2);
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.725;
-    skyYStart = 4
+    stageHeight = panoramaRadius * 0.26 * 2;
+    panoramaY = -panoramaHeight * 0.725 + stageHeight;
+    stageRadius = panoramaRadius * 0.3;
+    umbrellaRadius = panoramaRadius * 0.35;
+    ceilingHeight = panoramaRadius * 0.07 * 2;
+    skyYStart = 4 + stageHeight
     skyYEnd = panoramaY + panoramaHeight
     panoramaCeilingY = skyYEnd;
     groundYStart = panoramaY;
@@ -651,9 +663,10 @@ sky.addToScene(scene)
 
 const ground = new Ground(
     panoramaRadius,
+    Math.min(0, groundYStart),
     groundYStart,
     groundYEnd,
-    groundColor,
+    groundColor
 );
 ground.addToScene(scene)
 

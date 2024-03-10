@@ -12,8 +12,16 @@ export default class Sky {
   ) {
     this.objects = [];
 
-    const skyGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, skyYEnd - skyYStart, 60, 1, true);
-    const skyMat = new THREE.ShaderMaterial({
+    const skyGeom = new THREE.CylinderGeometry(panoramaRadius + 0.05, panoramaRadius + 0.05, panoramaCeilingY - skyYStart, 60, 1, true);
+    const skyMat = new THREE.MeshBasicMaterial( { color: skyColor, side: THREE.FrontSide } );
+    const sky = new THREE.Mesh(skyGeom, skyMat);
+    sky.geometry.scale(-1, -1, -1)
+    sky.geometry.rotateZ(Math.PI)
+    sky.geometry.translate(0, (panoramaCeilingY - skyYStart) / 2 + skyYStart, 0);
+    this.objects.push(sky);
+
+    const fadeGeom = new THREE.CylinderGeometry(panoramaRadius - 0.01, panoramaRadius - 0.01, skyYEnd - skyYStart, 60, 1, true);
+    const fadeMat = new THREE.ShaderMaterial({
       uniforms: {
         color1: {
           value: skyColor.clone().convertLinearToSRGB()
@@ -42,12 +50,12 @@ export default class Sky {
     }
   `
     });
-    skyMat.transparent = true;
-    const sky = new THREE.Mesh(skyGeom, skyMat);
-    sky.geometry.scale(-1, -1, -1)
-    sky.geometry.rotateZ(Math.PI)
-    sky.geometry.translate(0, (skyYEnd - skyYStart) / 2 + skyYStart, 0);
-    this.objects.push(sky);
+    fadeMat.transparent = true;
+    const fade = new THREE.Mesh(fadeGeom, fadeMat);
+    fade.geometry.scale(-1, -1, -1)
+    fade.geometry.rotateZ(Math.PI)
+    fade.geometry.translate(0, (skyYEnd - skyYStart) / 2 + skyYStart, 0);
+    this.objects.push(fade);
 
     const panoramaCeilingGeom = new THREE.PlaneGeometry(
       panoramaRadius * 2.2,
