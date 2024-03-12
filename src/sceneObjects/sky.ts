@@ -58,8 +58,8 @@ export default class Sky {
     this.objects.push(fade);
 
     const panoramaCeilingGeom = new THREE.PlaneGeometry(
-      panoramaRadius * 2.2,
-      panoramaRadius * 2.2
+      (panoramaRadius + 0.05) * 2,
+      (panoramaRadius + 0.05) * 2
     );
     const panoramaCeilingMat = new THREE.MeshBasicMaterial( { color: skyColor, side: THREE.FrontSide } );
     const panoramaCeiling = new THREE.Mesh(panoramaCeilingGeom, panoramaCeilingMat);

@@ -58,8 +58,8 @@ export default class Ground {
     this.objects.push(fade);
 
     const panoramaGroundGeom = new THREE.PlaneGeometry(
-      panoramaRadius * 2,
-      panoramaRadius * 2
+      (panoramaRadius + 0.05) * 2,
+      (panoramaRadius + 0.05) * 2
     );
     const panoramaGroundMat = new THREE.MeshBasicMaterial( { color: groundColor, side: THREE.BackSide } );
     const panoramaGround = new THREE.Mesh(panoramaGroundGeom, panoramaGroundMat);
