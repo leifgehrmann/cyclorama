@@ -20,7 +20,7 @@ const canvas = ref(null as null | HTMLDivElement)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'dublin-interior' as
+const mode = 'copenhagen' as
     | 'treport'
     | 'trafalgar'
     | 'lausanne'
@@ -49,6 +49,7 @@ const mode = 'dublin-interior' as
     | 'windsor'
     | 'dublin-bay'
     | 'dublin-interior'
+    | 'copenhagen'
     | 'blondon2';
 
 const ft2m = (feet: number): number => {
@@ -74,6 +75,23 @@ let ceilingHeight = ft2m(16);
 let initialCameraYaw = 0;
 // noinspection JSUnreachableSwitchBranches
 switch (mode) {
+  case 'copenhagen': {
+    panoramaUrls = ['DH020270_5446x6525-panorama.jpg'];
+    skyColor = new THREE.Color(0xBFAF8F);
+    groundColor = new THREE.Color(0xBFAF8F);
+    const imageWidth = 33212;
+    const imageHeight = 2740;
+    panoramaUrlHeights = [imageHeight];
+    panoramaRadius = ft2m(84 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    panoramaY = -panoramaHeight * 0.25 + stageHeight;
+    skyYStart = panoramaY + panoramaHeight - 0.5
+    skyYEnd = panoramaY + panoramaHeight
+    panoramaCeilingY = skyYEnd;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 0.25;
+    break;
+  }
   case 'dublin-bay': {
     panoramaUrls = ['51699284702_9e20b50237_o-panorama.jpg'];
     skyColor = new THREE.Color(0xF9F2CD);
