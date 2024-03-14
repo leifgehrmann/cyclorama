@@ -9,20 +9,6 @@ import * as THREE from 'three';
 import Info from "./components/Info.vue";
 import Loading from "./components/Loading.vue";
 
-// Plan
-// - ✅ Mouse navigation = click-drag changes angle
-// - ✅ Mouse navigation = joystick changes position
-// - ✅ Touch navigation = touch-drag changes angle
-// - ✅ Touch navigation = joystick changes position
-// -    Touch navigation = pinch gesture changes zoom
-// - ✅ Keyboard navigation = LRUD changes angle
-// - ✅ Keyboard navigation = WASD changes position
-// - ✅ Keyboard navigation = + / - changes zoom
-// - ✅ Keyboard navigation = I / K changes height
-// - ✅ Keyboard navigation = J / L changes roll
-// -    joystick and other controls fades when no touch or mouse-movement on screen
-// - ✅ velocity of mouse/touch release results in acceleration
-
 const controlState = ref({
   sagittalAcc: 0,
   frontalAcc: 0,
