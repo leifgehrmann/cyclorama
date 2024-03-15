@@ -504,7 +504,7 @@ function updateProgress (e: [number]) {
   <div
       class="grid w-screen h-screen max-h-screen min-h-screen grid-rows-1 grid-cols-1"
       :class="{
-    'md:grid-rows-2 md:grid-cols-1 2xl:grid-rows-1 2xl:grid-cols-[1fr_minmax(20rem,_33%)]': showInfo,
+    'lg:grid-rows-2 lg:grid-cols-1 2xl:grid-rows-1 2xl:grid-cols-[1fr_minmax(20rem,_33%)]': showInfo,
       }"
       style="height: 100dvh; min-height: 100dvh; max-height: 100dvh;">
     <div ref="interactive" class="touch-none relative md:block"
