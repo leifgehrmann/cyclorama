@@ -745,6 +745,7 @@ const person1 = new Person(
     880,
     0.01 / 5
 )
+person1.setOpacity(0);
 person1.setPosition(stageRadius - 0.7, stageHeight, 0)
 person1.addToScene(scene, loadedTextureCallback);
 
@@ -754,6 +755,7 @@ const person2 = new Person(
     925,
     0.01 / 5
 )
+person2.setOpacity(0);
 person2.setPosition(0, stageHeight, stageRadius - 1)
 person2.addToScene(scene, loadedTextureCallback);
 
@@ -763,6 +765,7 @@ const person3 = new Person(
     950,
     0.01 / 5
 )
+person3.setOpacity(0);
 person3.setPosition(0, stageHeight, (stageRadius - 0.7) * -1)
 person3.addToScene(scene, loadedTextureCallback);
 
@@ -772,6 +775,7 @@ const person4 = new Person(
     865,
     0.01 / 5
 )
+person4.setOpacity(0);
 person4.setPosition((stageRadius - 0.7) * -1, stageHeight, 0)
 person4.addToScene(scene, loadedTextureCallback);
 let people = [person1, person2, person3, person4];
