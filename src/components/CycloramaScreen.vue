@@ -512,7 +512,7 @@ function updateProgress (e: [number]) {
     'lg:grid-rows-2 lg:grid-cols-1 2xl:grid-rows-1 2xl:grid-cols-[1fr_minmax(20rem,_33%)]': showInfo,
       }"
       style="height: 100dvh; min-height: 100dvh; max-height: 100dvh;">
-    <div ref="interactive" class="touch-none relative md:block"
+    <div ref="interactive" class="touch-none relative lg:block"
          :class="{ hidden: showInfo }"
     >
       <Cyclorama
@@ -544,7 +544,7 @@ function updateProgress (e: [number]) {
       </div>
     </div>
     <div class="overflow-y-scroll overflow-x-hidden"
-         :class="{ hidden: !showInfo, 'md:block': showInfo }"
+         :class="{ hidden: !showInfo, 'lg:block': showInfo }"
     >
       <Info :info-component="props.scene.infoComponent" @toggle-info="toggleInfo"/>
     </div>
