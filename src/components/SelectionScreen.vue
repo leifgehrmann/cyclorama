@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import {getScenes} from "../scenes.ts";
+
+const barkerPanoramas = Object.entries(getScenes()).filter(([_, scene]) => scene.selectionScreenGroup === 'barker');
+const hornorPanoramas = Object.entries(getScenes()).filter(([_, scene]) => scene.selectionScreenGroup === 'hornor');
+
 </script>
 
 <template>
@@ -8,34 +13,24 @@
     <h2>1. Panoramas by the Barkers</h2>
     <p>Panoramas from Robert Barker, Henry Aston Barker, or any other panoramas exhibited at Leicester Square or the Strand in London.</p>
     <ul>
-      <li style="background-image: url('/public/barker.jpg');"><a href="./?view=edinburgh">
-        View of Edinburgh from Calton Hill<br>
-        <span class="text-xs">1789- (Watercolour from 1792)</span>
-      </a></li>
-      <li style="background-image: url('/public/blondon.jpg')"><a href="./?view=edinburgh">
-        London from the Roof of Albion Mills<br>
-        <span class="text-xs">17??-17?? (Aquatint from 1792-1793)</span>
-      </a></li>
-      <li style="background-image: url('/public/1982,U.3982-panorama.jpg')"><a href="./?view=edinburgh">
-        View of Treport, the surrounding Country, and Chateau d'Eu<br>
-        <span class="text-xs">19??</span>
-      </a></li>
+      <li
+          v-for="sceneEntry in barkerPanoramas"
+          :style="`background-image: url('${sceneEntry[1].thumbnail}');`"
+      >
+        <a href="./?view={{sceneEntry[0]}}" v-html="sceneEntry[1].selectionScreenHtml">
+        </a>
+      </li>
     </ul>
     <h2>2. Thomas Hornor's Colosseum</h2>
     <p>Panoramas related to Thomas Hornor's panorama taken from the top of St. Paul Cathedral, including a modern view of London for comparison.</p>
     <ul>
-      <li style="background-image: url('/public/1880,1113.1213.jpg');"><a href="./?view=edinburgh">
-        View of Edinburgh from Calton Hill<br>
-        <span class="text-xs">1789- (Watercolour from 1792)</span>
-      </a></li>
-      <li style="background-image: url('/public/1880,1113.1214.jpg')"><a href="./?view=edinburgh">
-        London from the Roof of Albion Mills<br>
-        <span class="text-xs">17??-17?? (Aquatint from 1792-1793)</span>
-      </a></li>
-      <li style="background-image: url('/public/london.jpg')"><a href="./?view=edinburgh">
-        Panoramic view of London taken from the Golden Gallery of St Paulʼs Cathedral<br>
-        <span class="text-xs">2007, Photo by David Iliff</span>
-      </a></li>
+      <li
+          v-for="sceneEntry in hornorPanoramas"
+          :style="`background-image: url('${sceneEntry[1].thumbnail}');`"
+      >
+        <a href="./?view={{sceneEntry[0]}}" v-html="sceneEntry[1].selectionScreenHtml">
+        </a>
+      </li>
     </ul>
     <h2>Credits</h2>
     <p class="mb-16">
