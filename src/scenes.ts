@@ -5,7 +5,7 @@ import CaltonHill from "./components/explanations/CaltonHill.vue";
 import LondonBarker from "./components/explanations/LondonBarker.vue";
 import LondonToday from "./components/explanations/LondonToday.vue";
 import Elba from "./components/explanations/Elba.vue";
-import * as THREE from "three";
+import EdinburghStGiles from "./components/explanations/EdinburghStGiles.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -29,7 +29,7 @@ export interface CycloramaData {
 export interface Scene extends CycloramaData {
   source?: string;
   selectionScreenHtml: string;
-  selectionScreenGroup: 'barker' | 'hornor';
+  selectionScreenGroup: 'barker' | 'hornor' | 'other';
   thumbnail: string;
   infoComponent: Component|null;
 }
@@ -202,7 +202,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of Windsor<br><span class="text-xs">1798</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/bodleian-windsor-panorama.jpg',
-      infoComponent: LondonBarker,
+      infoComponent: null,
       ...buildBarkerGrandCircleParams(
         buildUrls('bodleian-windsor-panorama.jpg', 1),
         [33891],
@@ -239,7 +239,7 @@ export function getScenes(): Record<string, Scene> {
     },
     copenhagen: {
       source: 'http://www5.kb.dk/images/billed/2010/okt/billeder/object383074/en',
-      selectionScreenHtml: `Lord Nelson's Attack of Copenhagen (in 1801)<br><span class="text-xs">1802</span>`,
+      selectionScreenHtml: `Lord Nelson's Attack of Copenhagen (in&nbsp;1801)<br><span class="text-xs">1802</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: 'DH020270_5446x6525-panorama.jpg',
       infoComponent: null,
@@ -263,7 +263,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Edinburgh and the surrounding country<br><span class="text-xs">1805</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/yale-orbis-12828979-panorama.jpg',
-      infoComponent: CaltonHill,
+      infoComponent: null,
       ...buildBarkerGrandCircleParams(
         buildUrls('yale-orbis-12828979-panorama.jpg', 1),
         [13535],
@@ -300,9 +300,30 @@ export function getScenes(): Record<string, Scene> {
         1.33
       ),
     },
+    naples: {
+      source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-12',
+      selectionScreenHtml: `View of the Bay of Naples<br><span class="text-xs">1805</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/1886,0111.23.12-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('1886,0111.23.12-panorama.jpg', 1),
+        [15909],
+        [1206],
+        0.25,
+        0xE9C9A1,
+        0,
+        0.1,
+        0xF2D8B5,
+        -0.25,
+        0,
+        Math.PI / 2,
+        1.33
+      ),
+    },
     flushing: {
       source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-9',
-      selectionScreenHtml: `The view of Flushing during the Siege (in 1809)<br><span class="text-xs">1810</span>`,
+      selectionScreenHtml: `The view of Flushing during the Siege (in&nbsp;1809)<br><span class="text-xs">1810</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.9-panorama.jpg',
       infoComponent: null,
@@ -316,6 +337,48 @@ export function getScenes(): Record<string, Scene> {
         0.2,
         0xF2D8B5,
         -0.5,
+        0,
+        Math.PI / 2,
+        1.33
+      ),
+    },
+    malta: {
+      source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-11',
+      selectionScreenHtml: `Grand view of La Valetta, Malta<br><span class="text-xs">1810</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/1886,0111.23.11-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('1886,0111.23.11-panorama.jpg', 1),
+        [22946],
+        [1742],
+        0.5,
+        0xE9C9A1,
+        0,
+        0.1,
+        0xF6DFB6,
+        -0.25,
+        0,
+        Math.PI / 2,
+        1.33
+      ),
+    },
+    lisbon: {
+      source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-10',
+      selectionScreenHtml: `View of Lisbon<br><span class="text-xs">1811</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/1886,0111.23.10-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('1886,0111.23.10-panorama.jpg', 1),
+        [22556],
+        [1158],
+        0.25,
+        0xE9C9A1,
+        0,
+        0.1,
+        0xF2D8B5,
+        -0.25,
         0,
         Math.PI / 2,
         1.33
@@ -360,6 +423,48 @@ export function getScenes(): Record<string, Scene> {
         -0.25,
         0.05,
         Math.PI / 2,
+        1.33
+      ),
+    },
+    berlin: {
+      source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-6',
+      selectionScreenHtml: `View of Berlin<br><span class="text-xs">1814</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/1886,0111.23.6-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('1886,0111.23.6-panorama.jpg', 1),
+        [21312],
+        [1936],
+        0.7,
+        0xF1D4AC,
+        0,
+        0.1,
+        0xF2D8B5,
+        -0.25,
+        0,
+        Math.PI * 3/2,
+        1.33
+      ),
+    },
+    montmartre: {
+      source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-13',
+      selectionScreenHtml: `View of Paris, taken from Montmartre<br><span class="text-xs">1814</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/1886,0111.23.13-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('1886,0111.23.13-panorama.jpg', 1),
+        [24190],
+        [2224],
+        0.4,
+        0x1E1F22,
+        0,
+        0.2,
+        0xF2D8B5,
+        -0.5,
+        0,
+        Math.PI * 3/2,
         1.33
       ),
     },
@@ -424,6 +529,26 @@ export function getScenes(): Record<string, Scene> {
         0,
         Math.PI / 12,
         1.33
+      ),
+    },
+    algiers: {
+      source: 'https://collection.sl.nsw.gov.au/digital/oBvwa7raadWGQ',
+      selectionScreenHtml: `Lord Exmouth's Attack upon Algiers (In&nbsp;1816)<br><span class="text-xs">1818</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: 'SLNSW_FL16254393-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('SLNSW_FL16254393-panorama.jpg', 1),
+        [15323],
+        [1886],
+        0.3,
+        0xE3DECD,
+        0,
+        0.1,
+        0xE3DECD,
+        -0.25,
+        0.05,
+        Math.PI,
       ),
     },
     lausanne: {
@@ -543,7 +668,27 @@ export function getScenes(): Record<string, Scene> {
         0xAACCED,
         - 1,
         0,
-      )
+      ),
+    },
+    edinburghCityArtCentre: {
+      source: 'City Art Center',
+      selectionScreenHtml: `View of Treport, the surrounding Country, and Chateau d'Eu<br><span class="text-xs">1843, Featuring Queen Victoria</span>`,
+      selectionScreenGroup: 'other',
+      thumbnail: '/public/edinburgh-2.png',
+      infoComponent: EdinburghStGiles,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('edinburgh-2.png-%d.jpg', 4),
+        [4049 * 4],
+        [2136],
+        0.45,
+        0x000000,
+        0,
+        0,
+        0x8A918F,
+        -3,
+        -0.25,
+        Math.PI / 5
+      ),
     }
   }
 }
