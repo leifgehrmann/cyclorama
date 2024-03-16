@@ -1,18 +1,10 @@
 import { Component } from "vue";
+import { ft2m } from "./utils/units.ts";
 import Treport from "./components/explanations/Treport.vue";
 import CaltonHill from "./components/explanations/CaltonHill.vue";
 import LondonBarker from "./components/explanations/LondonBarker.vue";
 import LondonToday from "./components/explanations/LondonToday.vue";
-import { ft2m } from "./utils/units.ts";
-
-type SceneKey =
-  | 'caltonHill'
-  | 'albionMills'
-  | 'treport'
-  | 'hornor'
-  | 'josiahHenshallIllustrative'
-  | 'josiahHenshallDescriptive'
-  | 'hornorModern';
+import Elba from "./components/explanations/Elba.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -158,7 +150,7 @@ function buildUrls(urlPattern: string, count: number, leadingZeros: number = 2):
   return urls;
 }
 
-export function getScenes(): Record<SceneKey, Scene> {
+export function getScenes(): Record<string, Scene> {
   return {
     caltonHill: {
       source: 'https://archives.collections.ed.ac.uk/repositories/2/digital_objects/100',
@@ -196,6 +188,63 @@ export function getScenes(): Record<SceneKey, Scene> {
         0xC2C2BF,
         - 3,
         0,
+      ),
+    },
+    constantinople: {
+      source: 'https://www.loc.gov/item/2013646602/',
+      selectionScreenHtml: `View of Constantinople from the Tower&nbsp;of&nbsp;Galata<br><span class="text-xs">Exhibited 1800, Aquatints from 1813</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: 'constantinople-color-small.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('constantinople-color-small-%d.jpg', 7),
+        [25172],
+        [3136],
+        0.575,
+        0x000000,
+        0,
+        0.25,
+        0xF8EFE8,
+        -2,
+        0,
+      ),
+    },
+    flushing: {
+      source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-9',
+      selectionScreenHtml: `The view of Flushing during the Siege<br><span class="text-xs">1810</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/1886,0111.23.9-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('1886,0111.23.9-panorama.jpg', 1),
+        [20671],
+        [1800],
+        0.3,
+        0x1E1F22,
+        0,
+        0.2,
+        0xF2D8B5,
+        -0.5,
+        0,
+      ),
+    },
+    elba: {
+      source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-2',
+      selectionScreenHtml: `Island of Elba, and Porto-Ferrajo<br><span class="text-xs">1815, Featuring Napoleon Bonaparte</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/1886,0111.23.2-panorama.jpg',
+      infoComponent: Elba,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('1886,0111.23.2-panorama.jpg', 1),
+        [20797],
+        [1134],
+        0.2,
+        0xF1D4AC,
+        0,
+        0.1,
+        0xF1D4AC,
+        -0.25,
+        0.05,
       ),
     },
     treport: {
@@ -297,5 +346,5 @@ export function getScenes(): Record<SceneKey, Scene> {
 }
 
 export function getScene(key: string): Scene|null {
-  return getScenes()[key as SceneKey] ?? null;
+  return getScenes()[key] ?? null;
 }
