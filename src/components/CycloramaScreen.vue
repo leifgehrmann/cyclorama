@@ -2,12 +2,17 @@
 import Cyclorama from './Cyclorama.vue'
 import Joystick from './Joystick.vue';
 import Controls from "./Controls.vue";
-import {onMounted, ref} from "vue";
+import {defineProps, onMounted, ref} from "vue";
 import {ControlState} from "../utils/types.ts";
 import getTouchById, {getAngularDifferenceFromPointers, getDistanceBetweenPointers} from "../utils/pointerUtils.ts";
 import * as THREE from 'three';
 import Info from "./Info.vue";
 import Loading from "./Loading.vue";
+import {Scene} from "../scenes.ts";
+
+const props = defineProps<{
+  scene: Scene,
+}>()
 
 const controlState = ref({
   sagittalAcc: 0,
@@ -511,6 +516,7 @@ function updateProgress (e: [number]) {
          :class="{ hidden: showInfo }"
     >
       <Cyclorama
+          :scene="scene"
           :camera="camera"
           :controlState="controlState"
           @progressUpdate="updateProgress"
@@ -529,6 +535,7 @@ function updateProgress (e: [number]) {
       >
         <div class="p-4 pointer-events-auto">
           <Controls
+              :has-info="props.scene.infoComponent !== null"
               :show-info="showInfo"
               @toggle-info="toggleInfo"
               @zoom-update="controlZoomUpdate"
@@ -539,7 +546,7 @@ function updateProgress (e: [number]) {
     <div class="overflow-y-scroll overflow-x-hidden"
          :class="{ hidden: !showInfo, 'md:block': showInfo }"
     >
-      <Info @toggle-info="toggleInfo"/>
+      <Info :info-component="props.scene.infoComponent" @toggle-info="toggleInfo"/>
     </div>
   </div>
 </template>

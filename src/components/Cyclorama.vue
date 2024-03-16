@@ -7,8 +7,10 @@ import Ground from "../sceneObjects/ground.ts";
 import Person from "../sceneObjects/person.ts";
 import Panorama from "../sceneObjects/panorama.ts";
 import {ControlState} from "../utils/types.ts";
+import {Scene} from "../scenes.ts";
 
 const props = defineProps<{
+  scene: Scene,
   camera: THREE.PerspectiveCamera,
   controlState: ControlState
 }>()
@@ -20,14 +22,9 @@ const canvas = ref(null as null | HTMLDivElement)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'hornor' as
-    | 'treport'
+const mode = 'unknown' as
     | 'trafalgar'
     | 'lausanne'
-    | 'london'
-    | 'hornor'
-    | 'horner-illustrative'
-    | 'horner-descriptive'
     | 'barker' // Todo
     | 'edinburgh'
     | 'edinburgh-2'
@@ -51,7 +48,8 @@ const mode = 'hornor' as
     | 'dublin-bay'
     | 'dublin-interior'
     | 'copenhagen'
-    | 'blondon2';
+    | 'blondon2'
+    | string;
 
 const ft2m = (feet: number): number => {
   return 0.3048 * feet;
@@ -61,7 +59,7 @@ let panoramaUrls: string[];
 let panoramaUrlHeights: number[];
 let panoramaRadius: number;
 let panoramaHeight: number;
-let panoramaCeilingY: number;
+// let panoramaCeilingY: number;
 let groundColor: THREE.Color = new THREE.Color(0x000000);
 let groundYStart: number;
 let groundYEnd: number;
@@ -139,23 +137,6 @@ switch (mode) {
     panoramaY = -panoramaHeight * 0.75 + stageHeight;
     skyYStart = panoramaY + panoramaHeight - 1
     skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.1;
-    break;
-  }
-  case 'treport': {
-    panoramaUrls = ['1982,U.3982-panorama.jpg'];
-    skyColor = new THREE.Color(0xF3D3AC);
-    groundColor = new THREE.Color(0xF3D3AC);
-    const imageWidth = 9334;
-    const imageHeight = 1249;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(84 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.4 + stageHeight;
-    skyYStart = panoramaY + panoramaHeight - 0.25
-    skyYEnd = panoramaY + panoramaHeight + 0.05
     panoramaCeilingY = skyYEnd;
     groundYStart = panoramaY;
     groundYEnd = panoramaY + 0.1;
@@ -382,42 +363,6 @@ switch (mode) {
     groundYEnd = panoramaY + 0.2;
     break;
   }
-  case 'blondon2': {
-    panoramaUrls = [
-      'yale-orbis-205530-stitch-00.jpg',
-      'yale-orbis-205530-stitch-01.jpg',
-      'yale-orbis-205530-stitch-02.jpg',
-      'yale-orbis-205530-stitch-03.jpg',
-      'yale-orbis-205530-stitch-04.jpg',
-      'yale-orbis-205530-stitch-05.jpg',
-      'yale-orbis-205530-stitch-06.jpg',
-      'yale-orbis-205530-stitch-07.jpg',
-      'yale-orbis-205530-stitch-08.jpg',
-      'yale-orbis-205530-stitch-09.jpg',
-      'yale-orbis-205530-stitch-10.jpg',
-      'yale-orbis-205530-stitch-11.jpg',
-      'yale-orbis-205530-stitch-12.jpg',
-      'yale-orbis-205530-stitch-13.jpg',
-      'yale-orbis-205530-stitch-14.jpg',
-      'yale-orbis-205530-stitch-15.jpg',
-      'yale-orbis-205530-stitch-16.jpg',
-      'yale-orbis-205530-stitch-17.jpg',
-    ];
-    skyColor = new THREE.Color(0xC2C2BF);
-    groundColor = new THREE.Color(0x1E1F22);
-    const imageWidth = 34684;
-    const imageHeight = 4559;
-    panoramaUrlHeights = [2280, 2279];
-    panoramaRadius = ft2m(84 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.45 + stageHeight;
-    skyYStart = 4
-    skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.2;
-    break;
-  }
   case 'blondon': {
     panoramaUrls = ['blondon.jpg'];
     skyColor = new THREE.Color(0xC2C2BF);
@@ -550,75 +495,6 @@ switch (mode) {
     groundYEnd = panoramaY;
     break;
   }
-  case 'hornor': {
-    panoramaUrls = [
-      '1880,1113.1207.1-2.jpg',
-    ];
-    skyColor = new THREE.Color(0xFDFDDA);
-    groundColor = new THREE.Color(0xFAEACC);
-    const imageWidth = 22990;
-    const imageHeight = 2343;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(130 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    stageHeight = panoramaRadius * 0.26 * 2;
-    panoramaY = -panoramaHeight * 0.9 + stageHeight;
-    stageRadius = panoramaRadius * 0.3;
-    umbrellaRadius = panoramaRadius * 0.35;
-    ceilingHeight = panoramaRadius * 0.07 * 2;
-    skyYStart = panoramaY + panoramaHeight - 1.5;
-    skyYEnd = panoramaY + panoramaHeight;
-    panoramaCeilingY = skyYEnd + stageHeight;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.4;
-    break;
-  }
-  case 'horner-illustrative': {
-    panoramaUrls = [
-      '1880,1113.1213.jpg',
-    ];
-    skyColor = new THREE.Color(0xFDFDDA);
-    groundColor = new THREE.Color(0x2D291E);
-    const imageWidth = 12569;
-    const imageHeight = 1109;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(130 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    stageHeight = panoramaRadius * 0.26 * 2;
-    panoramaY = -panoramaHeight * 0.8 + stageHeight;
-    stageRadius = panoramaRadius * 0.3;
-    umbrellaRadius = panoramaRadius * 0.35;
-    ceilingHeight = panoramaRadius * 0.07 * 2;
-    skyYStart = panoramaY + panoramaHeight - 1.5;
-    skyYEnd = panoramaY + panoramaHeight;
-    panoramaCeilingY = skyYEnd + stageHeight;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.4;
-    break;
-  }
-  case 'horner-descriptive': {
-    panoramaUrls = [
-      '1880,1113.1214.jpg',
-    ];
-    skyColor = new THREE.Color(0xFFFEDF);
-    groundColor = new THREE.Color(0xFFFEDF);
-    const imageWidth = 12786;
-    const imageHeight = 1090;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(130 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    stageHeight = panoramaRadius * 0.26 * 2;
-    panoramaY = -panoramaHeight * 0.8 + stageHeight;
-    stageRadius = panoramaRadius * 0.3;
-    umbrellaRadius = panoramaRadius * 0.35;
-    ceilingHeight = panoramaRadius * 0.07 * 2;
-    skyYStart = panoramaY + panoramaHeight - 0.25;
-    skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd + stageHeight;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY;
-    break;
-  }
   case 'london': {
     panoramaUrls = [
         'london-00.jpg',
@@ -647,27 +523,22 @@ switch (mode) {
     break;
   }
   default: {
-    panoramaUrls = [
-        'barker-00.jpg',
-        'barker-01.jpg',
-        'barker-02.jpg',
-        'barker-03.jpg',
-        'barker-04.jpg',
-    ];
-    skyColor = new THREE.Color(0xDCD7B7);
-    groundColor = new THREE.Color(0x212111);
-    const imageWidth = 18237;
-    const imageHeight = 2248;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(84 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.50 + stageHeight;
-    skyYStart = 4
-    skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 1;
-    initialCameraYaw = Math.PI * 0.8;
+    panoramaUrls = props.scene.panoramaUrls;
+    panoramaUrlHeights = props.scene.panoramaUrlHeights;
+    panoramaHeight = props.scene.panoramaHeight;
+    panoramaRadius = props.scene.panoramaRadius;
+    panoramaY = props.scene.panoramaY;
+    stageRadius = props.scene.stageRadius;
+    stageHeight = props.scene.stageHeight;
+    umbrellaRadius = props.scene.umbrellaRadius;
+    ceilingHeight = props.scene.ceilingHeight;
+    groundColor = new THREE.Color(props.scene.groundColor);
+    groundYStart = props.scene.groundYStart;
+    groundYEnd = props.scene.groundYEnd;
+    skyColor = new THREE.Color(props.scene.skyColor);
+    skyYStart = props.scene.skyYStart;
+    skyYEnd = props.scene.skyYEnd;
+    initialCameraYaw = props.scene.initialCameraYaw;
     break;
   }
 }
@@ -747,7 +618,7 @@ stage.addToScene(scene)
 
 const sky = new Sky(
     panoramaRadius,
-    Math.max(stageHeight + ceilingHeight + 0.01, panoramaCeilingY),
+    Math.max(stageHeight + ceilingHeight + 0.01, panoramaY + panoramaHeight, skyYEnd),
     skyYStart,
     skyYEnd,
     skyColor,

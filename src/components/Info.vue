@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import {defineEmits, onMounted, ref} from "vue";
-import Treport from "./explanations/Treport.vue";
-import Elba from "./explanations/Elba.vue";
-import LondonBarker from "./explanations/LondonBarker.vue";
-import CaltonHill from "./explanations/CaltonHill.vue";
-import EdinburghStGiles from "./explanations/EdinburghStGiles.vue";
-import LondonToday from "./explanations/LondonToday.vue";
-import Constantinople from "./explanations/Constantinople.vue";
+import {DefineComponent, defineEmits, defineProps, onMounted, ref} from "vue";
 
+const props = defineProps<{
+  infoComponent: DefineComponent,
+}>()
 const emit = defineEmits(['toggleInfo'])
 const info = ref(null as null | HTMLDivElement)
 
@@ -60,13 +56,7 @@ onMounted(() => {
     </div>
     <div class="p-4 pt-24 md:pt-10 select-text grid gap-4 max-w-[25rem] m-auto"
     >
-<!--      <Treport/>-->
-<!--      <Elba/>-->
-<!--      <LondonBarker/>-->
-<!--      <CaltonHill/>-->
-      <EdinburghStGiles/>
-<!--      <LondonToday/>-->
-<!--      <Constantinople/>-->
+      <component :is="props.infoComponent"></component>
     </div>
   </div>
 </template>

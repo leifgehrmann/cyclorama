@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {getScenes} from "../scenes.ts";
+import {ref} from "vue";
 
-const barkerPanoramas = Object.entries(getScenes()).filter(([_, scene]) => scene.selectionScreenGroup === 'barker');
-const hornorPanoramas = Object.entries(getScenes()).filter(([_, scene]) => scene.selectionScreenGroup === 'hornor');
+const barkerPanoramas = ref(Object.entries(getScenes()).filter(([_, scene]) => scene.selectionScreenGroup === 'barker'));
+const hornorPanoramas = ref(Object.entries(getScenes()).filter(([_, scene]) => scene.selectionScreenGroup === 'hornor'));
 
 </script>
 
@@ -17,7 +18,7 @@ const hornorPanoramas = Object.entries(getScenes()).filter(([_, scene]) => scene
           v-for="sceneEntry in barkerPanoramas"
           :style="`background-image: url('${sceneEntry[1].thumbnail}');`"
       >
-        <a href="./?view={{sceneEntry[0]}}" v-html="sceneEntry[1].selectionScreenHtml">
+        <a :href="`./?view=${sceneEntry[0]}`" v-html="sceneEntry[1].selectionScreenHtml">
         </a>
       </li>
     </ul>
@@ -28,7 +29,7 @@ const hornorPanoramas = Object.entries(getScenes()).filter(([_, scene]) => scene
           v-for="sceneEntry in hornorPanoramas"
           :style="`background-image: url('${sceneEntry[1].thumbnail}');`"
       >
-        <a href="./?view={{sceneEntry[0]}}" v-html="sceneEntry[1].selectionScreenHtml">
+        <a :href="`./?view=${sceneEntry[0]}`" v-html="sceneEntry[1].selectionScreenHtml">
         </a>
       </li>
     </ul>

@@ -8,6 +8,7 @@
     "
   >
     <div
+        v-if="hasInfo"
         class="
       bg-neutral-800 bg-opacity-70
       backdrop-filter backdrop-blur-xl
@@ -100,6 +101,7 @@
 <script setup lang="ts">
 import {defineEmits, defineProps, onMounted, ref} from "vue";
 defineProps<{
+  hasInfo: boolean,
   showInfo: boolean,
 }>()
 const emit = defineEmits(['toggleInfo', 'zoomUpdate'])
