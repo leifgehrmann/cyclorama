@@ -20,11 +20,12 @@ const canvas = ref(null as null | HTMLDivElement)
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
-const mode = 'copenhagen' as
+const mode = 'hornor' as
     | 'treport'
     | 'trafalgar'
     | 'lausanne'
     | 'london'
+    | 'hornor'
     | 'horner-illustrative'
     | 'horner-descriptive'
     | 'barker' // Todo
@@ -547,6 +548,29 @@ switch (mode) {
     panoramaCeilingY = skyYEnd;
     groundYStart = panoramaY;
     groundYEnd = panoramaY;
+    break;
+  }
+  case 'hornor': {
+    panoramaUrls = [
+      '1880,1113.1207.1-2.jpg',
+    ];
+    skyColor = new THREE.Color(0xFDFDDA);
+    groundColor = new THREE.Color(0xFAEACC);
+    const imageWidth = 22990;
+    const imageHeight = 2343;
+    panoramaUrlHeights = [imageHeight];
+    panoramaRadius = ft2m(130 / 2);
+    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
+    stageHeight = panoramaRadius * 0.26 * 2;
+    panoramaY = -panoramaHeight * 0.9 + stageHeight;
+    stageRadius = panoramaRadius * 0.3;
+    umbrellaRadius = panoramaRadius * 0.35;
+    ceilingHeight = panoramaRadius * 0.07 * 2;
+    skyYStart = panoramaY + panoramaHeight - 1.5;
+    skyYEnd = panoramaY + panoramaHeight;
+    panoramaCeilingY = skyYEnd + stageHeight;
+    groundYStart = panoramaY;
+    groundYEnd = panoramaY + 0.4;
     break;
   }
   case 'horner-illustrative': {
