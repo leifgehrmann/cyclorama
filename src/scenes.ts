@@ -169,6 +169,7 @@ export function getScenes(): Record<string, Scene> {
         0xDCD7B7,
       - 1,
         0,
+        Math.PI - 0.5,
       ),
     },
     albionMills: {
@@ -188,6 +189,7 @@ export function getScenes(): Record<string, Scene> {
         0xC2C2BF,
         - 3,
         0,
+        2,
       ),
     },
     constantinople: {
@@ -207,6 +209,7 @@ export function getScenes(): Record<string, Scene> {
         0xF8EFE8,
         -2,
         0,
+        Math.PI - 0.5,
       ),
     },
     flushing: {
@@ -226,6 +229,7 @@ export function getScenes(): Record<string, Scene> {
         0xF2D8B5,
         -0.5,
         0,
+        Math.PI / 2,
       ),
     },
     elba: {
@@ -245,6 +249,7 @@ export function getScenes(): Record<string, Scene> {
         0xF1D4AC,
         -0.25,
         0.05,
+        -0.75
       ),
     },
     treport: {
@@ -264,6 +269,7 @@ export function getScenes(): Record<string, Scene> {
         0xF3D3AC,
         -0.25,
         0.05,
+        Math.PI-1,
       ),
     },
     hornor: {
@@ -276,13 +282,14 @@ export function getScenes(): Record<string, Scene> {
         buildUrls('1880,1113.1207.1-2.jpg', 1),
         [22990],
         [2343],
-        0.9,
+        0.85,
         0xFAEACC,
         0,
         0.1,
         0xFDFDDA,
         - 1.5,
         0,
+        Math.PI - 0.25,
       )
     },
     josiahHenshallIllustrative: {
@@ -302,6 +309,7 @@ export function getScenes(): Record<string, Scene> {
         0xFDFDDA,
         - 1.5,
         0,
+        Math.PI + 0.5,
       )
     },
     josiahHenshallDescriptive: {
@@ -321,6 +329,7 @@ export function getScenes(): Record<string, Scene> {
         0xFFFEDF,
         - 0.25,
         0,
+        Math.PI + 0.5,
       )
     },
     hornorModern: {
