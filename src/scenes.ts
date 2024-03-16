@@ -5,6 +5,7 @@ import CaltonHill from "./components/explanations/CaltonHill.vue";
 import LondonBarker from "./components/explanations/LondonBarker.vue";
 import LondonToday from "./components/explanations/LondonToday.vue";
 import Elba from "./components/explanations/Elba.vue";
+import * as THREE from "three";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -50,10 +51,11 @@ function buildCycloramaData(options: {
   skyStartOffset: number,
   skyEndOffset: number,
   initialCameraYaw: number,
+  panoramaHeightScale: number,
 }): CycloramaData {
   const panoramaImagesWidth = options.imageWidths.reduce((a,b) => a + b);
   const panoramaImagesHeight = options.imageHeights.reduce((a,b) => a + b);
-  const panoramaHeight = options.panoramaRadius * 2 * Math.PI / panoramaImagesWidth * panoramaImagesHeight;
+  const panoramaHeight = options.panoramaRadius * 2 * Math.PI / panoramaImagesWidth * panoramaImagesHeight * options.panoramaHeightScale;
   const panoramaY = -panoramaHeight * options.horizonRatio + options.stageHeight;
   return {
     panoramaUrls: options.panoramaUrls,
@@ -86,7 +88,8 @@ function buildBarkerGrandCircleParams(
   skyColor: number,
   skyStartOffset: number,
   skyEndOffset: number,
-  initialCameraYaw: number = 0
+  initialCameraYaw: number = 0,
+  panoramaHeightScale: number = 1
 ): CycloramaData {
   return buildCycloramaData({
     panoramaRadius: ft2m(84 / 2),
@@ -105,6 +108,7 @@ function buildBarkerGrandCircleParams(
     skyStartOffset,
     skyEndOffset,
     initialCameraYaw,
+    panoramaHeightScale
   });
 }
 
@@ -139,6 +143,7 @@ function buildHornorParams(
     skyStartOffset,
     skyEndOffset,
     initialCameraYaw,
+    panoramaHeightScale: 1
   });
 }
 
@@ -154,7 +159,7 @@ export function getScenes(): Record<string, Scene> {
   return {
     caltonHill: {
       source: 'https://archives.collections.ed.ac.uk/repositories/2/digital_objects/100',
-      selectionScreenHtml: `View of Edinburgh from Calton Hill<br><span class="text-xs">Exhibited in 1788, Watercolour from 1792</span>`,
+      selectionScreenHtml: `View of Edinburgh from Calton Hill<br><span class="text-xs">Exhibited 1788-1789, Watercolour from 1792</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/barker.jpg',
       infoComponent: CaltonHill,
@@ -192,6 +197,26 @@ export function getScenes(): Record<string, Scene> {
         2,
       ),
     },
+    windsor: {
+      source: 'https://digital.bodleian.ox.ac.uk/objects/22e9e513-e1c9-4c54-b39a-2c188f86fb0a/',
+      selectionScreenHtml: `View of Windsor<br><span class="text-xs">1798</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/bodleian-windsor-panorama.jpg',
+      infoComponent: LondonBarker,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('bodleian-windsor-panorama.jpg', 1),
+        [33891],
+        [3630],
+        0.75,
+        0xECE5D2,
+        0,
+        0.1,
+        0xFCF5E2,
+        -1,
+        0,
+        Math.PI,
+      ),
+    },
     constantinople: {
       source: 'https://www.loc.gov/item/2013646602/',
       selectionScreenHtml: `View of Constantinople from the Tower&nbsp;of&nbsp;Galata<br><span class="text-xs">Exhibited 1800, Aquatints from 1813</span>`,
@@ -212,6 +237,48 @@ export function getScenes(): Record<string, Scene> {
         Math.PI - 0.5,
       ),
     },
+    copenhagen: {
+      source: 'http://www5.kb.dk/images/billed/2010/okt/billeder/object383074/en',
+      selectionScreenHtml: `Lord Nelson's Attack of Copenhagen<br><span class="text-xs">1802</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: 'DH020270_5446x6525-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('DH020270_5446x6525-panorama.jpg', 1),
+        [33212],
+        [2740],
+        0.3,
+        0xBFAF8F,
+        0,
+        0.25,
+        0xBFAF8F,
+        -0.5,
+        0,
+        Math.PI - 1,
+        1.33
+      ),
+    },
+    edinburgh: {
+      source: 'https://collections.britishart.yale.edu/catalog/orbis:12828979',
+      selectionScreenHtml: `Edinburgh and the surrounding country<br><span class="text-xs">1805</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '/public/yale-orbis-12828979-panorama.jpg',
+      infoComponent: CaltonHill,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('yale-orbis-12828979-panorama.jpg', 1),
+        [13535],
+        [1000],
+        0.45,
+        0xE8DBBE,
+        0,
+        0.2,
+        0xE8DBBE,
+        - 0.5,
+        0,
+        0,
+        1.33
+      ),
+    },
     flushing: {
       source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-9',
       selectionScreenHtml: `The view of Flushing during the Siege<br><span class="text-xs">1810</span>`,
@@ -222,7 +289,7 @@ export function getScenes(): Record<string, Scene> {
         buildUrls('1886,0111.23.9-panorama.jpg', 1),
         [20671],
         [1800],
-        0.3,
+        0.35,
         0x1E1F22,
         0,
         0.2,
@@ -230,6 +297,7 @@ export function getScenes(): Record<string, Scene> {
         -0.5,
         0,
         Math.PI / 2,
+        1.33
       ),
     },
     elba: {
@@ -242,19 +310,40 @@ export function getScenes(): Record<string, Scene> {
         buildUrls('1886,0111.23.2-panorama.jpg', 1),
         [20797],
         [1134],
-        0.2,
+        0.3,
         0xF1D4AC,
         0,
         0.1,
         0xF1D4AC,
         -0.25,
         0.05,
-        -0.75
+        -0.75,
+        1.33
+      ),
+    },
+    lausanne: {
+      source: 'https://www.britishmuseum.org/collection/object/P_2010-7081-7379',
+      selectionScreenHtml: `View of Lausanne and Lake Geneva<br><span class="text-xs">1819</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: '2010,7081.7379-panorama.jpg',
+      infoComponent: null,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('2010,7081.7379-panorama.jpg', 1),
+        [7941],
+        [619],
+        0.4,
+        0xFFFBDA,
+        0,
+        0.1,
+        0xFFFBDA,
+        -0.25,
+        0.05,
+        1,
       ),
     },
     treport: {
       source: 'https://www.britishmuseum.org/collection/object/P_1982-U-3982',
-      selectionScreenHtml: `View of Treport, the surrounding Country, and Chateau d'Eu<br><span class="text-xs">1843</span>`,
+      selectionScreenHtml: `View of Treport, the surrounding Country, and Chateau d'Eu<br><span class="text-xs">1843, Featuring Queen Victoria</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1982,U.3982-panorama.jpg',
       infoComponent: Treport,
