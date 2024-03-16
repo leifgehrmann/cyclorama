@@ -23,20 +23,14 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000)
 
 const mode = 'unknown' as
-    | 'trafalgar'
     | 'barker' // Todo
     | 'edinburgh'
     | 'edinburgh-2'
-    | 'waterloo'
     | 'montmartre'
     | 'naples'
     | 'malta'
     | 'lisbon'
     | 'berlin'
-    | 'badajoz'
-    | 'paris'
-    | 'vittoria'
-    | 'windsor'
     | 'dublin-bay'
     | 'dublin-interior'
     | string;
@@ -92,91 +86,6 @@ switch (mode) {
     panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
     panoramaY = -panoramaHeight * 0.45 + stageHeight;
     skyYStart = panoramaY + panoramaHeight - 1
-    skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.1;
-    break;
-  }
-  case 'trafalgar': {
-    panoramaUrls = ['40348i-panorama.jpg'];
-    skyColor = new THREE.Color(0xCABAAB);
-    groundColor = new THREE.Color(0x939E95);
-    const imageWidth = 26112;
-    const imageHeight = 2974;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(84 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight * 2;
-    panoramaY = -panoramaHeight * 0.125 + stageHeight;
-    skyYStart = panoramaY + panoramaHeight - 4
-    skyYEnd = panoramaY + panoramaHeight -3
-    panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.1;
-    break;
-  }
-  case 'vittoria': {
-    panoramaUrls = ['1886,0111.23.1-panorama.jpg'];
-    skyColor = new THREE.Color(0xF1D4AC);
-    groundColor = new THREE.Color(0xF1D4AC);
-    const imageWidth = 27595;
-    const imageHeight = 2488;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(84 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.3 + stageHeight;
-    skyYStart = panoramaY + panoramaHeight - 0.25
-    skyYEnd = panoramaY + panoramaHeight + 0.05
-    panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.1;
-    break;
-  }
-  case 'waterloo': {
-    panoramaUrls = ['1886,0111.23.3-panorama.jpg'];
-    skyColor = new THREE.Color(0xF6DAB1);
-    groundColor = new THREE.Color(0xD1B594);
-    const imageWidth = 22996;
-    const imageHeight = 1526;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(84 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.35 + stageHeight;
-    skyYStart = panoramaY + panoramaHeight - 1
-    skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.2;
-    break;
-  }
-  case 'paris': {
-    panoramaUrls = ['1886,0111.23.4-panorama.jpg'];
-    skyColor = new THREE.Color(0xF2D8B5);
-    groundColor = new THREE.Color(0xF1D4AC);
-    const imageWidth = 22782;
-    const imageHeight = 1812;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(84 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.45 + stageHeight;
-    skyYStart = panoramaY + panoramaHeight - 0.25
-    skyYEnd = panoramaY + panoramaHeight
-    panoramaCeilingY = skyYEnd;
-    groundYStart = panoramaY;
-    groundYEnd = panoramaY + 0.1;
-    break;
-  }
-  case 'badajoz': {
-    panoramaUrls = ['1886,0111.23.5-panorama.jpg'];
-    skyColor = new THREE.Color(0xF2D8B5);
-    groundColor = new THREE.Color(0x000000);
-    const imageWidth = 22782;
-    const imageHeight = 1812;
-    panoramaUrlHeights = [imageHeight];
-    panoramaRadius = ft2m(84 / 2);
-    panoramaHeight = panoramaRadius * 2 * Math.PI / imageWidth * imageHeight;
-    panoramaY = -panoramaHeight * 0.4 + stageHeight;
-    skyYStart = panoramaY + panoramaHeight - 0.25
     skyYEnd = panoramaY + panoramaHeight
     panoramaCeilingY = skyYEnd;
     groundYStart = panoramaY;
