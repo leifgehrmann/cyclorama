@@ -12,10 +12,15 @@ import Attribution from "./Attribution.vue";
   </p>
   <p class="text-center text-xl">1792-1793</p>
   <hr>
+  <p>A panorama from Albion Mills was first exhibited at 28 Castle Street in London in June 11th 1791 until early 1794.<a href="#citation1"><sup>[1]</sup></a> It was small and not a complete circle.<a href="#citation2"><sup>[2]</sup></a> It was later exhibited at Leicester Square between March 28th, 1795 and February 13th, 1796. It's unclear how different these panoramas were from the aquatints.</p>
+  <p>The dimensions of this simulated panorama are not the same as the dimensions of the original panorama; the original had a much smaller diameter. At 28 Castle Street the dimensions are unknown. At Leceister Square the diameter of the "upper circle" was 50 feet (15 meters). This simulation uses the dimensions of the "large circle" at Leicester Square, which has a diameter of 84 feet (25 meters), to demonstrate Robert Barker's desired vision.</p>
+  <p>Ralph Hyde noted in his book <em>Panoramania</em> some nice details.<a href="#citation3"><sup>[3]</sup></a> "At the S. end of Blackfriars Bridge workmen repair the road, a waterman descends the stairs to his vessel, a man raps on a door of Albion Place, and a woman calls out of a window. River craft close by includes a barge of the Royal Exchange Fire Office, an allusion to the fire, fought by insurance fire boats, which gutted the Albion Mills between the completion of Barker's drawings and the publication of the prints."</p>
   <p>A key of the panorama can be found at the <a href="https://www.britishmuseum.org/collection/object/P_1880-1113-5509-1">British Museum</a> (Museum Number: 1880,1113.5509.1)</p>
   <hr>
-  <p>This work is a digital composition of the original aquatints.</p>
-  <p>Original images were downloaded from the Yale Center for British Art.</p>
+  <p id="citation1"><sup>[1]</sup> The First Panoramas: Visions of British Imperialism by Denise Oleksijczuk, p. 48</p>
+  <p id="citation2"><sup>[2]</sup> Panoramania by Ralph Hyde, p. 62</p>
+  <p id="citation3"><sup>[3]</sup> Ibid, p. 64</p>
+  <p>This work is a digital composition of the original aquatints. The originals were downloaded from the Yale Center for British Art.</p>
   <Attribution
       identifier="orbis:205530"
       license-url="https://creativecommons.org/publicdomain/zero/1.0/"
@@ -25,15 +30,6 @@ import Attribution from "./Attribution.vue";
   />
   <img src="/public/blondon.jpg">
   <p>The images were then trimmed and edited by Leif&nbsp;Gehrmann. The edited version is licensed to the public domain to match the original document from the Yale Center for British Art.</p>
-  <!-- Todo: Show composition instructions. -->
-  <details>
-    <summary>Commands</summary>
-    <pre>
-
-// Todo:
-montage yale-orbis-205530-[1-6].jpg -tile 6x1 -geometry +0+0 stitch.jpg
-    </pre>
-  </details>
 </template>
 
 <style scoped>
