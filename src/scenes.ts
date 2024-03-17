@@ -13,6 +13,7 @@ import Edinburgh from "./components/explanations/Edinburgh.vue";
 import Naples from "./components/explanations/Naples.vue";
 import Trafalgar from "./components/explanations/Trafalgar.vue";
 import Flushing from "./components/explanations/Flushing.vue";
+import Malta from "./components/explanations/Malta.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -354,7 +355,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Grand view of La Valetta, Malta<br><span class="text-xs">1810</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.11-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Malta,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.11-panorama.jpg', 1),
         [22946],
