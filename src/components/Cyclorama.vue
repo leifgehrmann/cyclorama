@@ -114,7 +114,7 @@ stage.addToScene(scene)
 
 const sky = new Sky(
     panoramaRadius,
-    Math.max(stageHeight + ceilingHeight + 0.01, panoramaY + panoramaHeight, skyYEnd),
+    Math.max(stageHeight + ceilingHeight + 0.01, skyYEnd),
     skyYStart,
     skyYEnd,
     skyColor,
