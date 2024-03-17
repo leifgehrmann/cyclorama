@@ -112,13 +112,11 @@ onMounted(() => {
 }
 
 #info details {
-  @apply px-4 py-3 bg-white/10 rounded-xl overflow-x-scroll mb-2;
+  @apply overflow-x-scroll;
 }
 
-#info details[open] > summary::after {
-  content: '';
-  display: block;
-  @apply my-2 bg-white/80 h-0.5 rounded-full;
+#info summary {
+  @apply px-4 py-3 bg-white/10 rounded-xl mb-2 cursor-pointer;
 }
 
 #info pre {
