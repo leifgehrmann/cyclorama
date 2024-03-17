@@ -112,8 +112,45 @@ function buildBarkerGrandCircleParams(
     panoramaRadius: ft2m(84 / 2),
     stageRadius: ft2m(30 / 2),
     stageHeight: ft2m(9),
-    umbrellaRadius: ft2m(55 / 2),
+    umbrellaRadius: ft2m(55 / 2), // Unknown, this is just a guess
     ceilingHeight: ft2m(16),
+    panoramaUrls,
+    imageWidths,
+    imageHeights,
+    horizonRatio,
+    groundColor,
+    groundStartOffset,
+    groundEndOffset,
+    skyColor,
+    skyStartOffset,
+    skyEndOffset,
+    initialCameraYaw,
+    panoramaHeightScale
+  });
+}
+
+function buildBarkerUpperCircleParams(
+  panoramaUrls: string[],
+  imageWidths: number[],
+  imageHeights: number[],
+  horizonRatio: number,
+  groundColor: number,
+  groundStartOffset: number,
+  groundEndOffset: number,
+  skyColor: number,
+  skyStartOffset: number,
+  skyEndOffset: number,
+  initialCameraYaw: number = 0,
+  panoramaHeightScale: number = 1
+): CycloramaData {
+  return buildCycloramaData({
+    // Dimensions inferred from this illustration.
+    // https://commons.wikimedia.org/wiki/File:Mitchell_LeicesterSquareRotunda_05-11-20.jpg
+    panoramaRadius: ft2m(50 / 2),
+    stageRadius: ft2m(16 / 2),
+    stageHeight: ft2m(16 * 130/330),
+    umbrellaRadius: ft2m(16 * 1.5), // Unknown, this is just a guess
+    ceilingHeight: ft2m(16 * 230/330),
     panoramaUrls,
     imageWidths,
     imageHeights,
@@ -281,11 +318,11 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenGroup: 'barker',
       thumbnail: '/public/yale-orbis-12828979-panorama.jpg',
       infoComponent: Edinburgh,
-      ...buildBarkerGrandCircleParams(
+      ...buildBarkerUpperCircleParams(
         buildUrls('yale-orbis-12828979-panorama.jpg', 1),
         [13535],
         [1000],
-        0.45,
+        0.35,
         0xE8DBBE,
         0,
         0.2,
@@ -344,11 +381,11 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.9-panorama.jpg',
       infoComponent: Flushing,
-      ...buildBarkerGrandCircleParams(
+      ...buildBarkerUpperCircleParams(
         buildUrls('1886,0111.23.9-panorama.jpg', 1),
         [20671],
         [1800],
-        0.35,
+        0.25,
         0x1E1F22,
         0,
         0.2,
@@ -574,11 +611,11 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenGroup: 'barker',
       thumbnail: '2010,7081.7379-panorama.jpg',
       infoComponent: Lausanne,
-      ...buildBarkerGrandCircleParams(
+      ...buildBarkerUpperCircleParams(
         buildUrls('2010,7081.7379-panorama.jpg', 1),
         [7941],
         [619],
-        0.4,
+        0.3,
         0xFFFBDA,
         0,
         0.1,
