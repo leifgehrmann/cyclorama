@@ -17,6 +17,12 @@ import Malta from "./components/explanations/Malta.vue";
 import Lisbon from "./components/explanations/Lisbon.vue";
 import Badajoz from "./components/explanations/Badajoz.vue";
 import Algiers from "./components/explanations/Algiers.vue";
+import Lausanne from "./components/explanations/Lausanne.vue";
+import Waterloo from "./components/explanations/Waterloo.vue";
+import Paris from "./components/explanations/Paris.vue";
+import Montmartre from "./components/explanations/Montmartre.vue";
+import Berlin from "./components/explanations/Berlin.vue";
+import Vittoria from "./components/explanations/Vittoria.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -421,7 +427,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Plains of Vittoria (in 1813)<br><span class="text-xs">1814, Featuring Duke of Wellington (Arthur&nbsp;Wellesley) and Joseph&nbsp;Bonaparte</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.1-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Vittoria,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.1-panorama.jpg', 1),
         [26112],
@@ -442,7 +448,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of Berlin<br><span class="text-xs">1814</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.6-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Berlin,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.6-panorama.jpg', 1),
         [21312],
@@ -463,7 +469,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of Paris, taken from Montmartre<br><span class="text-xs">1814</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.13-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Montmartre,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.13-panorama.jpg', 1),
         [24190],
@@ -505,7 +511,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of the city of Paris<br><span class="text-xs">1815</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.4-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Paris,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.4-panorama.jpg', 1),
         [22996],
@@ -526,7 +532,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Battle of Waterloo (in 1815)<br><span class="text-xs">1816, Featuring Marquess of Wellington (Arthur&nbsp;Wellesley) and Napoleon&nbsp;Bonaparte</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.3-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Waterloo,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.3-panorama.jpg', 1),
         [22996],
@@ -567,7 +573,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of Lausanne and Lake Geneva<br><span class="text-xs">1819</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '2010,7081.7379-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Lausanne,
       ...buildBarkerGrandCircleParams(
         buildUrls('2010,7081.7379-panorama.jpg', 1),
         [7941],

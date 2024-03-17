@@ -4,13 +4,21 @@ import Attribution from "./Attribution.vue";
 </script>
 
 <template>
+  <Attribution
+      identifier="1886,0111.23.9"
+      license="CC BY-NC-SA 4.0"
+      url="https://www.britishmuseum.org/collection/object/P_1886-0111-23-9"
+      entity="The British Museum"
+  />
+  <hr>
+  <p class="text-center">Exhibited in 1810. Upper Circle</p>
+  <hr>
   <h1 class="text-center text-2xl uppercase mb-4">
     <span class="text-base">The</span><br>
     <span class="text-xl">view of</span><br>
     <span class="text-5xl font-bold">Flushing</span><br>
     <span class="text-xl italic">during the siege.</span><br>
   </h1>
-  <p class="text-center text-xl">1810</p>
   <ol>
     <li>Entrance of the Stad-house Square, in Flames.</li>
     <li>Bomb-proof Tower to which Gen. Monnet retired when the Stad-house took fire.</li>
@@ -66,13 +74,6 @@ import Attribution from "./Attribution.vue";
     <li>A Discharge of Congreve's Rockets.</li>
   </ol>
   <p>The Line of Battle Ships attacked the Town at an earlier Period than this Picture represents, but they are introduced to give a general Idea of the whole Attack.</p>
-  <hr>
-  <Attribution
-      identifier="1886,0111.23.9"
-      license="CC BY-NC-SA 4.0"
-      url="https://www.britishmuseum.org/collection/object/P_1886-0111-23-9"
-      entity="The British Museum"
-  />
 </template>
 
 <style scoped>

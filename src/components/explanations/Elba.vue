@@ -4,6 +4,16 @@ import Attribution from "./Attribution.vue";
 </script>
 
 <template>
+  <Attribution
+      identifier="1886,0111.23.2"
+      license-url="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+      license="CC BY-NC-SA 4.0"
+      url="https://www.britishmuseum.org/collection/image/1613542973"
+      entity="the British Museum"
+  />
+  <hr>
+  <p class="text-center">Exhibited in ????. Lower Circle</p>
+  <hr>
   <h1 class="text-center text-3xl leading-5 mb-4"><small>EXPLANATION</small><br><small><small>OF THE</small><br></small> <span class="font-extrabold">ISLAND <small>OF</small> ELBA</span><br><small style="font-variant-caps: small-caps">And PORTO-FERRAJO,</small></h1>
   <p class="text-center text-sm">Taken on the Spot by HENRY ASTON BARKER,</p>
   <p class="text-center text-sm"><em>Painted on</em> 10,000 <em>square Feet of Canvass, and exhibiting in the GREAT ROTUNDA of his</em></p>
@@ -67,15 +77,6 @@ import Attribution from "./Attribution.vue";
     <li>Barracks of the Imperial Guard.</li>
   </ol>
   <p class="text-center">Bonaparte's Flag at <span style="font-variant-caps: small-caps">Elba</span> was White, with a Red Stripe, placed diagonally, upon which were Three Bees.</p>
-  <hr>
-  <Attribution
-      identifier="1886,0111.23.2"
-      license-url="http://creativecommons.org/licenses/by-nc-sa/4.0/"
-      license="CC BY-NC-SA 4.0"
-      url="https://www.britishmuseum.org/collection/image/1613542973"
-      entity="the British Museum"
-  />
-  <img src="/public/1886,0111.23.2.jpg">
 </template>
 
 <style scoped>

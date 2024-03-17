@@ -11,6 +11,8 @@ import Attribution from "./Attribution.vue";
       entity="The British Museum"
   />
   <hr>
+  <p class="text-center">Exhibited in ???. Lower Circle</p>
+  <hr>
   <h1 class="text-center text-base leading-6 mb-4">
     <span class="text-base uppercase">Explanation</span><br>
     <span class="text-xl uppercase">of a</span><br>

@@ -11,6 +11,8 @@ import Attribution from "./Attribution.vue";
       entity="State Library of New South Wales"
   />
   <hr>
+  <p class="text-center">Exhibited in ???. Lower Circle</p>
+  <hr>
   <h1 class="text-center leading-4">
     <span class="uppercase font-bold text-base">Description</span><br>
     <span class="uppercase text-xs">of</span><br>
