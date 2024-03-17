@@ -20,7 +20,7 @@ import Attribution from "./Attribution.vue";
   </h1>
   <p>Taken from the <span style="font-variant: small-caps">Conservatory</span>, and painted upon 10,000 Square Feet of Canvas, by <span class="uppercase">Henry Aston Barker</span>, now Exhibiting in the great Rotunda of the</p>
   <h2 class="text-center font-extrabold text-2xl" style="font-variant-caps: small-caps;">Panorama, Leicester Square.</h2>
-  <p class="text-center text-xl">1805</p>
+  <p class="text-center text-xl">1810</p>
   <ol>
     <li>College of Jesuits</li>
     <li>Church of the Souls in purgatory</li>

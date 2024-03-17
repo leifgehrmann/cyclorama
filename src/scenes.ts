@@ -14,6 +14,7 @@ import Naples from "./components/explanations/Naples.vue";
 import Trafalgar from "./components/explanations/Trafalgar.vue";
 import Flushing from "./components/explanations/Flushing.vue";
 import Malta from "./components/explanations/Malta.vue";
+import Lisbon from "./components/explanations/Lisbon.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -376,7 +377,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of Lisbon<br><span class="text-xs">1811</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.10-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Lisbon,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.10-panorama.jpg', 1),
         [22556],
