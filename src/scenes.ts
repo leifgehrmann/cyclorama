@@ -16,6 +16,7 @@ import Flushing from "./components/explanations/Flushing.vue";
 import Malta from "./components/explanations/Malta.vue";
 import Lisbon from "./components/explanations/Lisbon.vue";
 import Badajoz from "./components/explanations/Badajoz.vue";
+import Algiers from "./components/explanations/Algiers.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -546,7 +547,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Lord Exmouth's Attack upon Algiers (In&nbsp;1816)<br><span class="text-xs">1818</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: 'SLNSW_FL16254393-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Algiers,
       ...buildBarkerGrandCircleParams(
         buildUrls('SLNSW_FL16254393-panorama.jpg', 1),
         [15323],
