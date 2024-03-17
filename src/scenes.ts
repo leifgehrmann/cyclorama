@@ -15,6 +15,7 @@ import Trafalgar from "./components/explanations/Trafalgar.vue";
 import Flushing from "./components/explanations/Flushing.vue";
 import Malta from "./components/explanations/Malta.vue";
 import Lisbon from "./components/explanations/Lisbon.vue";
+import Badajoz from "./components/explanations/Badajoz.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -398,7 +399,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Siege of Badajoz in 1812<br><span class="text-xs">1812</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.5-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Badajoz,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.5-panorama.jpg', 1),
         [22782],
