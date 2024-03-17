@@ -28,7 +28,6 @@ import Attribution from "./Attribution.vue";
       url="https://collections.britishart.yale.edu/catalog/orbis:205530"
       entity="Yale Center for British Art"
   />
-  <img src="/public/blondon.jpg">
   <p>The images were then trimmed and edited by Leif&nbsp;Gehrmann. The edited version is licensed to the public domain to match the original document from the Yale Center for British Art.</p>
 </template>
 

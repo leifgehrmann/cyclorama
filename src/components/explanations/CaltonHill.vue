@@ -20,7 +20,6 @@ import Attribution from "./Attribution.vue";
       url="https://archives.collections.ed.ac.uk/repositories/2/digital_objects/100"
       entity="the University of Edinburgh"
   />
-  <img src="/public/barker.jpg">
 </template>
 
 <style scoped>

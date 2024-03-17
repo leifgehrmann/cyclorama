@@ -6,6 +6,12 @@ import LondonBarker from "./components/explanations/LondonBarker.vue";
 import LondonToday from "./components/explanations/LondonToday.vue";
 import Elba from "./components/explanations/Elba.vue";
 import EdinburghStGiles from "./components/explanations/EdinburghStGiles.vue";
+import Windsor from "./components/explanations/Windsor.vue";
+import Constantinople from "./components/explanations/Constantinople.vue";
+import Copenhagen from "./components/explanations/Copenhagen.vue";
+import Edinburgh from "./components/explanations/Edinburgh.vue";
+import Naples from "./components/explanations/Naples.vue";
+import Trafalgar from "./components/explanations/Trafalgar.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -202,7 +208,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of Windsor<br><span class="text-xs">1798</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/bodleian-windsor-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Windsor,
       ...buildBarkerGrandCircleParams(
         buildUrls('bodleian-windsor-panorama.jpg', 1),
         [33891],
@@ -222,7 +228,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of Constantinople from the Tower&nbsp;of&nbsp;Galata<br><span class="text-xs">Exhibited 1800, Aquatints from 1813</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: 'constantinople-color-small.jpg',
-      infoComponent: null,
+      infoComponent: Constantinople,
       ...buildBarkerGrandCircleParams(
         buildUrls('constantinople-color-small-%d.jpg', 7),
         [25172],
@@ -242,7 +248,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Lord Nelson's Attack of Copenhagen (in&nbsp;1801)<br><span class="text-xs">1802</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: 'DH020270_5446x6525-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Copenhagen,
       ...buildBarkerGrandCircleParams(
         buildUrls('DH020270_5446x6525-panorama.jpg', 1),
         [33212],
@@ -263,7 +269,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Edinburgh and the surrounding country<br><span class="text-xs">1805</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/yale-orbis-12828979-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Edinburgh,
       ...buildBarkerGrandCircleParams(
         buildUrls('yale-orbis-12828979-panorama.jpg', 1),
         [13535],
@@ -284,7 +290,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `Battle of Trafalgar<br><span class="text-xs">1805</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/40348i-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Trafalgar,
       ...buildBarkerGrandCircleParams(
         buildUrls('40348i-panorama.jpg', 1),
         [26112],
@@ -305,7 +311,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `View of the Bay of Naples<br><span class="text-xs">1805</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.12-panorama.jpg',
-      infoComponent: null,
+      infoComponent: Naples,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.12-panorama.jpg', 1),
         [15909],
