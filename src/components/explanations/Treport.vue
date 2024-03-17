@@ -4,6 +4,14 @@ import Attribution from "./Attribution.vue";
 </script>
 
 <template>
+  <Attribution
+      identifier="1982,U.3982"
+      license-url="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+      license="CC BY-NC-SA 4.0"
+      url="https://www.britishmuseum.org/collection/object/P_1982-U-3982"
+      entity="the British Museum"
+  />
+  <hr>
   <h1 class="text-center text-xl mb-4">
     <span class="uppercase">Explanation</span> of a View of <span class="uppercase">Treport</span>, the surrounding Country, and <span class="uppercase whitespace-nowrap">Chateau d'Eu</span>, now exhibiting at the <span class="uppercase">Panorama, Leicester Square</span>.</h1>
   <ol>
@@ -56,15 +64,6 @@ import Attribution from "./Attribution.vue";
   </ol>
   <hr>
   <p id="vignette"><sup>[1]</sup> The "Vignette" pages are not available from the British Museum online archive.</p>
-  <Attribution
-      identifier="1982,U.3982"
-      license-url="http://creativecommons.org/licenses/by-nc-sa/4.0/"
-      license="CC BY-NC-SA 4.0"
-      url="https://www.britishmuseum.org/collection/object/P_1982-U-3982"
-      entity="the British Museum"
-  />
-  <!-- Todo: Replace with original image. -->
-  <img src="/public/1982,U.3982-panorama.jpg">
 </template>
 
 <style scoped>
