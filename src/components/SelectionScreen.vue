@@ -33,6 +33,45 @@ const hornorPanoramas = ref(Object.entries(getScenes()).filter(([_, scene]) => s
         </a>
       </li>
     </ul>
+    <h2>Controls</h2>
+    <table class="mb-16 text-left">
+      <tr>
+        <td><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or Joystick</td>
+        <td>Walk around</td>
+      </tr>
+      <tr>
+        <td><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> or Drag</td>
+        <td>Adjust view</td>
+      </tr>
+      <tr>
+        <td><kbd>+</kbd><kbd>−</kbd></td>
+        <td>Adjust zoom</td>
+      </tr>
+      <tr>
+        <td><kbd>SHIFT</kbd></td>
+        <td>Move fast</td>
+      </tr>
+      <tr>
+        <td><kbd>ALT</kbd></td>
+        <td>Move slow</td>
+      </tr>
+      <tr>
+        <td><kbd>I</kbd><kbd>K</kbd></td>
+        <td>Adjust height</td>
+      </tr>
+      <tr>
+        <td><kbd>J</kbd><kbd>L</kbd></td>
+        <td>Adjust tilt</td>
+      </tr>
+      <tr>
+        <td><kbd>H</kbd></td>
+        <td>Toggle controls</td>
+      </tr>
+      <tr>
+        <td><kbd>B</kbd></td>
+        <td>Toggle boundary break</td>
+      </tr>
+    </table>
     <h2>Credits</h2>
     <p class="mb-16">
       Compilation and recreation of panoramas by <a href="https://leifgehrmann.com">Leif Gehrmann</a>. Source code for this website is available on <a href="https://github.com/leifgehrmann/cyclorama">GitHub</a>. For attribution of the original panoramas, please press the <img src="../assets/show-info-inactive.svg" alt="info" class="inline opacity-60" style="height: 1ic"> button on each page.
@@ -87,6 +126,22 @@ p {
 
 p a {
   @apply text-indigo-400;
+}
+
+table {
+  @apply text-sm text-white/60 max-w-96 mx-auto font-serif border-separate border-spacing-x-4 border-spacing-y-2;
+}
+
+kbd {
+  font-family: monospace;
+  font-size: 90%;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+}
+
+kbd + kbd {
+  margin-left: 0.2rem;
 }
 
 </style>
