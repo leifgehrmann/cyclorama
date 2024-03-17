@@ -12,22 +12,12 @@ import Attribution from "./Attribution.vue";
       entity="the British Museum"
   />
   <hr>
-  <p class="text-center">Exhibited in ????. Lower Circle</p>
+  <p class="text-center">Exhibited between May 10th, 1815 – March 2nd, 1816 at Leicester Square in the Lower Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
   <h1 class="text-center text-3xl leading-5 mb-4"><small>EXPLANATION</small><br><small><small>OF THE</small><br></small> <span class="font-extrabold">ISLAND <small>OF</small> ELBA</span><br><small style="font-variant-caps: small-caps">And PORTO-FERRAJO,</small></h1>
   <p class="text-center text-sm">Taken on the Spot by HENRY ASTON BARKER,</p>
   <p class="text-center text-sm"><em>Painted on</em> 10,000 <em>square Feet of Canvass, and exhibiting in the GREAT ROTUNDA of his</em></p>
   <h2 class="text-center font-extrabold text-2xl" style="font-variant-caps: small-caps;">Panorama, Leicester Square.</h2>
-  <div class="opacity-60 grid gap-1">
-    <p class="text-center leading-4"><small>THE UPPER CIRCLE CONTAINS</small><br><small><small>A REPRESENTATION OF</small></small><br><span class="text-xl" style="font-variant-caps: small-caps">The BATTLE of PARIS,</span><br><small><em>Fought by the Allies in March</em>, 1814,</small><br><small><span style="font-variant-caps: small-caps">with a VIEW of</span></small><br><small class="font-bold">THE CITY AND ENVIRONS.</small></p>
-    <hr class="w-6 m-auto">
-    <p class="text-center text-xs">Admittance to each Painting One Shilling.</p>
-    <hr class="w-6 m-auto">
-    <p class="text-center text-xs"><em>Open from Ten till Dusk.</em></p>
-    <p class="text-center">1815.</p>
-    <hr class="w-6 m-auto">
-    <p class="text-center text-xs"><span style="font-variant-caps: small-caps">J. Adlard</span>, Printer, 23, Bartholomew&middot;close.</p>
-  </div>
   <hr>
   <p class="text-center text-sm">[NORTH.]</p>
   <ol>
@@ -77,6 +67,8 @@ import Attribution from "./Attribution.vue";
     <li>Barracks of the Imperial Guard.</li>
   </ol>
   <p class="text-center">Bonaparte's Flag at <span style="font-variant-caps: small-caps">Elba</span> was White, with a Red Stripe, placed diagonally, upon which were Three Bees.</p>
+  <hr>
+  <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
 </template>
 
 <style scoped>

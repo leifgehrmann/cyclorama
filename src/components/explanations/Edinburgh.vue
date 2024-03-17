@@ -11,7 +11,7 @@ import Attribution from "./Attribution.vue";
       entity="Yale Center for British Art"
   />
   <hr>
-  <p class="text-center">Exhibited between June 8th, 1804 to January 5th, 1807 at Leicester Square in the Upper Circle.<a href="#citation1"><sup>[1]</sup></a> This simulated cyclorama uses the dimensions of the Lower Circle.</p>
+  <p class="text-center">Exhibited between June 8th, 1804 – January 5th, 1807 at Leicester Square in the Upper Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
   <p class="text-center leading-3">
     <span class="text-base uppercase">In the second circle,</span><br>

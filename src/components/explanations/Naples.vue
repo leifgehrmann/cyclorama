@@ -11,7 +11,7 @@ import Attribution from "./Attribution.vue";
       entity="The British Museum"
   />
   <hr>
-  <p class="text-center">Exhibited in 1805 at the Strand. The dimensions of this cyclorama are unknown, so the the ones for the Leicester Square Panorama (which at the time was a competitor to the Strand Panorama) were used instead.</p>
+  <p class="text-center">Exhibited in 1805 at the Strand Panorama in London. The dimensions of this cyclorama are unknown, so the dimensions of the Lower Circle at the Leicester Square Panorama (which at the time was a competitor to the Strand Panorama) is used instead.</p>
   <hr>
   <h1 class="text-center text-3xl leading-8 mb-4">
     <span class="uppercase text-base">Now open,</span><br>

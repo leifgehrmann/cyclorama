@@ -11,9 +11,11 @@ import Attribution from "./Attribution.vue";
       entity="Wellcome Collection"
   />
   <hr>
-  <p class="text-center">Exhibited in 1806. Lower Circle</p>
+  <p class="text-center">Exhibited between May 14th, 1806 – May 25th, 1807 at Leicester Square in the <span class="whitespace-nowrap">Lower Circle.<a href="#citation1"><sup>[1]</sup></a></span></p>
   <hr>
-  <h1 class="text-center text-2xl leading-6 uppercase">Battle of Trafalgar</h1>
+  <h1 class="text-center text-2xl leading-6 uppercase">Battle of Trafalgar.</h1>
+  <hr>
+  <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
 </template>
 
 <style scoped>

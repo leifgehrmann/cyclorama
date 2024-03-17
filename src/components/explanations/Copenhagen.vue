@@ -11,7 +11,7 @@ import Attribution from "./Attribution.vue";
       entity="Det Kgl. Bibliotek"
   />
   <hr>
-  <p class="text-center">Exhibited between May 1802 to April 1803 at Leicester Square in the Lower Circle.<a href="#citation1"><sup>[1]</sup></a></p>
+  <p class="text-center">Exhibited between May 1802 – April 1803 at Leicester Square in the Lower Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
   <h1 class="text-center text-2xl leading-6 mb-4 uppercase"><span>Lord Nelson'<span class="lowercase">s</span></span><br><span class="text-5xl font-bold">Attack of Copenhagen.</span></h1>
   <p class="text-center text-xl">~~~~~~~~~~~~</p>

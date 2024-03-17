@@ -11,7 +11,7 @@ import Attribution from "./Attribution.vue";
       entity="The British Museum"
   />
   <hr>
-  <p class="text-center">Exhibited in ???. Lower Circle</p>
+  <p class="text-center">Exhibited between June 6th, 1810 – May 18th, 1811 at Leicester Square in the Lower Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
   <h1 class="text-center text-2xl uppercase mb-4">
     <span class="text-base">Explanation</span><br>
@@ -73,6 +73,8 @@ import Attribution from "./Attribution.vue";
     <li>Church of St. Dominico</li>
     <li>Clock Tower on the Palace; on the top are black figures which strike the hour, &amp;c.</li>
   </ol>
+  <hr>
+  <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
 </template>
 
 <style scoped>

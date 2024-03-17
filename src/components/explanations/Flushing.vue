@@ -11,7 +11,7 @@ import Attribution from "./Attribution.vue";
       entity="The British Museum"
   />
   <hr>
-  <p class="text-center">Exhibited in 1810. Upper Circle</p>
+  <p class="text-center">Exhibited between March 10th, 1810 – November 30th, 1812 at Leicester Square in the <span class="whitespace-nowrap">Upper Circle.<a href="#citation1"><sup>[1]</sup></a></span></p>
   <hr>
   <h1 class="text-center text-2xl uppercase mb-4">
     <span class="text-base">The</span><br>
@@ -74,6 +74,8 @@ import Attribution from "./Attribution.vue";
     <li>A Discharge of Congreve's Rockets.</li>
   </ol>
   <p>The Line of Battle Ships attacked the Town at an earlier Period than this Picture represents, but they are introduced to give a general Idea of the whole Attack.</p>
+  <hr>
+  <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
 </template>
 
 <style scoped>

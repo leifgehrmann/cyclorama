@@ -11,7 +11,7 @@ import Attribution from "./Attribution.vue";
       entity="The British Museum"
   />
   <hr>
-  <p class="text-center">Exhibited in ???. Lower Circle</p>
+  <p class="text-center">Exhibited between February 28th, 1812 – April 3rd, 1813 at Leicester Square in the Lower Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
   <h1 class="text-center text-base leading-6 mb-4">
     <span class="text-base uppercase">Explanation</span><br>
@@ -70,6 +70,8 @@ import Attribution from "./Attribution.vue";
     <li>Telegraph.</li>
     <li>Fort Burgio, or St. Lawrence.</li>
   </ol>
+  <hr>
+  <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
 </template>
 
 <style scoped>

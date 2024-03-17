@@ -11,7 +11,7 @@ import Attribution from "./Attribution.vue";
       entity="State Library of New South Wales"
   />
   <hr>
-  <p class="text-center">Exhibited in ???. Lower Circle</p>
+  <p class="text-center">Exhibited between May 11th, 1818 – March 1819 at Leicester Square in the Lower Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
   <h1 class="text-center leading-4">
     <span class="uppercase font-bold text-base">Description</span><br>
@@ -70,6 +70,8 @@ import Attribution from "./Attribution.vue";
     <li>Omar Bache, the Dey of Algiers.</li>
   </ol>
   <p>More details are available in the pamphlet, which can be viewed at the <a href="https://collection.sl.nsw.gov.au/digital/8gM3JjZk855bL">State Library of New South Wales</a>.</p>
+  <hr>
+  <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
 </template>
 
 <style scoped>

@@ -11,7 +11,7 @@ import Attribution from "./Attribution.vue";
       entity="The British Museum"
   />
   <hr>
-  <p class="text-center">Exhibited in ???. Lower Circle</p>
+  <p class="text-center">Exhibited between April 14th, 1813 – July 1814 at Leicester Square in the Lower Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
   <h1 class="text-center text-base leading-6 mb-4">
     <span class="text-base uppercase font-bold">Explanation</span><br>
@@ -80,6 +80,8 @@ import Attribution from "./Attribution.vue";
     <li>Eight-gun Battery, 18-pounders, to breach the left flank of Santa Maria.</li>
     <li>Caçadores firing upon the enemy in the covered way</li>
   </ol>
+  <hr>
+  <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
 </template>
 
 <style scoped>

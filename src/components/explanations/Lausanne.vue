@@ -12,7 +12,7 @@ import Attribution from "./Attribution.vue";
       entity="the British Museum"
   />
   <hr>
-  <p class="text-center">Exhibited in 1819. Upper Circle????</p>
+  <p class="text-center">Exhibited between December 27th, 1819 – November 19th, 1825 at Leicester Square in the Upper Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
   <h1 class="text-center text-lg uppercase font-medium mb-4">
     <span class="text-2xl">Explanation</span> of the <span class="text-2xl">view</span> of <span class="text-2xl">Lausanne</span> and <span class="text-2xl">Lake</span> of <span class="text-2xl">Geneva</span>.
@@ -73,6 +73,8 @@ import Attribution from "./Attribution.vue";
     <li>Old Tower, formerly used as a Magazine for Gunpowder.</li>
     <li>Part of the Old Town Wall.</li>
   </ol>
+  <hr>
+  <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
 </template>
 
 <style scoped>

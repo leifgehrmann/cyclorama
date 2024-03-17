@@ -12,7 +12,7 @@ import Attribution from "./Attribution.vue";
       entity="the British Museum"
   />
   <hr>
-  <p class="text-center">Exhibited in 1843. It's unclear if this was exhibited in the lower or upper circle, so the dimensions of the lower circle were used.</p>
+  <p class="text-center">Exhibited in 1843. It's unclear if this was exhibited in the Lower or Upper Circle, so the dimensions of the Lower Circle were used.</p>
   <hr>
   <h1 class="text-center text-xl mb-4">
     <span class="uppercase">Explanation</span> of a View of <span class="uppercase">Treport</span>, the surrounding Country, and <span class="uppercase whitespace-nowrap">Chateau d'Eu</span>, now exhibiting at the <span class="uppercase">Panorama, Leicester Square</span>.</h1>
