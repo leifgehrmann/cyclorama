@@ -24,6 +24,7 @@ import ParisStrand from "./components/explanations/ParisStrand.vue";
 import Montmartre from "./components/explanations/Montmartre.vue";
 import Berlin from "./components/explanations/Berlin.vue";
 import Vittoria from "./components/explanations/Vittoria.vue";
+import Pandemonium from "./components/explanations/Pandemonium.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -647,6 +648,26 @@ export function getScenes(): Record<string, Scene> {
         1,
       ),
     },
+    pandemonium: {
+      source: 'https://collection.sl.nsw.gov.au/record/74VvxyKvekLX/V53ApJayLQxVl',
+      selectionScreenHtml: `An attempt to illustrate Milton's Pandemonium<br><span class="text-xs">1829</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: 'SLNSW_FL16254563-panorama.jpg',
+      infoComponent: Pandemonium,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('SLNSW_FL16254563-panorama.jpg', 1),
+        [33212],
+        [2740],
+        0.3,
+        0xE8E3D0,
+        0,
+        0.25,
+        0xE8E3D0,
+        -0.1,
+        0,
+        Math.PI - 1,
+      ),
+    },
     treport: {
       source: 'https://www.britishmuseum.org/collection/object/P_1982-U-3982',
       selectionScreenHtml: `View of Treport, the surrounding Country, and Chateau d'Eu<br><span class="text-xs">1843, Featuring Queen Victoria</span>`,
@@ -748,7 +769,7 @@ export function getScenes(): Record<string, Scene> {
     },
     edinburghCityArtCentre: {
       source: 'City Art Center',
-      selectionScreenHtml: `View of Treport, the surrounding Country, and Chateau d'Eu<br><span class="text-xs">1843, Featuring Queen Victoria</span>`,
+      selectionScreenHtml: `???`,
       selectionScreenGroup: 'other',
       thumbnail: '/public/edinburgh-2.png',
       infoComponent: EdinburghStGiles,
