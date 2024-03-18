@@ -20,6 +20,7 @@ import Algiers from "./components/explanations/Algiers.vue";
 import Lausanne from "./components/explanations/Lausanne.vue";
 import Waterloo from "./components/explanations/Waterloo.vue";
 import Paris from "./components/explanations/Paris.vue";
+import ParisStrand from "./components/explanations/ParisStrand.vue";
 import Montmartre from "./components/explanations/Montmartre.vue";
 import Berlin from "./components/explanations/Berlin.vue";
 import Vittoria from "./components/explanations/Vittoria.vue";
@@ -312,6 +313,27 @@ export function getScenes(): Record<string, Scene> {
         1.33
       ),
     },
+    paris: {
+      source: 'https://collection.sl.nsw.gov.au/record/74VvxyKvekLX/ewB2eAJArgko',
+      selectionScreenHtml: `View of Paris taken between the Pont Neuf and the Louvre<br><span class="text-xs">1803</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: 'SLNSW_FL16254799-panorama.jpg',
+      infoComponent: Paris,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('SLNSW_FL16254799-panorama.jpg', 1),
+        [33212],
+        [2740],
+        0.6,
+        0xC9C3AD,
+        0,
+        0.25,
+        0xC9C3AD,
+        -0.5,
+        0,
+        Math.PI - 1,
+        1.33
+      ),
+    },
     edinburgh: {
       source: 'https://collections.britishart.yale.edu/catalog/orbis:12828979',
       selectionScreenHtml: `Edinburgh and the surrounding country<br><span class="text-xs">1805</span>`,
@@ -543,12 +565,12 @@ export function getScenes(): Record<string, Scene> {
         1.33
       ),
     },
-    paris: {
+    parisStrand: {
       source: 'https://www.britishmuseum.org/collection/object/P_1886-0111-23-4',
       selectionScreenHtml: `View of the city of Paris<br><span class="text-xs">1815</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: '/public/1886,0111.23.4-panorama.jpg',
-      infoComponent: Paris,
+      infoComponent: ParisStrand,
       ...buildBarkerGrandCircleParams(
         buildUrls('1886,0111.23.4-panorama.jpg', 1),
         [22996],
