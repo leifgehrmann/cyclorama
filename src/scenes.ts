@@ -594,7 +594,7 @@ export function getScenes(): Record<string, Scene> {
       thumbnail: '/public/1886,0111.23.3-panorama.jpg',
       infoComponent: Waterloo,
       ...buildBarkerGrandCircleParams(
-        buildUrls('1886,0111.23.3-panorama.jpg', 1),
+        buildUrls('1886,0111.23.3-panorama-%d.jpg', 6),
         [22996],
         [1526],
         0.4,
