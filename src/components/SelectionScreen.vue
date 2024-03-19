@@ -74,7 +74,7 @@ const hornorPanoramas = ref(Object.entries(getScenes()).filter(([_, scene]) => s
     </table>
     <h2>Credits</h2>
     <p class="mb-16">
-      Compilation and recreation of panoramas by <a href="https://leifgehrmann.com">Leif Gehrmann</a>. Source code for this website is available on <a href="https://github.com/leifgehrmann/cyclorama">GitHub</a>. For attribution of the original panoramas, please press the <img src="../assets/show-info-inactive.svg" alt="info" class="inline opacity-60" style="height: 1ic"> button on each page.
+      Compilation and recreation of panoramas by <a href="https://leifgehrmann.com">Leif Gehrmann</a>. Source code for this website is available on <a href="https://github.com/leifgehrmann/cyclorama">GitHub</a>. For attribution of the original panoramas, please press the <img src="../assets/show-info-inactive.svg" alt="info" class="inline opacity-60 align-text-bottom" style="height: 1ic"> button on each page.
     </p>
   </div>
 </template>

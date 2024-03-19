@@ -13,7 +13,7 @@ import Attribution from "./Attribution.vue";
   <hr>
   <p class="text-center">Exhibited between April 14th, 1813 – July 1814 at Leicester Square in the Lower Circle.<a href="#citation1"><sup>[1]</sup></a></p>
   <hr>
-  <h1 class="text-center text-base leading-6 mb-4">
+  <h1 class="text-center text-base leading-6">
     <span class="text-base uppercase font-bold">Explanation</span><br>
     <span class="text-base uppercase">of the</span><br>
     <span class="text-5xl uppercase font-bold">Siege of Badajoz</span><br>
@@ -25,7 +25,7 @@ import Attribution from "./Attribution.vue";
     <span class="text-center uppercase text-base">Henry Aston Barker's</span><br>
     <span class="text-center font-extrabold text-2xl" style="font-variant-caps: small-caps;">Panorama, Leicester Square.</span>
   </h1>
-  <p class="text-center text-xl">1812</p>
+  <hr>
   <ol>
     <li>Fort Pardeleras.</li>
     <li>Fort St. Lucia.</li>
