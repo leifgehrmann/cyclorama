@@ -25,6 +25,7 @@ import Montmartre from "./components/explanations/Montmartre.vue";
 import Berlin from "./components/explanations/Berlin.vue";
 import Vittoria from "./components/explanations/Vittoria.vue";
 import Pandemonium from "./components/explanations/Pandemonium.vue";
+import Hornor from "./components/explanations/Hornor.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -693,7 +694,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `The Panoramic View from the top of St. Paul's Cathedral<br><span class="text-xs">1829, Prints by Godefroy Engelmann I</span>`,
       selectionScreenGroup: 'hornor',
       thumbnail: '/public/1880,1113.1207.1-2.jpg',
-      infoComponent: null,
+      infoComponent: Hornor,
       ...buildHornorParams(
         buildUrls('1880,1113.1207.1-2.jpg', 1),
         [22990],
@@ -702,8 +703,8 @@ export function getScenes(): Record<string, Scene> {
         0xFAEACC,
         0,
         0.1,
-        0xFDFDDA,
-        - 1.5,
+        0xF5E5C6,
+        - 0.2,
         0,
         Math.PI - 0.25,
       )
