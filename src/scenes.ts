@@ -26,6 +26,8 @@ import Berlin from "./components/explanations/Berlin.vue";
 import Vittoria from "./components/explanations/Vittoria.vue";
 import Pandemonium from "./components/explanations/Pandemonium.vue";
 import Hornor from "./components/explanations/Hornor.vue";
+import JosiahHenshallIllustrative from "./components/explanations/JosiahHenshallIllustrative.vue";
+import JosiahHenshallDescriptive from "./components/explanations/JosiahHenshallDescriptive.vue";
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -714,7 +716,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `A Panoramic View of London and the Surrounding Country<br><span class="text-xs">1836, Prints by Josiah Henshall</span>`,
       selectionScreenGroup: 'hornor',
       thumbnail: '/public/1880,1113.1213.jpg',
-      infoComponent: null,
+      infoComponent: JosiahHenshallIllustrative,
       ...buildHornorParams(
         buildUrls('1880,1113.1213.jpg', 1),
         [12569],
@@ -734,7 +736,7 @@ export function getScenes(): Record<string, Scene> {
       selectionScreenHtml: `A Key to the Panoramic View of London and the Surrounding Country<br><span class="text-xs">1836, Prints by Josiah Henshall</span>`,
       selectionScreenGroup: 'hornor',
       thumbnail: '/public/1880,1113.1214.jpg',
-      infoComponent: null,
+      infoComponent: JosiahHenshallDescriptive,
       ...buildHornorParams(
         buildUrls('1880,1113.1214.jpg', 1),
         [12786],

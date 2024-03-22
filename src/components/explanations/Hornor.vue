@@ -5,7 +5,7 @@ import Attribution from "./Attribution.vue";
 
 <template>
   <Attribution
-      identifier="1886,0111.23.3"
+      identifier="1880,1113.1207.1-2"
       license="CC BY-NC-SA 4.0"
       url="https://www.britishmuseum.org/collection/object/P_1880-1113-1207-1-2"
       entity="The British Museum"
