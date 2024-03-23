@@ -25,7 +25,8 @@ export default class Person {
 
   addToScene(
     scene: THREE.Scene,
-    loadedTextureCallback: () => void
+    loadedTextureCallback: () => void,
+    loadingTextureFailedCallback: () => void
   ): void {
     new THREE.TextureLoader().load(this.textureUrl, (texture) => {
       texture.colorSpace = THREE.SRGBColorSpace;
@@ -38,6 +39,9 @@ export default class Person {
       this.group.add(mesh);
       scene.add(this.group);
       loadedTextureCallback()
+    }, () => {
+    }, () => {
+      loadingTextureFailedCallback()
     });
   }
 

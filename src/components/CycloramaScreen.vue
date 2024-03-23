@@ -33,6 +33,7 @@ const interactive = ref(null as null | HTMLDivElement)
 const hiddenControls = ref(false)
 const showInfo = ref(false)
 const progress = ref(0)
+const failed = ref(false)
 
 camera.value.aspect = window.innerWidth / window.innerHeight;
 camera.value.updateProjectionMatrix()
@@ -497,6 +498,10 @@ function updateProgress (e: [number]) {
   progress.value = e[0];
 }
 
+function updateFailed (e: [boolean]) {
+  failed.value = e[0];
+}
+
 </script>
 
 <template>
@@ -504,7 +509,7 @@ function updateProgress (e: [number]) {
       class="absolute w-screen h-screen max-h-screen min-h-screen bg-black z-10 pointer-events-none flex items-center justify-center flex-col gap-5"
       :class="{hidden: progress === 1}"
   >
-    <Loading :progress="progress" />
+    <Loading :progress="progress" :failed="failed" />
   </div>
   <div
       class="grid w-screen h-screen max-h-screen min-h-screen grid-rows-1 grid-cols-1"
@@ -520,6 +525,7 @@ function updateProgress (e: [number]) {
           :camera="camera"
           :controlState="controlState"
           @progressUpdate="updateProgress"
+          @failedUpdate="updateFailed"
       />
       <div
           class="absolute bottom-0 left-0 pointer-events-none"

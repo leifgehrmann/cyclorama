@@ -15,7 +15,7 @@ const props = defineProps<{
   controlState: ControlState
 }>()
 
-const emit = defineEmits(['progressUpdate'])
+const emit = defineEmits(['progressUpdate', 'failedUpdate'])
 
 const canvas = ref(null as null | HTMLDivElement)
 
@@ -89,6 +89,9 @@ const loadedTextureCallback = () => {
   itemsLoaded += 1;
   emit('progressUpdate', [itemsLoaded/totalItemsToLoad])
 }
+const loadingTextureFailedCallback = () => {
+  emit('failedUpdate', [true])
+}
 
 new Panorama(
     scene,
@@ -97,7 +100,8 @@ new Panorama(
     panoramaRadius,
     panoramaHeight,
     panoramaY,
-    loadedTextureCallback
+    loadedTextureCallback,
+    loadingTextureFailedCallback
 );
 
 const stage = new Stage(
@@ -138,7 +142,7 @@ const person1 = new Person(
 )
 person1.setOpacity(0);
 person1.setPosition(stageRadius - 0.7, stageHeight, 0)
-person1.addToScene(scene, loadedTextureCallback);
+person1.addToScene(scene, loadedTextureCallback, loadingTextureFailedCallback);
 
 const person2 = new Person(
     'person-2.png',
@@ -148,7 +152,7 @@ const person2 = new Person(
 )
 person2.setOpacity(0);
 person2.setPosition(0, stageHeight, stageRadius - 1)
-person2.addToScene(scene, loadedTextureCallback);
+person2.addToScene(scene, loadedTextureCallback, loadingTextureFailedCallback);
 
 const person3 = new Person(
     'person-3.png',
@@ -158,7 +162,7 @@ const person3 = new Person(
 )
 person3.setOpacity(0);
 person3.setPosition(0, stageHeight, (stageRadius - 0.7) * -1)
-person3.addToScene(scene, loadedTextureCallback);
+person3.addToScene(scene, loadedTextureCallback, loadingTextureFailedCallback);
 
 const person4 = new Person(
     'person-4.png',
@@ -168,7 +172,7 @@ const person4 = new Person(
 )
 person4.setOpacity(0);
 person4.setPosition((stageRadius - 0.7) * -1, stageHeight, 0)
-person4.addToScene(scene, loadedTextureCallback);
+person4.addToScene(scene, loadedTextureCallback, loadingTextureFailedCallback);
 let people = [person1, person2, person3, person4];
 
 props.camera.position.y = stageHeight + 1;

@@ -9,6 +9,7 @@ export default class Panorama {
     panoramaHeight: number,
     panoramaY: number,
     loadedTextureCallback: () => void,
+    loadingTextureFailedCallback: () => void,
   ) {
     const imageHeightSum = panoramaImageHeights.reduce((s, h) => s + h, 0);
     panoramaUrls.map((panoramaUrl, index) => {
@@ -32,6 +33,9 @@ export default class Panorama {
         panorama.geometry.translate(0, panoramaSectionHeight / 2 + panoramaY + panoramaSectionY, 0);
         scene.add( panorama );
         loadedTextureCallback();
+      }, () => {
+      }, () => {
+        loadingTextureFailedCallback()
       });
     })
   }

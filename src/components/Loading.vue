@@ -3,16 +3,22 @@ import {defineProps} from "vue";
 
 defineProps<{
   progress: number,
+  failed: boolean
 }>()
 
 const transformToWidth = (progress: number): number => {
   const bound = Math.max(0, Math.min(1, progress));
   return (Math.sin((bound * Math.PI) - (Math.PI / 2)) + 1) / 2 * 200 + 0.01;
 }
+
+const reloadPage = () => {
+  window.location.reload();
+}
+
 </script>
 
 <template>
-  <svg width="200" height="200">
+  <svg v-if="!failed" width="200" height="200">
     <defs>
       <linearGradient id="shimmer" x1="0" x2="1" y1="1" y2="1">
         <stop offset="-0.5" stop-color="#FFFFFF10">
@@ -45,11 +51,20 @@ const transformToWidth = (progress: number): number => {
     <rect ref="rect" x="0" y="0" :width="transformToWidth(progress)" height="200" fill="#FFFFFF80" mask="url(#panorama)" />
     <rect ref="rect" x="0" y="0" width="200" height="200" fill="url(#shimmer)" mask="url(#panorama)" />
   </svg>
+  <div v-else class="flex flex-col gap-5 justify-center z-10 pointer-events-auto">
+    <p>Failed to load panorama.</p>
+    <button
+        class="bg-white/20 py-2 rounded-lg cursor-pointer touch-manipulation"
+        @click="reloadPage"
+    >
+      Reload
+    </button>
+  </div>
 </template>
 
 <style scoped>
-p {
-  font-family: serif;
+p, button {
+  font-family: sans-serif;
   color: white;
 }
 </style>
