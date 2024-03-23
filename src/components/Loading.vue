@@ -52,9 +52,9 @@ const reloadPage = () => {
     <rect ref="rect" x="0" y="0" width="200" height="200" fill="url(#shimmer)" mask="url(#panorama)" />
   </svg>
   <div v-else class="flex flex-col gap-5 justify-center z-10 pointer-events-auto">
-    <p>Failed to load panorama.</p>
+    <p class="text-white/75">Failed to load the panorama.</p>
     <button
-        class="bg-white/20 py-2 rounded-lg cursor-pointer touch-manipulation"
+        class="bg-white/20 text-white/75 py-2 rounded-lg cursor-pointer touch-manipulation"
         @click="reloadPage"
     >
       Reload
@@ -63,8 +63,4 @@ const reloadPage = () => {
 </template>
 
 <style scoped>
-p, button {
-  font-family: sans-serif;
-  color: white;
-}
 </style>
