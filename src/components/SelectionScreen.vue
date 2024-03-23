@@ -16,7 +16,7 @@ const hornorPanoramas = ref(Object.entries(getScenes()).filter(([_, scene]) => s
     <ul>
       <li
           v-for="sceneEntry in barkerPanoramas"
-          :style="`background-image: url('${sceneEntry[1].thumbnail}');`"
+          :style="`background-color: #FFEEC3;background-image: url('${sceneEntry[1].thumbnail}');`"
       >
         <a :href="`./?view=${sceneEntry[0]}`" v-html="sceneEntry[1].selectionScreenHtml">
         </a>
@@ -27,7 +27,7 @@ const hornorPanoramas = ref(Object.entries(getScenes()).filter(([_, scene]) => s
     <ul>
       <li
           v-for="sceneEntry in hornorPanoramas"
-          :style="`background-image: url('${sceneEntry[1].thumbnail}');`"
+          :style="`background-color: #FFEEC3;background-image: url('${sceneEntry[1].thumbnail}');`"
       >
         <a :href="`./?view=${sceneEntry[0]}`" v-html="sceneEntry[1].selectionScreenHtml">
         </a>

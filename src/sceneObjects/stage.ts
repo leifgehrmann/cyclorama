@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export default class Stage {
-  private objects: THREE.Mesh[];
+  private objects: THREE.Object3D[];
   constructor(
     stageRadius: number,
     stageHeight: number,

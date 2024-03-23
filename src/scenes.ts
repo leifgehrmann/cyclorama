@@ -1,33 +1,35 @@
-import { Component } from "vue";
 import { ft2m } from "./utils/units.ts";
-import Treport from "./components/explanations/Treport.vue";
-import CaltonHill from "./components/explanations/CaltonHill.vue";
-import LondonBarker from "./components/explanations/LondonBarker.vue";
-import LondonToday from "./components/explanations/LondonToday.vue";
-import Elba from "./components/explanations/Elba.vue";
-import EdinburghStGiles from "./components/explanations/EdinburghStGiles.vue";
-import Windsor from "./components/explanations/Windsor.vue";
-import Constantinople from "./components/explanations/Constantinople.vue";
-import Copenhagen from "./components/explanations/Copenhagen.vue";
-import Edinburgh from "./components/explanations/Edinburgh.vue";
-import Naples from "./components/explanations/Naples.vue";
-import Trafalgar from "./components/explanations/Trafalgar.vue";
-import Flushing from "./components/explanations/Flushing.vue";
-import Malta from "./components/explanations/Malta.vue";
-import Lisbon from "./components/explanations/Lisbon.vue";
-import Badajoz from "./components/explanations/Badajoz.vue";
-import Algiers from "./components/explanations/Algiers.vue";
-import Lausanne from "./components/explanations/Lausanne.vue";
-import Waterloo from "./components/explanations/Waterloo.vue";
-import Paris from "./components/explanations/Paris.vue";
-import ParisStrand from "./components/explanations/ParisStrand.vue";
-import Montmartre from "./components/explanations/Montmartre.vue";
-import Berlin from "./components/explanations/Berlin.vue";
-import Vittoria from "./components/explanations/Vittoria.vue";
-import Pandemonium from "./components/explanations/Pandemonium.vue";
-import Hornor from "./components/explanations/Hornor.vue";
-import JosiahHenshallIllustrative from "./components/explanations/JosiahHenshallIllustrative.vue";
-import JosiahHenshallDescriptive from "./components/explanations/JosiahHenshallDescriptive.vue";
+
+import { defineAsyncComponent } from 'vue'
+
+const Treport = defineAsyncComponent(() => import('./components/explanations/Treport.vue'));
+const CaltonHill = defineAsyncComponent(() => import('./components/explanations/CaltonHill.vue'));
+const LondonBarker = defineAsyncComponent(() => import('./components/explanations/LondonBarker.vue'));
+const LondonToday = defineAsyncComponent(() => import('./components/explanations/LondonToday.vue'));
+const Elba = defineAsyncComponent(() => import('./components/explanations/Elba.vue'));
+const EdinburghStGiles = defineAsyncComponent(() => import('./components/explanations/EdinburghStGiles.vue'));
+const Windsor = defineAsyncComponent(() => import('./components/explanations/Windsor.vue'));
+const Constantinople = defineAsyncComponent(() => import('./components/explanations/Constantinople.vue'));
+const Copenhagen = defineAsyncComponent(() => import('./components/explanations/Copenhagen.vue'));
+const Edinburgh = defineAsyncComponent(() => import('./components/explanations/Edinburgh.vue'));
+const Naples = defineAsyncComponent(() => import('./components/explanations/Naples.vue'));
+const Trafalgar = defineAsyncComponent(() => import('./components/explanations/Trafalgar.vue'));
+const Flushing = defineAsyncComponent(() => import('./components/explanations/Flushing.vue'));
+const Malta = defineAsyncComponent(() => import('./components/explanations/Malta.vue'));
+const Lisbon = defineAsyncComponent(() => import('./components/explanations/Lisbon.vue'));
+const Badajoz = defineAsyncComponent(() => import('./components/explanations/Badajoz.vue'));
+const Algiers = defineAsyncComponent(() => import('./components/explanations/Algiers.vue'));
+const Lausanne = defineAsyncComponent(() => import('./components/explanations/Lausanne.vue'));
+const Waterloo = defineAsyncComponent(() => import('./components/explanations/Waterloo.vue'));
+const Paris = defineAsyncComponent(() => import('./components/explanations/Paris.vue'));
+const ParisStrand = defineAsyncComponent(() => import('./components/explanations/ParisStrand.vue'));
+const Montmartre = defineAsyncComponent(() => import('./components/explanations/Montmartre.vue'));
+const Berlin = defineAsyncComponent(() => import('./components/explanations/Berlin.vue'));
+const Vittoria = defineAsyncComponent(() => import('./components/explanations/Vittoria.vue'));
+const Pandemonium = defineAsyncComponent(() => import('./components/explanations/Pandemonium.vue'));
+const Hornor = defineAsyncComponent(() => import('./components/explanations/Hornor.vue'));
+const JosiahHenshallIllustrative = defineAsyncComponent(() => import('./components/explanations/JosiahHenshallIllustrative.vue'));
+const JosiahHenshallDescriptive = defineAsyncComponent(() => import('./components/explanations/JosiahHenshallDescriptive.vue'));
 
 export interface CycloramaData {
   panoramaUrls: string[];
@@ -53,7 +55,7 @@ export interface Scene extends CycloramaData {
   selectionScreenHtml: string;
   selectionScreenGroup: 'barker' | 'hornor' | 'other';
   thumbnail: string;
-  infoComponent: Component|null;
+  infoComponent: ReturnType<typeof defineAsyncComponent> | null;
 }
 
 function buildCycloramaData(options: {

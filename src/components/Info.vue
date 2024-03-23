@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {DefineComponent, defineEmits, defineProps, onMounted, ref} from "vue";
+import {defineAsyncComponent, defineEmits, defineProps, onMounted, ref} from "vue";
 
 const props = defineProps<{
-  infoComponent: DefineComponent,
+  infoComponent: ReturnType<typeof defineAsyncComponent> | null,
 }>()
 const emit = defineEmits(['toggleInfo'])
 const info = ref(null as null | HTMLDivElement)
@@ -56,7 +56,7 @@ onMounted(() => {
     </div>
     <div class="p-4 pt-24 lg:pt-10 select-text grid gap-4 max-w-[25rem] m-auto"
     >
-      <component :is="props.infoComponent"></component>
+      <component v-if="props.infoComponent !== null" :is="props.infoComponent"></component>
     </div>
   </div>
 </template>
