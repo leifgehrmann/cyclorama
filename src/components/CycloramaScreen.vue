@@ -514,10 +514,10 @@ function updateFailed (e: [boolean]) {
   <div
       class="grid w-screen h-screen max-h-screen min-h-screen grid-rows-1 grid-cols-1"
       :class="{
-    'lg:grid-rows-2 lg:grid-cols-1 2xl:grid-rows-1 2xl:grid-cols-[1fr_minmax(20rem,_33%)]': showInfo,
+    'tall:grid-rows-2 tall:grid-cols-1 lg:grid-rows-1 lg:grid-cols-[1fr_minmax(20rem,_33%)]': showInfo,
       }"
       style="height: 100dvh; min-height: 100dvh; max-height: 100dvh;">
-    <div ref="interactive" class="touch-none relative lg:block"
+    <div ref="interactive" class="touch-none relative tall:block lg:block"
          :class="{ hidden: showInfo }"
     >
       <Cyclorama
@@ -550,7 +550,7 @@ function updateFailed (e: [boolean]) {
       </div>
     </div>
     <div class="overflow-y-scroll overflow-x-hidden"
-         :class="{ hidden: !showInfo, 'lg:block': showInfo }"
+         :class="{ hidden: !showInfo, 'tall:block': showInfo, 'lg:block': showInfo }"
     >
       <Info :info-component="props.scene.infoComponent" @toggle-info="toggleInfo"/>
     </div>

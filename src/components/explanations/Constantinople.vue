@@ -9,7 +9,7 @@ import Attribution from "./Attribution.vue";
       entity="Library of Congress & King George Ⅲ's Personal Coloured Views Collection"
   />
   <hr>
-  <h1 class="text-center leading-3 text-xl mb-10"><span class="font-bold" style="font-variant: small-caps"><span class="text-4xl">Panorama</span><br> of <br><span class="my-4 text-4xl">Constantinople.</span></span><br> and Environs.</h1>
+  <h1 class="text-center leading-3 text-xl mb-10"><span class="font-bold" style="font-variant: small-caps"><span class="text-4xl">Panorama</span> of <br><span class="inline-block mb-3 text-4xl">Constantinople.</span></span><br> and Environs.</h1>
   <p class="text-center text-sm">
     <small>Drawn on the spot by</small><br> Henry Aston Barker<br>
     <small>Etched by</small> Charles Tomkins<br>
@@ -19,7 +19,7 @@ import Attribution from "./Attribution.vue";
     <small>Published</small> January 1<sup>st</sup> 1813,<br><small> by</small> Thomas Palser, Surry side Westminster Bridge<br> <small>and</small> Henry Aston Barker, West Square.
   </p>
   <hr>
-  <p>The original panorama no longer exists, but this aquatint is possibly a recreation of it. The panorama <em>"View of Constantinople from the Tower of Galata"</em> was first exhibited at Leicester Square in the Lower Circle, between April 27th, 1801 – May 15th, 1802.<a href="#citation1"><sup>[1]</sup></a> It's unclear how different these panoramas were from the aquatints.</p>
+  <p>The original panorama no longer exists, but this aquatint is possibly a recreation of it. The panorama <em>"View of Constantinople from the Tower of Galata"</em> was first exhibited at Leicester Square in the Lower Circle, between April 27th, 1801 – May 15th, 1802.<a href="#citation1"><sup>[1]</sup></a> It's unclear how different the panorama was from this aquatint.</p>
   <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
   <hr>
   <p>This work is a digital composition of two reproductions of aquatints.</p>

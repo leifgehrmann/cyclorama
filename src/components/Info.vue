@@ -22,7 +22,7 @@ onMounted(() => {
 
 <template>
   <div id="info" ref="info" class="pointer-events-auto shadow-lg">
-    <div class="lg:hidden absolute top-0 right-0 p-4">
+    <div class="tall:hidden lg:hidden absolute top-0 right-0 p-4">
       <div
           class="
       bg-neutral-800 bg-opacity-70
@@ -54,7 +54,7 @@ onMounted(() => {
         </button>
       </div>
     </div>
-    <div class="p-4 pt-24 lg:pt-10 select-text grid gap-4 max-w-[25rem] m-auto"
+    <div class="p-4 pt-24 tall:pt-10 lg:pt-10 select-text grid gap-4 max-w-[25rem] m-auto"
     >
       <component v-if="props.infoComponent !== null" :is="props.infoComponent"></component>
     </div>
