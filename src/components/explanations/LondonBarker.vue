@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 import Attribution from "./Attribution.vue";
+const urlParams = new URLSearchParams(window.location.search);
+const highQuality = urlParams.get('hq') === 'true';
 </script>
 
 <template>
@@ -24,6 +26,7 @@ import Attribution from "./Attribution.vue";
   <p>The dimensions of this simulated cyclorama are not the same as the dimensions of the original cyclorama; the original had a much smaller diameter. At 28 Castle Street the dimensions are unknown. At Leceister Square the diameter of the Upper Circle was 50 feet (15 meters). This simulation uses the dimensions of the Lower Circle at Leicester Square, which has a diameter of 84 feet (25 meters), to demonstrate Robert Barker's desired vision.</p>
   <p>Ralph Hyde noted in his book <em>Panoramania</em> some nice details.<a href="#citation3"><sup>[3]</sup></a> "At the S. end of Blackfriars Bridge workmen repair the road, a waterman descends the stairs to his vessel, a man raps on a door of Albion Place, and a woman calls out of a window. River craft close by includes a barge of the Royal Exchange Fire Office, an allusion to the fire, fought by insurance fire boats, which gutted the Albion Mills between the completion of Barker's drawings and the publication of the prints."</p>
   <p>A key of the panorama can be found at the <a href="https://www.britishmuseum.org/collection/object/P_1880-1113-5509-1">British Museum</a> (Museum Number: 1880,1113.5509.1)</p>
+  <p v-if="!highQuality">For performance reasons, the image quality of this panorama was reduced so the experience on mobile phones is smoother. <a href="./?view=albionMills&hq=true">Click here to view a higher quality version.</a></p>
   <hr>
   <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 48</p>
   <p id="citation2"><sup>[2]</sup> <em>Panoramania: The Art and Entertainment of the "all-embracing" View</em> by Ralph Hyde, p. 62</p>

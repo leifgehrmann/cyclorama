@@ -216,7 +216,7 @@ function buildUrls(urlPattern: string, count: number, leadingZeros: number = 2):
   return urls;
 }
 
-export function getScenes(): Record<string, Scene> {
+export function getScenes(highQuality: boolean = false): Record<string, Scene> {
   return {
     caltonHill: {
       source: 'https://archives.collections.ed.ac.uk/repositories/2/digital_objects/100',
@@ -242,12 +242,14 @@ export function getScenes(): Record<string, Scene> {
       source: 'https://collections.britishart.yale.edu/catalog/orbis:205530',
       selectionScreenHtml: `London from the Roof of Albion Mills<br><span class="text-xs">Exhibited 1791-1794, Aquatints from 1792-1793</span>`,
       selectionScreenGroup: 'barker',
-      thumbnail: '/public/blondon.jpg',
+      thumbnail: 'https://assets.leifgehrmann.com/external/cyclorama/yale-orbis-205530-stitch-thumb.jpg',
       infoComponent: LondonBarker,
       ...buildBarkerGrandCircleParams(
-        buildUrls('yale-orbis-205530-stitch-%d.jpg', 18),
-        [34684],
-        [2280, 2279],
+        highQuality ?
+          buildUrls('https://assets.leifgehrmann.com/external/cyclorama/yale-orbis-205530-stitch-%d.jpg', 18) :
+          buildUrls('https://assets.leifgehrmann.com/external/cyclorama/yale-orbis-205530-stitch-small-%d.jpg', 4),
+        highQuality ? [34684] : [15216],
+        highQuality ? [2280, 2279] : [2000],
         0.5,
         0x1E1F22,
         0,
@@ -795,6 +797,6 @@ export function getScenes(): Record<string, Scene> {
   }
 }
 
-export function getScene(key: string): Scene|null {
-  return getScenes()[key] ?? null;
+export function getScene(key: string, highQuality: boolean = false): Scene|null {
+  return getScenes(highQuality)[key] ?? null;
 }

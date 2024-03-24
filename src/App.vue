@@ -5,9 +5,10 @@ import {getScene, Scene} from "./scenes.ts";
 
 const urlParams = new URLSearchParams(window.location.search);
 const sceneKey = urlParams.get('view');
+const highQuality = urlParams.get('hq') === 'true';
 let scene: Scene|null = null;
 if (sceneKey !== null) {
-  scene = getScene(sceneKey);
+  scene = getScene(sceneKey, highQuality);
 }
 
 </script>
