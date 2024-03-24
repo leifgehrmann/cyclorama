@@ -135,7 +135,7 @@ const ground = new Ground(
 ground.addToScene(scene)
 
 const person1 = new Person(
-    'person-1.png',
+    'https://assets.leifgehrmann.com/external/cyclorama/person-1.png',
     425,
     880,
     0.01 / 5
@@ -145,7 +145,7 @@ person1.setPosition(stageRadius - 0.7, stageHeight, 0)
 person1.addToScene(scene, loadedTextureCallback, loadingTextureFailedCallback);
 
 const person2 = new Person(
-    'person-2.png',
+    'https://assets.leifgehrmann.com/external/cyclorama/person-2.png',
     500,
     925,
     0.01 / 5
@@ -155,7 +155,7 @@ person2.setPosition(0, stageHeight, stageRadius - 1)
 person2.addToScene(scene, loadedTextureCallback, loadingTextureFailedCallback);
 
 const person3 = new Person(
-    'person-3.png',
+    'https://assets.leifgehrmann.com/external/cyclorama/person-3.png',
     855,
     950,
     0.01 / 5
@@ -165,7 +165,7 @@ person3.setPosition(0, stageHeight, (stageRadius - 0.7) * -1)
 person3.addToScene(scene, loadedTextureCallback, loadingTextureFailedCallback);
 
 const person4 = new Person(
-    'person-4.png',
+    'https://assets.leifgehrmann.com/external/cyclorama/person-4.png',
     350,
     865,
     0.01 / 5
