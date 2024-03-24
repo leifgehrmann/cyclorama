@@ -222,10 +222,10 @@ export function getScenes(): Record<string, Scene> {
       source: 'https://archives.collections.ed.ac.uk/repositories/2/digital_objects/100',
       selectionScreenHtml: `View of Edinburgh from Calton Hill<br><span class="text-xs">Exhibited 1788-1789, Watercolour from 1792</span>`,
       selectionScreenGroup: 'barker',
-      thumbnail: '/public/barker.jpg',
+      thumbnail: 'https://assets.leifgehrmann.com/external/cyclorama/ado-2016-0006-thumb.jpg',
       infoComponent: CaltonHill,
       ...buildBarkerGrandCircleParams(
-        buildUrls('barker-%d.jpg', 5),
+        buildUrls('https://assets.leifgehrmann.com/external/cyclorama/ado-2016-0006-%d.jpg', 5),
         [18237],
         [2248],
         0.5,
