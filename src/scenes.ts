@@ -287,7 +287,9 @@ export function getScenes(highQuality: boolean = false): Record<string, Scene> {
       thumbnail: 'constantinople-color-small.jpg',
       infoComponent: Constantinople,
       ...buildBarkerGrandCircleParams(
-        buildUrls('constantinople-color-small-%d.jpg', 7),
+        highQuality ?
+          buildUrls('https://assets.leifgehrmann.com/external/cyclorama/constantinople-color-%d.jpg', 26) :
+          buildUrls('constantinople-color-small-%d.jpg', 7),
         [25172],
         [3136],
         0.575,
@@ -657,7 +659,7 @@ export function getScenes(highQuality: boolean = false): Record<string, Scene> {
     },
     pandemonium: {
       source: 'https://collection.sl.nsw.gov.au/record/74VvxyKvekLX/V53ApJayLQxVl',
-      selectionScreenHtml: `An attempt to illustrate Milton's Pandemonium<br><span class="text-xs">1829</span>`,
+      selectionScreenHtml: `An attempt to illustrate Milton's Pandemonium<br><span class="text-xs">1829, Featuring Satan</span>`,
       selectionScreenGroup: 'barker',
       thumbnail: 'SLNSW_FL16254563-panorama.jpg',
       infoComponent: Pandemonium,
