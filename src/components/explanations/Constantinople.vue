@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 import Attribution from "./Attribution.vue";
+const urlParams = new URLSearchParams(window.location.search);
+const highQuality = urlParams.get('hq') === 'true';
 </script>
 
 <template>
@@ -20,6 +22,7 @@ import Attribution from "./Attribution.vue";
   </p>
   <hr>
   <p>The original panorama no longer exists, but this aquatint is possibly a recreation of it. The panorama <em>"View of Constantinople from the Tower of Galata"</em> was first exhibited at Leicester Square in the Lower Circle, between April 27th, 1801 – May 15th, 1802.<a href="#citation1"><sup>[1]</sup></a> It's unclear how different the panorama was from this aquatint.</p>
+  <p v-if="!highQuality">For performance reasons, the image quality of this panorama was reduced so the experience on mobile phones is smoother. <a href="./?view=constantinople&hq=true">Click here to view a higher quality version.</a></p>
   <p id="citation1"><sup>[1]</sup> <em>The First Panoramas: Visions of British Imperialism</em> by Denise Oleksijczuk, p. 173</p>
   <hr>
   <p>This work is a digital composition of two reproductions of aquatints.</p>
