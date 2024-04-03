@@ -284,7 +284,7 @@ export function getScenes(highQuality: boolean = false): Record<string, Scene> {
       source: 'https://www.loc.gov/item/2013646602/',
       selectionScreenHtml: `View of Constantinople from the Tower&nbsp;of&nbsp;Galata<br><span class="text-xs">Exhibited 1800, Aquatints from 1813</span>`,
       selectionScreenGroup: 'barker',
-      thumbnail: 'https://assets.leifgehrmann.com/external/cyclorama/constantinople-color-small.jpg',
+      thumbnail: 'https://assets.leifgehrmann.com/external/cyclorama/constantinople-color-thumb.jpg',
       infoComponent: Constantinople,
       ...buildBarkerGrandCircleParams(
         highQuality ?
