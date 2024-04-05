@@ -20,6 +20,7 @@ const Lisbon = defineAsyncComponent(() => import('./components/explanations/Lisb
 const Badajoz = defineAsyncComponent(() => import('./components/explanations/Badajoz.vue'));
 const Algiers = defineAsyncComponent(() => import('./components/explanations/Algiers.vue'));
 const Lausanne = defineAsyncComponent(() => import('./components/explanations/Lausanne.vue'));
+const CaltonHill1825 = defineAsyncComponent(() => import('./components/explanations/CaltonHill1825.vue'));
 const Waterloo = defineAsyncComponent(() => import('./components/explanations/Waterloo.vue'));
 const Paris = defineAsyncComponent(() => import('./components/explanations/Paris.vue'));
 const ParisStrand = defineAsyncComponent(() => import('./components/explanations/ParisStrand.vue'));
@@ -655,6 +656,26 @@ export function getScenes(highQuality: boolean = false): Record<string, Scene> {
         -0.25,
         0.05,
         1,
+      ),
+    },
+    caltonHill1825: {
+      source: 'https://collection.sl.nsw.gov.au/record/74VvxyKvekLX/mjAeJqbdNN7pB',
+      selectionScreenHtml: `View of the City of Edinburgh<br><span class="text-xs">1825</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: 'https://assets.leifgehrmann.com/external/cyclorama/SLNSW_FL16254467-panorama-thumb.jpg',
+      infoComponent: CaltonHill1825,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('https://assets.leifgehrmann.com/external/cyclorama/SLNSW_FL16254467-panorama-%d.jpg', 4),
+        [3480 * 4],
+        [1952],
+        0.4,
+        0xE9E0D6,
+        0,
+        0.1,
+        0xE9E0D6,
+        -0.5,
+        -0.10,
+        3 * Math.PI / 4,
       ),
     },
     pandemonium: {
