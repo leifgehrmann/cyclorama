@@ -268,7 +268,7 @@ export function getScenes(highQuality: boolean = false): Record<string, Scene> {
       thumbnail: 'https://assets.leifgehrmann.com/external/cyclorama/bodleian-windsor-panorama-thumb.jpg',
       infoComponent: Windsor,
       ...buildBarkerGrandCircleParams(
-        buildUrls('bodleian-windsor-panorama-%d.jpg', 5),
+        buildUrls('https://assets.leifgehrmann.com/external/cyclorama/bodleian-windsor-panorama-%d.jpg', 5),
         [3825*5],
         [2048],
         0.75,
