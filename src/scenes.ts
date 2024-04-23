@@ -174,6 +174,51 @@ function buildBarkerUpperCircleParams(
   });
 }
 
+function buildBarkerArchersHallParams(
+  panoramaUrls: string[],
+  imageWidths: number[],
+  imageHeights: number[],
+  horizonRatio: number,
+  groundColor: number,
+  groundStartOffset: number,
+  groundEndOffset: number,
+  skyColor: number,
+  skyStartOffset: number,
+  skyEndOffset: number,
+  initialCameraYaw: number = 0,
+  panoramaHeightScale: number = 1
+): CycloramaData {
+  return buildCycloramaData({
+    // Dimensions inferred from pages 28 and 29 from "The First Panoramas:
+    // Visions of British Imperialism" by Denise Blake Oleksijczuk.
+    // "With a view of twenty-three feet in diameter, it seems likely that so
+    // few people could be accommodated at once because they were confined to
+    // a smaller platform inside the painting."
+    panoramaRadius: ft2m(23 / 2),
+    // "A raised platform big enough for seven people would have left
+    // approximately ten feet between the spectators and the painting's
+    // curved surface, which would have accorded with Barker's patent
+    // specifications."
+    // The railing is accounted for
+    stageRadius: ft2m(23 / 2 - 10 + 0.17),
+    stageHeight: 0.1, // Unknown, this is just a guess
+    umbrellaRadius: ft2m(23 / 2), // Unknown, this is just a guess
+    ceilingHeight: 2.5, // Unknown, this is just a guess
+    panoramaUrls,
+    imageWidths,
+    imageHeights,
+    horizonRatio,
+    groundColor,
+    groundStartOffset,
+    groundEndOffset,
+    skyColor,
+    skyStartOffset,
+    skyEndOffset,
+    initialCameraYaw,
+    panoramaHeightScale
+  });
+}
+
 function buildHornorParams(
   panoramaUrls: string[],
   imageWidths: number[],
@@ -235,6 +280,26 @@ export function getScenes(highQuality: boolean = false): Record<string, Scene> {
         0,
         0xDCD7B7,
       - 1,
+        0,
+        Math.PI - 0.5,
+      ),
+    },
+    caltonHillArchersHall: {
+      source: 'https://archives.collections.ed.ac.uk/repositories/2/digital_objects/100',
+      selectionScreenHtml: `View of Edinburgh from Calton Hill<br><span class="text-xs">Exhibited 1788-1789, Watercolour from 1792</span>`,
+      selectionScreenGroup: 'other',
+      thumbnail: 'https://assets.leifgehrmann.com/external/cyclorama/ado-2016-0006-thumb.jpg',
+      infoComponent: null,
+      ...buildBarkerArchersHallParams(
+        buildUrls('https://assets.leifgehrmann.com/external/cyclorama/ado-2016-0006-%d.jpg', 5),
+        [18237],
+        [2248],
+        0,
+        0x212111,
+        0,
+        0,
+        0xDCD7B7,
+        - 1,
         0,
         Math.PI - 0.5,
       ),

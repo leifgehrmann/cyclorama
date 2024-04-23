@@ -173,7 +173,12 @@ const person4 = new Person(
 person4.setOpacity(0);
 person4.setPosition((stageRadius - 0.7) * -1, stageHeight, 0)
 person4.addToScene(scene, loadedTextureCallback, loadingTextureFailedCallback);
-let people = [person1, person2, person3, person4];
+
+// If the stage radius is too small, then don't display the people. Otherwise it would be too cramped.
+let people: Person[] = [];
+if (stageRadius > 2) {
+  people.push(person1, person2, person3, person4);
+}
 
 props.camera.position.y = stageHeight + 1;
 
