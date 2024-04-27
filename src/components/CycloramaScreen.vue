@@ -209,6 +209,9 @@ function normaliseControlStateFromKeyboardState() {
 
 onMounted(() => {
   window.addEventListener('mousedown', (e) => {
+    if (progress.value !== 1) {
+      return
+    }
     controlState.value.yawVel = 0
     controlState.value.pitchVel = 0
     controlState.value.yawAcc = 0;
@@ -219,6 +222,9 @@ onMounted(() => {
   })
 
   window.addEventListener('touchstart', (e) => {
+    if (progress.value !== 1) {
+      return
+    }
     if (touchId !== null) {
       return;
     }
@@ -236,6 +242,9 @@ onMounted(() => {
   })
 
   window.addEventListener('mousemove', (e) => {
+    if (progress.value !== 1) {
+      return
+    }
     if (pointerPrev === null || interactive.value === null) {
       return
     }
@@ -256,6 +265,9 @@ onMounted(() => {
   })
 
   window.addEventListener('touchmove', (e) => {
+    if (progress.value !== 1) {
+      return
+    }
     if (touchId === null || pointerPrev === null || interactive.value === null) {
       return;
     }
@@ -280,6 +292,9 @@ onMounted(() => {
   })
 
   function clearMouse(e: MouseEvent) {
+    if (progress.value !== 1) {
+      return
+    }
     if (pointer2ndPrev === null || interactive.value === null) {
       pointerPrev = null;
       return;
@@ -306,6 +321,9 @@ onMounted(() => {
   }
 
   function clearTouch(e: TouchEvent) {
+    if (progress.value !== 1) {
+      return
+    }
     if (touchId === null || interactive.value === null) {
       return;
     }
@@ -349,6 +367,9 @@ onMounted(() => {
   window.addEventListener('touchcancel', clearTouch)
 
   window.addEventListener('keydown', (event) => {
+    if (progress.value !== 1) {
+      return
+    }
     if (
         event.code === 'ArrowLeft' ||
         event.code === 'ArrowRight' ||
@@ -414,6 +435,9 @@ onMounted(() => {
   })
 
   window.addEventListener('keyup', (event) => {
+    if (progress.value !== 1) {
+      return
+    }
     if (event.code === 'ArrowLeft') {
       controlState.value.yawAcc = 0;
       keyboardLeft = false;
