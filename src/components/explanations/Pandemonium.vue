@@ -17,7 +17,7 @@ import Attribution from "./Attribution.vue";
     <span class="uppercase text-base">Description</span><br>
     <span class="uppercase text-sm">of an attempt to illustrate</span><br>
     <span class="uppercase text-2xl">Milton's</span><br>
-    <span class="uppercase text-4xl font-bold">Pandemonium;</span><br>
+    <span class="uppercase text-3xl font-bold">Pandemonium;</span><br>
     <span class="uppercase text-xs">now exhibiting in the</span><br>
     <span class="uppercase text-base">Panorama, leicester Square.</span><br>
   </h1>

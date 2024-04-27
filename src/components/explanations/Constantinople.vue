@@ -11,7 +11,7 @@ const highQuality = urlParams.get('hq') === 'true';
       entity="Library of Congress & King George Ⅲ's Personal Coloured Views Collection"
   />
   <hr>
-  <h1 class="text-center leading-3 text-xl mb-10"><span class="font-bold" style="font-variant: small-caps"><span class="text-4xl">Panorama</span> of <br><span class="inline-block mb-3 text-4xl">Constantinople.</span></span><br> and Environs.</h1>
+  <h1 class="text-center leading-3 text-xl mb-10"><span class="font-bold" style="font-variant: small-caps"><span class="text-4xl">Panorama</span> of <br><span class="inline-block mb-3 text-4xl">Constantin&shy;ople.</span></span><br> and Environs.</h1>
   <p class="text-center text-sm">
     <small>Drawn on the spot by</small><br> Henry Aston Barker<br>
     <small>Etched by</small> Charles Tomkins<br>

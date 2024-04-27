@@ -12,7 +12,7 @@ import Attribution from "./Attribution.vue";
       entity="the University of Edinburgh"
   />
   <hr>
-  <h1 class="text-center text-2xl leading-6 mb-4"><span><em>View of</em></span><br><span class="text-5xl font-bold">EDINBURGH</span><br><em>from</em> <span class="font-bold" style="font-variant: small-caps">Calton Hill</span></h1>
+  <h1 class="text-center text-2xl leading-6 mb-4"><span><em>View of</em></span><br><span class="text-4xl font-bold">EDINBURGH</span><br><em>from</em> <span class="font-bold" style="font-variant: small-caps">Calton Hill</span></h1>
   <p class="text-center text-sm"><small>Watercolour by</small><br> Robert Barker</p>
   <p class="text-center text-xl">1792</p>
   <p>The original panorama no longer exists, but this watercolour painting is possibly a recreation of it. A panorama from Calton Hill was first exhibited at the Archers' Hall in Edinburgh from the 31st of January 1788, until the beginning of March. It was then moved to the New Assembly Rooms in Edinburgh New Town between March 6th and June 2nd.<a href="#citation1"><sup>[1]</sup></a> Finally it was exhibited at 28 Haymarket in London on the 14th of March, 1789.<a href="#citation2"><sup>[2]</sup></a></p>

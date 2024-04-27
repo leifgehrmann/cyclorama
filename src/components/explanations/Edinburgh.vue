@@ -17,8 +17,8 @@ import Attribution from "./Attribution.vue";
     <span class="text-base uppercase">In the second circle,</span><br>
     <span class="text-xs">Is exhibiting a Painting of</span><br>
   </p>
-  <h1 class="text-center text-2xl leading-6 uppercase mb-4">
-    <span class="text-5xl font-bold uppercase">Edinburgh</span><br>
+  <h1 class="text-center text-2xl leading-6 uppercase mb-3">
+    <span class="text-4xl font-bold uppercase">Edinburgh</span><br>
     <span class="uppercase"><em>and the surrounding country.</em></span>
   </h1>
   <p class="text-center">The Contemplation of this grand and delightful Scene, and an earnest Desire to represent it entire, were the first Circumstances which impressed Mr. Barker's Mind with the Idea of a Panorama. The Public may now form a Judgment of the comparative Excellence of three Views, reckoned by men of Taste the finest in Europe, namely, Constantinople and Plymouth, which have been exhibited; and Edinburgh, which is now open.</p>
