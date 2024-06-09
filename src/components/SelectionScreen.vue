@@ -10,7 +10,7 @@ const hornorPanoramas = ref(Object.entries(getScenes()).filter(([_, scene]) => s
 <template>
   <div id="screen">
     <h1 class="italic text-3xl font-bold">Cycloramas</h1>
-    <p class="mb-10">A collection of panoramas from the 1800s and a virtual recreation of the cyclorama, a building designed to exhibit massive 360-degree paintings, surrounding the viewer. For more information, read <a href="https://leifgehrmann.com"><em>Virtual Reality in the&nbsp;1800s</em></a> by Leif Gehrmann.</p>
+    <p class="mb-10">A collection of panoramas from the 1800s and a virtual recreation of the cyclorama, a building designed to exhibit massive 360-degree paintings, surrounding the viewer. For more information, read <a href="https://leifgehrmann.com/2024/06/09/1800-panoramas/"><em>The Cyclorama: Virtual Reality in the&nbsp;1800s</em></a> by Leif Gehrmann.</p>
     <h2>1. Panoramas by the Barkers</h2>
     <p>Panoramas from Robert Barker, Henry Aston Barker, or any other panoramas exhibited at Leicester Square or the Strand in London.</p>
     <ul>
