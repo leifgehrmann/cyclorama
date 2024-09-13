@@ -2,6 +2,7 @@ import { ft2m } from "./utils/units.ts";
 
 import { defineAsyncComponent } from 'vue'
 
+const Coblentz = defineAsyncComponent(() => import('./components/explanations/Coblentz.vue'));
 const Treport = defineAsyncComponent(() => import('./components/explanations/Treport.vue'));
 const CaltonHill = defineAsyncComponent(() => import('./components/explanations/CaltonHill.vue'));
 const LondonBarker = defineAsyncComponent(() => import('./components/explanations/LondonBarker.vue'));
@@ -761,6 +762,26 @@ export function getScenes(highQuality: boolean = false): Record<string, Scene> {
         -0.1,
         0,
         Math.PI - 1,
+      ),
+    },
+    coblentz: {
+      source: 'https://archive.org/details/descriptionofvie00burf_14/mode/2up',
+      selectionScreenHtml: `View of Coblentz, Ehrenbreitstein, and the Rhine<br><span class="text-xs">1843</span>`,
+      selectionScreenGroup: 'barker',
+      thumbnail: 'https://assets.leifgehrmann.com/external/cyclorama/coblentz-thumb.jpg',
+      infoComponent: Coblentz,
+      ...buildBarkerGrandCircleParams(
+        buildUrls('https://assets.leifgehrmann.com/external/cyclorama/coblentz-%d.jpg', 3),
+        [3383 * 3],
+        [1267],
+        0.31,
+        0xE9D1AD,
+        0,
+        0.1,
+        0xE9D1AD,
+        -0.25,
+        0.05,
+        -1,
       ),
     },
     treport: {
